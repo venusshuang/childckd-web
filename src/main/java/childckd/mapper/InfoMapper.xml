@@ -1,0 +1,729 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.InfoMapper" >
+
+
+<select id="findtop" resultType="childckd.model.Info">
+SELECT
+	a.*
+FROM
+	info a,
+	info_category_info b
+WHERE
+	a.`infoid` = b.`infoid`
+AND b.`categoryid` = #{Infoid} ORDER BY b.`ordernum` DESC LIMIT 1
+		
+	</select>
+	
+	<select id="findDeptByDeptId" resultType="map">
+		     SELECT
+			        *
+		     FROM
+			         dept
+		     WHERE
+			         deptid = #{deptid};
+	</select>
+      <select id="findliulan" resultType="int">
+              SELECT
+	                num
+             FROM
+	               liulan
+             WHERE
+	               NAME = 'liulan'
+      </select>
+      <update id="updateliulan" parameterType="int" >
+           UPDATE liulan
+         SET num = #{liulannum}  WHERE NAME='liulan'
+    
+   
+  </update>
+	<select id="search" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			date_format( i.addtime, '%Y-%m-%d' ) AS addtime,
+			date_format( i.releasetime, '%Y-%m-%d' ) AS releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			ici.ordernum,
+			ic.categoryname,
+			ici.categoryid
+		FROM
+			info i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			i.infotitle LIKE CONCAT("%",#{searchtext}, "%")
+			AND i.checkpass = 1 
+		ORDER BY
+			i.releasetime DESC
+   </select>
+   
+   	<select id="countSearch" resultType="Object">
+		SELECT
+			COUNT(i.infoid)
+		FROM
+			info i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			i.infotitle LIKE CONCAT("%",#{searchtext}, "%")
+			AND i.checkpass = 1 
+   </select>
+
+	<select id="findByCategoryId" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			DATE_FORMAT(i.addtime, '%Y-%m-%d') AS addtime,
+			DATE_FORMAT(i.releasetime, '%Y-%m-%d') AS releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass,
+			ic.categoryname,
+			ici.categoryid
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			ici.categoryid = #{categoryid}
+		ORDER BY ici.ordernum DESC
+	</select>
+	
+	<select id="countByCategoryIdPaging" resultType="Object">
+		SELECT
+			COUNT(i.infoid)
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		WHERE
+			ici.categoryid = #{categoryid}
+	</select>
+	
+	<select id="findPassedByCategoryId" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			DATE_FORMAT(i.addtime, '%Y-%m-%d') AS addtime,
+			DATE_FORMAT(i.releasetime, '%Y-%m-%d') AS releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass,
+			ic.categoryname,
+			ici.categoryid
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			ici.categoryid = #{categoryid}
+		AND i.checkpass = 1
+		ORDER BY ici.ordernum DESC
+	</select>
+	
+	<select id="countPassedByCategoryIdPaging" resultType="Object">
+		SELECT
+			COUNT(i.infoid)
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		WHERE
+			ici.categoryid = #{categoryid}
+		AND i.checkpass = 1
+	</select>
+	
+	<select id="findOneInfo" resultType="map">
+		SELECT
+			DATE_FORMAT(i.addtime, '%Y-%m-%d') AS addtime,
+			DATE_FORMAT(i.releasetime, '%Y-%m-%d') AS releasetime,
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			i.addtime,
+			i.releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass
+		FROM
+			info AS i
+		WHERE
+			i.infoid = #{infoid}
+	</select>
+	
+	<select id="findCustomOne" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			DATE_FORMAT(i.addtime, '%Y-%m-%d') AS addtime,
+			DATE_FORMAT(i.releasetime, '%Y-%m-%d') AS releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass,
+			ic.categoryname,
+			ici.categoryid
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			i.infoid = #{infoid}
+		LIMIT 1
+	</select>
+	
+	<select id="findPassedPicNotNullByCategoryId" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			DATE_FORMAT(i.addtime, '%Y-%m-%d') AS addtime,
+			DATE_FORMAT(i.releasetime, '%Y-%m-%d') AS releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass,
+			ic.categoryname,
+			ici.categoryid
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			ici.categoryid = #{categoryid}
+		AND i.imageurl !=""
+		AND i.checkpass = 1
+		ORDER BY ici.ordernum DESC
+	</select>
+	
+	<select id="countPassedPicNotNullByCategoryIdPaging" resultType="Object">
+		SELECT
+			COUNT(i.infoid)
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		INNER JOIN info_category AS ic ON ici.categoryid = ic.categoryid
+		WHERE
+			ici.categoryid = #{categoryid}
+		AND i.imageurl !=""
+		AND i.checkpass = 1
+	</select>
+	
+	<select id="findTopOnePassedByCategoryId" resultType="map">
+		SELECT
+			i.infoid,
+			i.jianti,
+			i.infotitle,
+			i.infotitle2,
+			i.summary,
+			i.source,
+			i.author,
+			i.infocontent,
+			i.addtime,
+			i.releasetime,
+			i.imageurl,
+			i.videourl,
+			i.returnurl,
+			i.clicknum,
+			i.checkpass,
+			ici.categoryid
+		FROM
+			info AS i
+		INNER JOIN info_category_info AS ici ON i.infoid = ici.infoid
+		WHERE
+			i.checkpass = 1
+		AND ici.categoryid = #{categoryid}
+		ORDER BY
+			ici.ordernum DESC
+		LIMIT 1
+	</select>
+	
+	<select id="getScoreByDeptId" resultType="Object">
+		SELECT
+			COUNT(a.id)
+		FROM
+			(
+				SELECT
+					tg.*
+				FROM
+					tougao AS tg
+				INNER JOIN tougao_gaojian AS tggj ON tg.gaojianid = tggj.gaojianid
+				WHERE
+					tg.`status` = 1
+				AND tggj.deptid = #{deptid}
+				GROUP BY
+					tg.gaojianid
+			) AS a
+	</select>
+
+  <resultMap id="BaseResultMap" type="childckd.model.Info" >
+    <id column="infoid" property="infoid" jdbcType="VARCHAR" />
+    <result column="jianti" property="jianti" jdbcType="VARCHAR" />
+    <result column="infotitle" property="infotitle" jdbcType="VARCHAR" />
+    <result column="infotitle2" property="infotitle2" jdbcType="VARCHAR" />
+    <result column="summary" property="summary" jdbcType="VARCHAR" />
+    <result column="source" property="source" jdbcType="VARCHAR" />
+    <result column="author" property="author" jdbcType="VARCHAR" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="releasetime" property="releasetime" jdbcType="TIMESTAMP" />
+    <result column="imageurl" property="imageurl" jdbcType="VARCHAR" />
+    <result column="videourl" property="videourl" jdbcType="VARCHAR" />
+    <result column="returnurl" property="returnurl" jdbcType="VARCHAR" />
+    <result column="clicknum" property="clicknum" jdbcType="INTEGER" />
+    <result column="checkpass" property="checkpass" jdbcType="INTEGER" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="childckd.model.Info" extends="BaseResultMap" >
+    <result column="infocontent" property="infocontent" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    infoid, jianti, infotitle, infotitle2, summary, source, author, addtime, releasetime, 
+    imageurl, videourl, returnurl, clicknum, checkpass
+  </sql>
+  <sql id="Blob_Column_List" >
+    infocontent
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="childckd.model.InfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.InfoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from info
+    where infoid = #{infoid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from info
+    where infoid = #{infoid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.InfoExample" >
+    delete from info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.Info" >
+    insert into info (infoid, jianti, infotitle, 
+      infotitle2, summary, source, 
+      author, addtime, releasetime, 
+      imageurl, videourl, returnurl, 
+      clicknum, checkpass, infocontent
+      )
+    values (#{infoid,jdbcType=VARCHAR}, #{jianti,jdbcType=VARCHAR}, #{infotitle,jdbcType=VARCHAR}, 
+      #{infotitle2,jdbcType=VARCHAR}, #{summary,jdbcType=VARCHAR}, #{source,jdbcType=VARCHAR}, 
+      #{author,jdbcType=VARCHAR}, #{addtime,jdbcType=TIMESTAMP}, #{releasetime,jdbcType=TIMESTAMP}, 
+      #{imageurl,jdbcType=VARCHAR}, #{videourl,jdbcType=VARCHAR}, #{returnurl,jdbcType=VARCHAR}, 
+      #{clicknum,jdbcType=INTEGER}, #{checkpass,jdbcType=INTEGER}, #{infocontent,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.Info" >
+    insert into info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="infoid != null" >
+        infoid,
+      </if>
+      <if test="jianti != null" >
+        jianti,
+      </if>
+      <if test="infotitle != null" >
+        infotitle,
+      </if>
+      <if test="infotitle2 != null" >
+        infotitle2,
+      </if>
+      <if test="summary != null" >
+        summary,
+      </if>
+      <if test="source != null" >
+        source,
+      </if>
+      <if test="author != null" >
+        author,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="releasetime != null" >
+        releasetime,
+      </if>
+      <if test="imageurl != null" >
+        imageurl,
+      </if>
+      <if test="videourl != null" >
+        videourl,
+      </if>
+      <if test="returnurl != null" >
+        returnurl,
+      </if>
+      <if test="clicknum != null" >
+        clicknum,
+      </if>
+      <if test="checkpass != null" >
+        checkpass,
+      </if>
+      <if test="infocontent != null" >
+        infocontent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="infoid != null" >
+        #{infoid,jdbcType=VARCHAR},
+      </if>
+      <if test="jianti != null" >
+        #{jianti,jdbcType=VARCHAR},
+      </if>
+      <if test="infotitle != null" >
+        #{infotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="infotitle2 != null" >
+        #{infotitle2,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageurl != null" >
+        #{imageurl,jdbcType=VARCHAR},
+      </if>
+      <if test="videourl != null" >
+        #{videourl,jdbcType=VARCHAR},
+      </if>
+      <if test="returnurl != null" >
+        #{returnurl,jdbcType=VARCHAR},
+      </if>
+      <if test="clicknum != null" >
+        #{clicknum,jdbcType=INTEGER},
+      </if>
+      <if test="checkpass != null" >
+        #{checkpass,jdbcType=INTEGER},
+      </if>
+      <if test="infocontent != null" >
+        #{infocontent,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.InfoExample" resultType="java.lang.Integer" >
+    select count(*) from info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update info
+    <set >
+      <if test="record.infoid != null" >
+        infoid = #{record.infoid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jianti != null" >
+        jianti = #{record.jianti,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infotitle != null" >
+        infotitle = #{record.infotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.infotitle2 != null" >
+        infotitle2 = #{record.infotitle2,jdbcType=VARCHAR},
+      </if>
+      <if test="record.summary != null" >
+        summary = #{record.summary,jdbcType=VARCHAR},
+      </if>
+      <if test="record.source != null" >
+        source = #{record.source,jdbcType=VARCHAR},
+      </if>
+      <if test="record.author != null" >
+        author = #{record.author,jdbcType=VARCHAR},
+      </if>
+      <if test="record.addtime != null" >
+        addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.releasetime != null" >
+        releasetime = #{record.releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.imageurl != null" >
+        imageurl = #{record.imageurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.videourl != null" >
+        videourl = #{record.videourl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnurl != null" >
+        returnurl = #{record.returnurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.clicknum != null" >
+        clicknum = #{record.clicknum,jdbcType=INTEGER},
+      </if>
+      <if test="record.checkpass != null" >
+        checkpass = #{record.checkpass,jdbcType=INTEGER},
+      </if>
+      <if test="record.infocontent != null" >
+        infocontent = #{record.infocontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update info
+    set infoid = #{record.infoid,jdbcType=VARCHAR},
+      jianti = #{record.jianti,jdbcType=VARCHAR},
+      infotitle = #{record.infotitle,jdbcType=VARCHAR},
+      infotitle2 = #{record.infotitle2,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      releasetime = #{record.releasetime,jdbcType=TIMESTAMP},
+      imageurl = #{record.imageurl,jdbcType=VARCHAR},
+      videourl = #{record.videourl,jdbcType=VARCHAR},
+      returnurl = #{record.returnurl,jdbcType=VARCHAR},
+      clicknum = #{record.clicknum,jdbcType=INTEGER},
+      checkpass = #{record.checkpass,jdbcType=INTEGER},
+      infocontent = #{record.infocontent,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update info
+    set infoid = #{record.infoid,jdbcType=VARCHAR},
+      jianti = #{record.jianti,jdbcType=VARCHAR},
+      infotitle = #{record.infotitle,jdbcType=VARCHAR},
+      infotitle2 = #{record.infotitle2,jdbcType=VARCHAR},
+      summary = #{record.summary,jdbcType=VARCHAR},
+      source = #{record.source,jdbcType=VARCHAR},
+      author = #{record.author,jdbcType=VARCHAR},
+      addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      releasetime = #{record.releasetime,jdbcType=TIMESTAMP},
+      imageurl = #{record.imageurl,jdbcType=VARCHAR},
+      videourl = #{record.videourl,jdbcType=VARCHAR},
+      returnurl = #{record.returnurl,jdbcType=VARCHAR},
+      clicknum = #{record.clicknum,jdbcType=INTEGER},
+      checkpass = #{record.checkpass,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.Info" >
+    update info
+    <set >
+      <if test="jianti != null" >
+        jianti = #{jianti,jdbcType=VARCHAR},
+      </if>
+      <if test="infotitle != null" >
+        infotitle = #{infotitle,jdbcType=VARCHAR},
+      </if>
+      <if test="infotitle2 != null" >
+        infotitle2 = #{infotitle2,jdbcType=VARCHAR},
+      </if>
+      <if test="summary != null" >
+        summary = #{summary,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null" >
+        source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="author != null" >
+        author = #{author,jdbcType=VARCHAR},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="releasetime != null" >
+        releasetime = #{releasetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="imageurl != null" >
+        imageurl = #{imageurl,jdbcType=VARCHAR},
+      </if>
+      <if test="videourl != null" >
+        videourl = #{videourl,jdbcType=VARCHAR},
+      </if>
+      <if test="returnurl != null" >
+        returnurl = #{returnurl,jdbcType=VARCHAR},
+      </if>
+      <if test="clicknum != null" >
+        clicknum = #{clicknum,jdbcType=INTEGER},
+      </if>
+      <if test="checkpass != null" >
+        checkpass = #{checkpass,jdbcType=INTEGER},
+      </if>
+      <if test="infocontent != null" >
+        infocontent = #{infocontent,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where infoid = #{infoid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="childckd.model.Info" >
+    update info
+    set jianti = #{jianti,jdbcType=VARCHAR},
+      infotitle = #{infotitle,jdbcType=VARCHAR},
+      infotitle2 = #{infotitle2,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      releasetime = #{releasetime,jdbcType=TIMESTAMP},
+      imageurl = #{imageurl,jdbcType=VARCHAR},
+      videourl = #{videourl,jdbcType=VARCHAR},
+      returnurl = #{returnurl,jdbcType=VARCHAR},
+      clicknum = #{clicknum,jdbcType=INTEGER},
+      checkpass = #{checkpass,jdbcType=INTEGER},
+      infocontent = #{infocontent,jdbcType=LONGVARCHAR}
+    where infoid = #{infoid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.Info" >
+    update info
+    set jianti = #{jianti,jdbcType=VARCHAR},
+      infotitle = #{infotitle,jdbcType=VARCHAR},
+      infotitle2 = #{infotitle2,jdbcType=VARCHAR},
+      summary = #{summary,jdbcType=VARCHAR},
+      source = #{source,jdbcType=VARCHAR},
+      author = #{author,jdbcType=VARCHAR},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      releasetime = #{releasetime,jdbcType=TIMESTAMP},
+      imageurl = #{imageurl,jdbcType=VARCHAR},
+      videourl = #{videourl,jdbcType=VARCHAR},
+      returnurl = #{returnurl,jdbcType=VARCHAR},
+      clicknum = #{clicknum,jdbcType=INTEGER},
+      checkpass = #{checkpass,jdbcType=INTEGER}
+    where infoid = #{infoid,jdbcType=VARCHAR}
+  </update>
+</mapper>

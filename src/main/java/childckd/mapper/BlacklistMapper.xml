@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.BlacklistMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.Blacklist" >
+    <id column="blacklistid" property="blacklistid" jdbcType="VARCHAR" />
+    <result column="roles" property="roles" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="dept" property="dept" jdbcType="VARCHAR" />
+    <result column="shoujihao" property="shoujihao" jdbcType="VARCHAR" />
+    <result column="chuangjianshijian" property="chuangjianshijian" jdbcType="TIMESTAMP" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+  </resultMap>
+  <select id="findBlackByNameAndDeptAndShoujihao" resultType="Map">
+  	select bl.* from blacklist as bl where bl.name like CONCAT('%',#{ppName},'%') and 
+	  <if test='ppDept==""'> (bl.dept like CONCAT('%',#{ppDept},'%') or bl.dept is null)</if>
+	  <if test='ppDept!=""'> bl.dept like CONCAT('%',#{ppDept},'%')</if>
+	 and bl.shoujihao like CONCAT('%',#{ppShoujihao},'%')
+	 order by bl.name
+  </select>
+ 
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    blacklistid, roles, userid, name, dept, shoujihao, chuangjianshijian, zhuangtai
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.BlacklistExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from blacklist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from blacklist
+    where blacklistid = #{blacklistid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from blacklist
+    where blacklistid = #{blacklistid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.BlacklistExample" >
+    delete from blacklist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.Blacklist" >
+    insert into blacklist (blacklistid, roles, userid, 
+      name, dept, shoujihao, 
+      chuangjianshijian, zhuangtai)
+    values (#{blacklistid,jdbcType=VARCHAR}, #{roles,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR}, #{shoujihao,jdbcType=VARCHAR}, 
+      #{chuangjianshijian,jdbcType=TIMESTAMP}, #{zhuangtai,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.Blacklist" >
+    insert into blacklist
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="blacklistid != null" >
+        blacklistid,
+      </if>
+      <if test="roles != null" >
+        roles,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="dept != null" >
+        dept,
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao,
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="blacklistid != null" >
+        #{blacklistid,jdbcType=VARCHAR},
+      </if>
+      <if test="roles != null" >
+        #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="chuangjianshijian != null" >
+        #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.BlacklistExample" resultType="java.lang.Integer" >
+    select count(*) from blacklist
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update blacklist
+    <set >
+      <if test="record.blacklistid != null" >
+        blacklistid = #{record.blacklistid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.roles != null" >
+        roles = #{record.roles,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dept != null" >
+        dept = #{record.dept,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shoujihao != null" >
+        shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chuangjianshijian != null" >
+        chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update blacklist
+    set blacklistid = #{record.blacklistid,jdbcType=VARCHAR},
+      roles = #{record.roles,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      dept = #{record.dept,jdbcType=VARCHAR},
+      shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.Blacklist" >
+    update blacklist
+    <set >
+      <if test="roles != null" >
+        roles = #{roles,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="dept != null" >
+        dept = #{dept,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    where blacklistid = #{blacklistid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.Blacklist" >
+    update blacklist
+    set roles = #{roles,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      dept = #{dept,jdbcType=VARCHAR},
+      shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER}
+    where blacklistid = #{blacklistid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.NewsMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.News" >
+    <id column="newsid" property="newsid" jdbcType="VARCHAR" />
+    <result column="fajianren" property="fajianren" jdbcType="VARCHAR" />
+    <result column="fajianrenname" property="fajianrenname" jdbcType="VARCHAR" />
+    <result column="shoujianren" property="shoujianren" jdbcType="VARCHAR" />
+    <result column="shoujianrenname" property="shoujianrenname" jdbcType="VARCHAR" />
+    <result column="neirong" property="neirong" jdbcType="VARCHAR" />
+    <result column="newstype" property="newstype" jdbcType="INTEGER" />
+    <result column="chuangjianshijian" property="chuangjianshijian" jdbcType="TIMESTAMP" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+    <result column="ownerid" property="ownerid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    newsid, fajianren, fajianrenname, shoujianren, shoujianrenname, neirong, newstype, 
+    chuangjianshijian, zhuangtai, ownerid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.NewsExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from news
+    where newsid = #{newsid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from news
+    where newsid = #{newsid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.NewsExample" >
+    delete from news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.News" >
+    insert into news (newsid, fajianren, fajianrenname, 
+      shoujianren, shoujianrenname, neirong, 
+      newstype, chuangjianshijian, zhuangtai, 
+      ownerid)
+    values (#{newsid,jdbcType=VARCHAR}, #{fajianren,jdbcType=VARCHAR}, #{fajianrenname,jdbcType=VARCHAR}, 
+      #{shoujianren,jdbcType=VARCHAR}, #{shoujianrenname,jdbcType=VARCHAR}, #{neirong,jdbcType=VARCHAR}, 
+      #{newstype,jdbcType=INTEGER}, #{chuangjianshijian,jdbcType=TIMESTAMP}, #{zhuangtai,jdbcType=INTEGER}, 
+      #{ownerid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.News" >
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        newsid,
+      </if>
+      <if test="fajianren != null" >
+        fajianren,
+      </if>
+      <if test="fajianrenname != null" >
+        fajianrenname,
+      </if>
+      <if test="shoujianren != null" >
+        shoujianren,
+      </if>
+      <if test="shoujianrenname != null" >
+        shoujianrenname,
+      </if>
+      <if test="neirong != null" >
+        neirong,
+      </if>
+      <if test="newstype != null" >
+        newstype,
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+      <if test="ownerid != null" >
+        ownerid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="newsid != null" >
+        #{newsid,jdbcType=VARCHAR},
+      </if>
+      <if test="fajianren != null" >
+        #{fajianren,jdbcType=VARCHAR},
+      </if>
+      <if test="fajianrenname != null" >
+        #{fajianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujianren != null" >
+        #{shoujianren,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujianrenname != null" >
+        #{shoujianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="neirong != null" >
+        #{neirong,jdbcType=VARCHAR},
+      </if>
+      <if test="newstype != null" >
+        #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="chuangjianshijian != null" >
+        #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="ownerid != null" >
+        #{ownerid,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.NewsExample" resultType="java.lang.Integer" >
+    select count(*) from news
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update news
+    <set >
+      <if test="record.newsid != null" >
+        newsid = #{record.newsid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fajianren != null" >
+        fajianren = #{record.fajianren,jdbcType=VARCHAR},
+      </if>
+      <if test="record.fajianrenname != null" >
+        fajianrenname = #{record.fajianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shoujianren != null" >
+        shoujianren = #{record.shoujianren,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shoujianrenname != null" >
+        shoujianrenname = #{record.shoujianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.neirong != null" >
+        neirong = #{record.neirong,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newstype != null" >
+        newstype = #{record.newstype,jdbcType=INTEGER},
+      </if>
+      <if test="record.chuangjianshijian != null" >
+        chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="record.ownerid != null" >
+        ownerid = #{record.ownerid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update news
+    set newsid = #{record.newsid,jdbcType=VARCHAR},
+      fajianren = #{record.fajianren,jdbcType=VARCHAR},
+      fajianrenname = #{record.fajianrenname,jdbcType=VARCHAR},
+      shoujianren = #{record.shoujianren,jdbcType=VARCHAR},
+      shoujianrenname = #{record.shoujianrenname,jdbcType=VARCHAR},
+      neirong = #{record.neirong,jdbcType=VARCHAR},
+      newstype = #{record.newstype,jdbcType=INTEGER},
+      chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      ownerid = #{record.ownerid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.News" >
+    update news
+    <set >
+      <if test="fajianren != null" >
+        fajianren = #{fajianren,jdbcType=VARCHAR},
+      </if>
+      <if test="fajianrenname != null" >
+        fajianrenname = #{fajianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujianren != null" >
+        shoujianren = #{shoujianren,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujianrenname != null" >
+        shoujianrenname = #{shoujianrenname,jdbcType=VARCHAR},
+      </if>
+      <if test="neirong != null" >
+        neirong = #{neirong,jdbcType=VARCHAR},
+      </if>
+      <if test="newstype != null" >
+        newstype = #{newstype,jdbcType=INTEGER},
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="ownerid != null" >
+        ownerid = #{ownerid,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where newsid = #{newsid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.News" >
+    update news
+    set fajianren = #{fajianren,jdbcType=VARCHAR},
+      fajianrenname = #{fajianrenname,jdbcType=VARCHAR},
+      shoujianren = #{shoujianren,jdbcType=VARCHAR},
+      shoujianrenname = #{shoujianrenname,jdbcType=VARCHAR},
+      neirong = #{neirong,jdbcType=VARCHAR},
+      newstype = #{newstype,jdbcType=INTEGER},
+      chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      ownerid = #{ownerid,jdbcType=VARCHAR}
+    where newsid = #{newsid,jdbcType=VARCHAR}
+  </update>
+</mapper>

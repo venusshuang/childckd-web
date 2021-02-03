@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.GuahaoMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.Guahao" >
+    <id column="guahaoid" property="guahaoid" jdbcType="VARCHAR" />
+    <result column="jiuzhenxinxiid" property="jiuzhenxinxiid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="paibanid" property="paibanid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="chuangjianshijian" property="chuangjianshijian" jdbcType="TIMESTAMP" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+    <result column="shenhejieguo" property="shenhejieguo" jdbcType="INTEGER" />
+    <result column="shenheshijian" property="shenheshijian" jdbcType="TIMESTAMP" />
+    <result column="shenheyijian" property="shenheyijian" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="tongjiRenshu" resultType="map">
+  	SELECT
+		CONCAT(DATE_FORMAT( g.chuangjianshijian, '%m' ),"月") AS SHIJIAN,
+		COUNT(*) AS COUNT
+	FROM
+		guahao g 
+	WHERE g.shenhejieguo = 1
+	GROUP BY
+		DATE_FORMAT(g.chuangjianshijian,'%m')
+	ORDER BY DATE_FORMAT(g.chuangjianshijian,'%m') asc
+  </select>
+  
+  <select id="tongjiNianling" resultType="map">
+  	SELECT
+		dn.text AS name,
+		COUNT(g.guahaoid) AS value 
+	FROM
+		dict_nianlingduan dn
+		LEFT JOIN patient_jiuzhenxinxi p ON p.age = dn.id
+		LEFT JOIN guahao g on g.jiuzhenxinxiid = p.jiuzhenxinxiid
+	WHERE g.shenhejieguo = 1
+	GROUP BY
+		dn.id 
+	ORDER BY
+		dn.ordernum ASC
+  </select>
+  
+  <select id="findByDateAndUserId" resultType="map">
+  	  	SELECT
+		g.guahaoid AS id,
+		g.jiuzhenxinxiid,
+		g.userid,
+		g.`name` AS xingming,
+		'' AS bingzhong,
+		g.paibanid,
+		date_format(g.chuangjianshijian,'%Y-%m-%d')AS chuangjianshijian,
+		g.shenhejieguo,
+		g.shenheyijian,
+		g.shenheshijian,
+		g.zhuangtai,
+		'guahao' AS type,
+		p.`name` AS zhuanjianame,
+		date_format(p.paibanriqi,'%Y-%m-%d')AS paibanriqi,
+		pj.shenfenzhenghaoma,
+		pj.xingbie,
+		pj.age
+	FROM
+		guahao g 
+	LEFT JOIN paibanguanli p ON p.paibanid = g.paibanid
+	LEFT JOIN patient_jiuzhenxinxi pj on pj.jiuzhenxinxiid = g.jiuzhenxinxiid
+	WHERE (g.shenhejieguo = 0 or g.shenhejieguo = 1)
+		and g.userid = #{userid} AND date_format(p.paibanriqi,'%Y-%m-%d') = #{date}
+  </select> 
+  
+  <select id="findYuyueByUserId" resultType="map">
+  	SELECT
+		g.guahaoid AS id,
+		g.jiuzhenxinxiid,
+		g.userid,
+		g.`name` AS xingming,
+		'' AS bingzhong,
+		g.paibanid,
+		date_format(g.chuangjianshijian,'%Y-%m-%d')AS chuangjianshijian,
+		g.shenhejieguo,
+		g.shenheyijian,
+		g.shenheshijian,
+		g.zhuangtai,
+		'guahao' AS type,
+		p.`name` AS zhuanjianame,
+		pj.shenfenzhenghaoma,
+		pj.xingbie,
+		pj.age
+	FROM
+		guahao g 
+	LEFT JOIN paibanguanli p ON p.paibanid = g.paibanid
+	LEFT JOIN patient_jiuzhenxinxi pj on pj.jiuzhenxinxiid = g.jiuzhenxinxiid
+	WHERE g.userid = #{userid}
+	
+	UNION
+	
+	SELECT
+		z.zhuyuanid AS id,
+		z.jiuzhenxinxiid,
+		z.userid,
+		z.xingming,
+		db.text AS bingzhong,
+		'' AS paibanid,
+		date_format(z.chuangjianshijian,'%Y-%m-%d')AS chuangjianshijian,
+		z.shenhejieguo,
+		z.shenheyijian,
+		z.shenheshijian,
+		z.zhuangtai,
+		'zhuyuan' AS type,
+		'住院' AS zhuanjianame,
+		pj.shenfenzhenghaoma,
+		pj.xingbie,
+		pj.age
+	FROM
+		zhuyuan z
+	LEFT JOIN dict_bingzhong db on db.id = z.bingzhong
+	LEFT JOIN patient_jiuzhenxinxi pj on pj.jiuzhenxinxiid = z.jiuzhenxinxiid
+	WHERE z.userid = #{userid}
+	
+	ORDER BY chuangjianshijian DESC
+  </select>
+  
+  <select id="findCustomAll" resultType="map">
+  	SELECT
+		g.guahaoid,
+		g.jiuzhenxinxiid,
+		g.userid,
+		g.paibanid,
+		g.`name` AS jiuzhenxingming,
+		date_format(g.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian,
+		g.zhuangtai,
+		g.shenhejieguo,
+		g.shenheshijian,
+		g.shenheyijian,
+		pg.expertid,
+		pg.`name` AS zhuanjiaxingming,
+		pg.guahaoleibie,
+		date_format(pg.paibanriqi,'%Y-%m-%d') as paibanriqi,
+		pg.shangxiawu,
+		pg.xianhaoshu,
+		pg.shengyuhaoshu,
+		pg.jiage,
+		pg.zhuangtai,
+		pj.shenfenzhenghaoma,
+		pj.xingbie,
+		pj.zhuyaozhengzhuang,
+		pj.shoujihao,
+		nld.text as age,
+		pj.lianxidizhi,
+		pj.zhuangtai,
+		bz.text as bingzhongtext
+		
+	FROM
+		guahao AS g
+		INNER JOIN paibanguanli AS pg ON g.paibanid = pg.paibanid
+		INNER JOIN patient_jiuzhenxinxi AS pj ON g.jiuzhenxinxiid = pj.jiuzhenxinxiid 
+		left join dict_nianlingduan as nld on nld.id = pj.age
+		left join dict_bingzhong as bz on bz.id=pj.bingzhong
+	WHERE
+		g.`shenhejieguo` = #{shenhejieguo} and
+		pj.`name` LIKE CONCAT('%',#{xingming},'%')
+	<if test='shoujihao!=null and shoujihao!=""'>
+		AND pj.shoujihao LIKE CONCAT('%',#{shoujihao},'%')
+	</if>
+	<if test='bingzhong!=null and bingzhong!=""'>
+		AND pj.bingzhong = #{bingzhong}
+	</if>
+	<if test='expertid!=null and expertid!=""'>
+		AND pg.expertid  = #{expertid}
+	</if>
+	<if test='yuyueriqi!=null and yuyueriqi!=""'>
+		AND date_format(pg.paibanriqi,'%Y-%m-%d') = #{yuyueriqi}
+	</if>
+	
+	ORDER BY pg.paibanriqi DESC
+	
+	LIMIT #{startindex},#{pagesize}
+  </select>
+  
+  <select id="countFindCustomAll" resultType="Object">
+  	SELECT
+		count(*)
+	FROM
+		guahao AS g
+		INNER JOIN paibanguanli AS pg ON g.paibanid = pg.paibanid
+		INNER JOIN patient_jiuzhenxinxi AS pj ON g.jiuzhenxinxiid = pj.jiuzhenxinxiid 
+	WHERE
+	    g.`shenhejieguo` = #{shenhejieguo} and
+		pj.`name` LIKE CONCAT('%',#{xingming},'%')
+	<if test='shoujihao!=null and shoujihao!=""'>
+		AND pj.shoujihao LIKE CONCAT('%',#{shoujihao},'%')
+	</if>
+	<if test='bingzhong!=null and bingzhong!=""'>
+		AND pj.bingzhong = #{bingzhong}
+	</if>
+	<if test='expertid!=null and expertid!=""'>
+		AND pg.expertid  = #{expertid}
+	</if>
+	<if test='yuyueriqi!=null and yuyueriqi!=""'>
+		AND date_format(pg.paibanriqi,'%Y-%m-%d') = #{yuyueriqi}
+	</if>
+	ORDER BY g.chuangjianshijian DESC
+  </select>
+  
+
+  <select id="findCustomOne" resultType="map">
+  	select 
+  		g.guahaoid,
+		g.jiuzhenxinxiid,
+		g.userid,
+		g.paibanid,
+		g.`name` AS jiuzhenxingming,
+		g.chuangjianshijian,
+		g.zhuangtai,
+		g.shenhejieguo,
+		g.shenheshijian,
+		g.shenheyijian,
+		pg.expertid,
+		pg.`name` AS zhuanjiaxingming,
+		pg.guahaoleibie,
+		pg.paibanriqi,
+		pg.shangxiawu,
+		pg.xianhaoshu,
+		pg.shengyuhaoshu,
+		pg.jiage,
+		pg.zhuangtai,
+		pj.shenfenzhenghaoma,
+		pj.xingbie,
+		pj.zhuyaozhengzhuang,
+		pj.shoujihao,
+		pj.age,
+		pj.lianxidizhi,
+		pj.zhuangtai,
+		pj.chuangjianshijian,
+		e.*
+	FROM
+		guahao AS g
+		INNER JOIN paibanguanli AS pg ON g.paibanid = pg.paibanid
+		INNER JOIN patient_jiuzhenxinxi AS pj ON g.jiuzhenxinxiid = pj.jiuzhenxinxiid
+		INNER JOIN expert AS e ON e.expertid = pg.expertid
+  	WHERE g.guahaoid = #{guahaoid}
+  </select>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    guahaoid, jiuzhenxinxiid, userid, paibanid, name, chuangjianshijian, zhuangtai, shenhejieguo, 
+    shenheshijian, shenheyijian
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.GuahaoExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from guahao
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from guahao
+    where guahaoid = #{guahaoid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from guahao
+    where guahaoid = #{guahaoid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.GuahaoExample" >
+    delete from guahao
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.Guahao" >
+    insert into guahao (guahaoid, jiuzhenxinxiid, userid, 
+      paibanid, name, chuangjianshijian, 
+      zhuangtai, shenhejieguo, shenheshijian, 
+      shenheyijian)
+    values (#{guahaoid,jdbcType=VARCHAR}, #{jiuzhenxinxiid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, 
+      #{paibanid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{chuangjianshijian,jdbcType=TIMESTAMP}, 
+      #{zhuangtai,jdbcType=INTEGER}, #{shenhejieguo,jdbcType=INTEGER}, #{shenheshijian,jdbcType=TIMESTAMP}, 
+      #{shenheyijian,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.Guahao" >
+    insert into guahao
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="guahaoid != null" >
+        guahaoid,
+      </if>
+      <if test="jiuzhenxinxiid != null" >
+        jiuzhenxinxiid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="paibanid != null" >
+        paibanid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+      <if test="shenhejieguo != null" >
+        shenhejieguo,
+      </if>
+      <if test="shenheshijian != null" >
+        shenheshijian,
+      </if>
+      <if test="shenheyijian != null" >
+        shenheyijian,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="guahaoid != null" >
+        #{guahaoid,jdbcType=VARCHAR},
+      </if>
+      <if test="jiuzhenxinxiid != null" >
+        #{jiuzhenxinxiid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="paibanid != null" >
+        #{paibanid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="chuangjianshijian != null" >
+        #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="shenhejieguo != null" >
+        #{shenhejieguo,jdbcType=INTEGER},
+      </if>
+      <if test="shenheshijian != null" >
+        #{shenheshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shenheyijian != null" >
+        #{shenheyijian,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.GuahaoExample" resultType="java.lang.Integer" >
+    select count(*) from guahao
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update guahao
+    <set >
+      <if test="record.guahaoid != null" >
+        guahaoid = #{record.guahaoid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.jiuzhenxinxiid != null" >
+        jiuzhenxinxiid = #{record.jiuzhenxinxiid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.paibanid != null" >
+        paibanid = #{record.paibanid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.chuangjianshijian != null" >
+        chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="record.shenhejieguo != null" >
+        shenhejieguo = #{record.shenhejieguo,jdbcType=INTEGER},
+      </if>
+      <if test="record.shenheshijian != null" >
+        shenheshijian = #{record.shenheshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.shenheyijian != null" >
+        shenheyijian = #{record.shenheyijian,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update guahao
+    set guahaoid = #{record.guahaoid,jdbcType=VARCHAR},
+      jiuzhenxinxiid = #{record.jiuzhenxinxiid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      paibanid = #{record.paibanid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      shenhejieguo = #{record.shenhejieguo,jdbcType=INTEGER},
+      shenheshijian = #{record.shenheshijian,jdbcType=TIMESTAMP},
+      shenheyijian = #{record.shenheyijian,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.Guahao" >
+    update guahao
+    <set >
+      <if test="jiuzhenxinxiid != null" >
+        jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="paibanid != null" >
+        paibanid = #{paibanid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="shenhejieguo != null" >
+        shenhejieguo = #{shenhejieguo,jdbcType=INTEGER},
+      </if>
+      <if test="shenheshijian != null" >
+        shenheshijian = #{shenheshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="shenheyijian != null" >
+        shenheyijian = #{shenheyijian,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where guahaoid = #{guahaoid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.Guahao" >
+    update guahao
+    set jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR},
+      userid = #{userid,jdbcType=VARCHAR},
+      paibanid = #{paibanid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      shenhejieguo = #{shenhejieguo,jdbcType=INTEGER},
+      shenheshijian = #{shenheshijian,jdbcType=TIMESTAMP},
+      shenheyijian = #{shenheyijian,jdbcType=VARCHAR}
+    where guahaoid = #{guahaoid,jdbcType=VARCHAR}
+  </update>
+</mapper>

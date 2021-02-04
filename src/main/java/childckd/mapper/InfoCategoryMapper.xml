@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.InfoCategoryMapper" >
+
+	<select id="findByParentCategoryId" resultType="map">
+		SELECT
+			ic.categoryid,
+			ic.parentcategoryid,
+			ic.categoryname,
+			ic.picurl,
+			ic.score,
+			ic.addtime,
+			ic.ordernum,
+			ic.allowdelete,
+			ic.allowtougao,
+			ic.isvalid,
+			ic.beizhu
+		FROM
+			info_category AS ic
+		WHERE
+			ic.parentcategoryid = #{parentcategoryid}
+		ORDER BY
+			ic.ordernum ASC
+	</select>
+
+	<select id="findByDeptId" resultType="map">
+		SELECT
+			icd.deptid,
+			ic.categoryid,
+			ic.categoryname
+		FROM
+			info_category AS ic
+		INNER JOIN info_category_dept AS icd ON ic.categoryid = icd.categoryid
+		WHERE
+			icd.deptid = #{deptid}
+	</select>
+	
+	 <select id="findUp" resultType="map">
+		SELECT
+			ic.categoryid,
+			ic.ordernum
+		FROM
+			info_category ic
+		WHERE
+			ic.parentcategoryid = #{parentcategoryid}
+			AND ic.ordernum =(
+		SELECT
+			max(ic2.ordernum)
+		FROM
+			info_category ic2
+		WHERE
+			#{ordernum} > ic2.ordernum
+			AND ic2.parentcategoryid = #{parentcategoryid}
+		)
+	 </select>
+	 
+	 <select id="findDown" resultType="map">
+		SELECT
+			ic.categoryid,
+			ic.ordernum
+		FROM
+			info_category ic
+		WHERE
+			ic.parentcategoryid = #{parentcategoryid}
+			AND ic.ordernum =(
+		SELECT
+			min(ic2.ordernum)
+		FROM
+			info_category ic2
+		WHERE
+			ic2.ordernum > #{ordernum}
+			AND ic2.parentcategoryid = #{parentcategoryid}
+		)
+	 </select>
+	 
+	 <select id="getMaxOrdernum" resultType="Object">
+		SELECT
+			max(ic.ordernum) AS maxordernum
+		FROM
+			info_category ic
+		WHERE
+			ic.parentcategoryid = #{parentcategoryid}
+	 </select>
+
+  <resultMap id="BaseResultMap" type="childckd.model.InfoCategory" >
+    <id column="categoryid" property="categoryid" jdbcType="VARCHAR" />
+    <result column="parentcategoryid" property="parentcategoryid" jdbcType="VARCHAR" />
+    <result column="categoryname" property="categoryname" jdbcType="VARCHAR" />
+    <result column="picurl" property="picurl" jdbcType="VARCHAR" />
+    <result column="score" property="score" jdbcType="REAL" />
+    <result column="addtime" property="addtime" jdbcType="TIMESTAMP" />
+    <result column="ordernum" property="ordernum" jdbcType="INTEGER" />
+    <result column="allowdelete" property="allowdelete" jdbcType="INTEGER" />
+    <result column="allowtougao" property="allowtougao" jdbcType="INTEGER" />
+    <result column="isvalid" property="isvalid" jdbcType="INTEGER" />
+    <result column="beizhu" property="beizhu" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    categoryid, parentcategoryid, categoryname, picurl, score, addtime, ordernum, allowdelete, 
+    allowtougao, isvalid, beizhu
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.InfoCategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from info_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from info_category
+    where categoryid = #{categoryid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from info_category
+    where categoryid = #{categoryid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.InfoCategoryExample" >
+    delete from info_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.InfoCategory" >
+    insert into info_category (categoryid, parentcategoryid, categoryname, 
+      picurl, score, addtime, 
+      ordernum, allowdelete, allowtougao, 
+      isvalid, beizhu)
+    values (#{categoryid,jdbcType=VARCHAR}, #{parentcategoryid,jdbcType=VARCHAR}, #{categoryname,jdbcType=VARCHAR}, 
+      #{picurl,jdbcType=VARCHAR}, #{score,jdbcType=REAL}, #{addtime,jdbcType=TIMESTAMP}, 
+      #{ordernum,jdbcType=INTEGER}, #{allowdelete,jdbcType=INTEGER}, #{allowtougao,jdbcType=INTEGER}, 
+      #{isvalid,jdbcType=INTEGER}, #{beizhu,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.InfoCategory" >
+    insert into info_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="categoryid != null" >
+        categoryid,
+      </if>
+      <if test="parentcategoryid != null" >
+        parentcategoryid,
+      </if>
+      <if test="categoryname != null" >
+        categoryname,
+      </if>
+      <if test="picurl != null" >
+        picurl,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="addtime != null" >
+        addtime,
+      </if>
+      <if test="ordernum != null" >
+        ordernum,
+      </if>
+      <if test="allowdelete != null" >
+        allowdelete,
+      </if>
+      <if test="allowtougao != null" >
+        allowtougao,
+      </if>
+      <if test="isvalid != null" >
+        isvalid,
+      </if>
+      <if test="beizhu != null" >
+        beizhu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="categoryid != null" >
+        #{categoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="parentcategoryid != null" >
+        #{parentcategoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryname != null" >
+        #{categoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="picurl != null" >
+        #{picurl,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ordernum != null" >
+        #{ordernum,jdbcType=INTEGER},
+      </if>
+      <if test="allowdelete != null" >
+        #{allowdelete,jdbcType=INTEGER},
+      </if>
+      <if test="allowtougao != null" >
+        #{allowtougao,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="beizhu != null" >
+        #{beizhu,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.InfoCategoryExample" resultType="java.lang.Integer" >
+    select count(*) from info_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update info_category
+    <set >
+      <if test="record.categoryid != null" >
+        categoryid = #{record.categoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentcategoryid != null" >
+        parentcategoryid = #{record.parentcategoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.categoryname != null" >
+        categoryname = #{record.categoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.picurl != null" >
+        picurl = #{record.picurl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.score != null" >
+        score = #{record.score,jdbcType=REAL},
+      </if>
+      <if test="record.addtime != null" >
+        addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.ordernum != null" >
+        ordernum = #{record.ordernum,jdbcType=INTEGER},
+      </if>
+      <if test="record.allowdelete != null" >
+        allowdelete = #{record.allowdelete,jdbcType=INTEGER},
+      </if>
+      <if test="record.allowtougao != null" >
+        allowtougao = #{record.allowtougao,jdbcType=INTEGER},
+      </if>
+      <if test="record.isvalid != null" >
+        isvalid = #{record.isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="record.beizhu != null" >
+        beizhu = #{record.beizhu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update info_category
+    set categoryid = #{record.categoryid,jdbcType=VARCHAR},
+      parentcategoryid = #{record.parentcategoryid,jdbcType=VARCHAR},
+      categoryname = #{record.categoryname,jdbcType=VARCHAR},
+      picurl = #{record.picurl,jdbcType=VARCHAR},
+      score = #{record.score,jdbcType=REAL},
+      addtime = #{record.addtime,jdbcType=TIMESTAMP},
+      ordernum = #{record.ordernum,jdbcType=INTEGER},
+      allowdelete = #{record.allowdelete,jdbcType=INTEGER},
+      allowtougao = #{record.allowtougao,jdbcType=INTEGER},
+      isvalid = #{record.isvalid,jdbcType=INTEGER},
+      beizhu = #{record.beizhu,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.InfoCategory" >
+    update info_category
+    <set >
+      <if test="parentcategoryid != null" >
+        parentcategoryid = #{parentcategoryid,jdbcType=VARCHAR},
+      </if>
+      <if test="categoryname != null" >
+        categoryname = #{categoryname,jdbcType=VARCHAR},
+      </if>
+      <if test="picurl != null" >
+        picurl = #{picurl,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=REAL},
+      </if>
+      <if test="addtime != null" >
+        addtime = #{addtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="ordernum != null" >
+        ordernum = #{ordernum,jdbcType=INTEGER},
+      </if>
+      <if test="allowdelete != null" >
+        allowdelete = #{allowdelete,jdbcType=INTEGER},
+      </if>
+      <if test="allowtougao != null" >
+        allowtougao = #{allowtougao,jdbcType=INTEGER},
+      </if>
+      <if test="isvalid != null" >
+        isvalid = #{isvalid,jdbcType=INTEGER},
+      </if>
+      <if test="beizhu != null" >
+        beizhu = #{beizhu,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where categoryid = #{categoryid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.InfoCategory" >
+    update info_category
+    set parentcategoryid = #{parentcategoryid,jdbcType=VARCHAR},
+      categoryname = #{categoryname,jdbcType=VARCHAR},
+      picurl = #{picurl,jdbcType=VARCHAR},
+      score = #{score,jdbcType=REAL},
+      addtime = #{addtime,jdbcType=TIMESTAMP},
+      ordernum = #{ordernum,jdbcType=INTEGER},
+      allowdelete = #{allowdelete,jdbcType=INTEGER},
+      allowtougao = #{allowtougao,jdbcType=INTEGER},
+      isvalid = #{isvalid,jdbcType=INTEGER},
+      beizhu = #{beizhu,jdbcType=VARCHAR}
+    where categoryid = #{categoryid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.ReferralMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.Referral" >
+    <id column="referralid" property="referralid" jdbcType="VARCHAR" />
+    <result column="doctorid" property="doctorid" jdbcType="VARCHAR" />
+    <result column="doctorname" property="doctorname" jdbcType="VARCHAR" />
+    <result column="danwei" property="danwei" jdbcType="VARCHAR" />
+    <result column="patientname" property="patientname" jdbcType="VARCHAR" />
+    <result column="patientage" property="patientage" jdbcType="INTEGER" />
+    <result column="zhusu" property="zhusu" jdbcType="VARCHAR" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="findByCondition" resultType="Map">
+  	SELECT
+		* 
+	FROM
+		`referral` t 
+	WHERE
+		t.zhuangtai = 1 
+		<if test='patientname != ""'>
+			AND t.patientname = #{patientname} 
+		</if>
+		<if test='doctorname != ""'>
+			AND t.doctorname = #{doctorname} 
+		</if>
+		<if test='danwei != ""'>
+			AND t.danwei LIKE #{danwei} 
+		</if>
+		
+  </select>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    referralid, doctorid, doctorname, danwei, patientname, patientage, zhusu, zhuangtai
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.ReferralExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from referral
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from referral
+    where referralid = #{referralid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from referral
+    where referralid = #{referralid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.ReferralExample" >
+    delete from referral
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.Referral" >
+    insert into referral (referralid, doctorid, doctorname, 
+      danwei, patientname, patientage, 
+      zhusu, zhuangtai)
+    values (#{referralid,jdbcType=VARCHAR}, #{doctorid,jdbcType=VARCHAR}, #{doctorname,jdbcType=VARCHAR}, 
+      #{danwei,jdbcType=VARCHAR}, #{patientname,jdbcType=VARCHAR}, #{patientage,jdbcType=INTEGER}, 
+      #{zhusu,jdbcType=VARCHAR}, #{zhuangtai,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.Referral" >
+    insert into referral
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="referralid != null" >
+        referralid,
+      </if>
+      <if test="doctorid != null" >
+        doctorid,
+      </if>
+      <if test="doctorname != null" >
+        doctorname,
+      </if>
+      <if test="danwei != null" >
+        danwei,
+      </if>
+      <if test="patientname != null" >
+        patientname,
+      </if>
+      <if test="patientage != null" >
+        patientage,
+      </if>
+      <if test="zhusu != null" >
+        zhusu,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="referralid != null" >
+        #{referralid,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorid != null" >
+        #{doctorid,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorname != null" >
+        #{doctorname,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei != null" >
+        #{danwei,jdbcType=VARCHAR},
+      </if>
+      <if test="patientname != null" >
+        #{patientname,jdbcType=VARCHAR},
+      </if>
+      <if test="patientage != null" >
+        #{patientage,jdbcType=INTEGER},
+      </if>
+      <if test="zhusu != null" >
+        #{zhusu,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.ReferralExample" resultType="java.lang.Integer" >
+    select count(*) from referral
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update referral
+    <set >
+      <if test="record.referralid != null" >
+        referralid = #{record.referralid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctorid != null" >
+        doctorid = #{record.doctorid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.doctorname != null" >
+        doctorname = #{record.doctorname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.danwei != null" >
+        danwei = #{record.danwei,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patientname != null" >
+        patientname = #{record.patientname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.patientage != null" >
+        patientage = #{record.patientage,jdbcType=INTEGER},
+      </if>
+      <if test="record.zhusu != null" >
+        zhusu = #{record.zhusu,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update referral
+    set referralid = #{record.referralid,jdbcType=VARCHAR},
+      doctorid = #{record.doctorid,jdbcType=VARCHAR},
+      doctorname = #{record.doctorname,jdbcType=VARCHAR},
+      danwei = #{record.danwei,jdbcType=VARCHAR},
+      patientname = #{record.patientname,jdbcType=VARCHAR},
+      patientage = #{record.patientage,jdbcType=INTEGER},
+      zhusu = #{record.zhusu,jdbcType=VARCHAR},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.Referral" >
+    update referral
+    <set >
+      <if test="doctorid != null" >
+        doctorid = #{doctorid,jdbcType=VARCHAR},
+      </if>
+      <if test="doctorname != null" >
+        doctorname = #{doctorname,jdbcType=VARCHAR},
+      </if>
+      <if test="danwei != null" >
+        danwei = #{danwei,jdbcType=VARCHAR},
+      </if>
+      <if test="patientname != null" >
+        patientname = #{patientname,jdbcType=VARCHAR},
+      </if>
+      <if test="patientage != null" >
+        patientage = #{patientage,jdbcType=INTEGER},
+      </if>
+      <if test="zhusu != null" >
+        zhusu = #{zhusu,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    where referralid = #{referralid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.Referral" >
+    update referral
+    set doctorid = #{doctorid,jdbcType=VARCHAR},
+      doctorname = #{doctorname,jdbcType=VARCHAR},
+      danwei = #{danwei,jdbcType=VARCHAR},
+      patientname = #{patientname,jdbcType=VARCHAR},
+      patientage = #{patientage,jdbcType=INTEGER},
+      zhusu = #{zhusu,jdbcType=VARCHAR},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER}
+    where referralid = #{referralid,jdbcType=VARCHAR}
+  </update>
+</mapper>

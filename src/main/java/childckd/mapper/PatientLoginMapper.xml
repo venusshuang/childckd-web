@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.PatientLoginMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.PatientLogin" >
+    <id column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="loginname" property="loginname" jdbcType="VARCHAR" />
+    <result column="loginpassword" property="loginpassword" jdbcType="VARCHAR" />
+    <result column="shoujihao" property="shoujihao" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    userid, loginname, loginpassword, shoujihao, name, zhuangtai
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.PatientLoginExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from patient_login
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from patient_login
+    where userid = #{userid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from patient_login
+    where userid = #{userid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.PatientLoginExample" >
+    delete from patient_login
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.PatientLogin" >
+    insert into patient_login (userid, loginname, loginpassword, 
+      shoujihao, name, zhuangtai
+      )
+    values (#{userid,jdbcType=VARCHAR}, #{loginname,jdbcType=VARCHAR}, #{loginpassword,jdbcType=VARCHAR}, 
+      #{shoujihao,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{zhuangtai,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.PatientLogin" >
+    insert into patient_login
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="loginname != null" >
+        loginname,
+      </if>
+      <if test="loginpassword != null" >
+        loginpassword,
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="loginname != null" >
+        #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="loginpassword != null" >
+        #{loginpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.PatientLoginExample" resultType="java.lang.Integer" >
+    select count(*) from patient_login
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update patient_login
+    <set >
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginname != null" >
+        loginname = #{record.loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.loginpassword != null" >
+        loginpassword = #{record.loginpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shoujihao != null" >
+        shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update patient_login
+    set userid = #{record.userid,jdbcType=VARCHAR},
+      loginname = #{record.loginname,jdbcType=VARCHAR},
+      loginpassword = #{record.loginpassword,jdbcType=VARCHAR},
+      shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.PatientLogin" >
+    update patient_login
+    <set >
+      <if test="loginname != null" >
+        loginname = #{loginname,jdbcType=VARCHAR},
+      </if>
+      <if test="loginpassword != null" >
+        loginpassword = #{loginpassword,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+    </set>
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.PatientLogin" >
+    update patient_login
+    set loginname = #{loginname,jdbcType=VARCHAR},
+      loginpassword = #{loginpassword,jdbcType=VARCHAR},
+      shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER}
+    where userid = #{userid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="childckd.dao.PatientJiuzhenxinxiMapper" >
+  <resultMap id="BaseResultMap" type="childckd.model.PatientJiuzhenxinxi" >
+    <id column="jiuzhenxinxiid" property="jiuzhenxinxiid" jdbcType="VARCHAR" />
+    <result column="userid" property="userid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="shenfenzhenghaoma" property="shenfenzhenghaoma" jdbcType="VARCHAR" />
+    <result column="xingbie" property="xingbie" jdbcType="VARCHAR" />
+    <result column="zhuyaozhengzhuang" property="zhuyaozhengzhuang" jdbcType="VARCHAR" />
+    <result column="shoujihao" property="shoujihao" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="lianxidizhi" property="lianxidizhi" jdbcType="VARCHAR" />
+    <result column="zhuangtai" property="zhuangtai" jdbcType="INTEGER" />
+    <result column="chuangjianshijian" property="chuangjianshijian" jdbcType="TIMESTAMP" />
+    <result column="bingzhong" property="bingzhong" jdbcType="VARCHAR" />
+  </resultMap>
+  
+   <select id="findCustomAll" resultType="Map">
+  	select jz.jiuzhenxinxiid,jz.userid,jz.name,jz.shenfenzhenghaoma,jz.xingbie,jz.zhuyaozhengzhuang,jz.shoujihao,jz.age,jz.lianxidizhi,date_format(jz.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian
+	from patient_jiuzhenxinxi AS jz 
+	where jz.name like CONCAT('%',#{ppName},'%') and jz.shoujihao like CONCAT('%',#{ppShoujihao},'%')
+    order by jz.chuangjianshijian desc
+    LIMIT #{mmStartIndex},#{ppPageSize}
+  </select>
+  <select id="countFindCustomAll" resultType="Object">
+  	select count(*)
+	from patient_jiuzhenxinxi AS jz 
+	where jz.name like CONCAT('%',#{ppName},'%') and jz.shoujihao like CONCAT('%',#{ppShoujihao},'%')
+    order by jz.chuangjianshijian desc
+  </select>
+  
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    jiuzhenxinxiid, userid, name, shenfenzhenghaoma, xingbie, zhuyaozhengzhuang, shoujihao, 
+    age, lianxidizhi, zhuangtai, chuangjianshijian, bingzhong
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.PatientJiuzhenxinxiExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from patient_jiuzhenxinxi
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from patient_jiuzhenxinxi
+    where jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from patient_jiuzhenxinxi
+    where jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteByExample" parameterType="childckd.model.PatientJiuzhenxinxiExample" >
+    delete from patient_jiuzhenxinxi
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="childckd.model.PatientJiuzhenxinxi" >
+    insert into patient_jiuzhenxinxi (jiuzhenxinxiid, userid, name, 
+      shenfenzhenghaoma, xingbie, zhuyaozhengzhuang, 
+      shoujihao, age, lianxidizhi, 
+      zhuangtai, chuangjianshijian, bingzhong
+      )
+    values (#{jiuzhenxinxiid,jdbcType=VARCHAR}, #{userid,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{shenfenzhenghaoma,jdbcType=VARCHAR}, #{xingbie,jdbcType=VARCHAR}, #{zhuyaozhengzhuang,jdbcType=VARCHAR}, 
+      #{shoujihao,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER}, #{lianxidizhi,jdbcType=VARCHAR}, 
+      #{zhuangtai,jdbcType=INTEGER}, #{chuangjianshijian,jdbcType=TIMESTAMP}, #{bingzhong,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="childckd.model.PatientJiuzhenxinxi" >
+    insert into patient_jiuzhenxinxi
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="jiuzhenxinxiid != null" >
+        jiuzhenxinxiid,
+      </if>
+      <if test="userid != null" >
+        userid,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="shenfenzhenghaoma != null" >
+        shenfenzhenghaoma,
+      </if>
+      <if test="xingbie != null" >
+        xingbie,
+      </if>
+      <if test="zhuyaozhengzhuang != null" >
+        zhuyaozhengzhuang,
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="lianxidizhi != null" >
+        lianxidizhi,
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai,
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian,
+      </if>
+      <if test="bingzhong != null" >
+        bingzhong,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="jiuzhenxinxiid != null" >
+        #{jiuzhenxinxiid,jdbcType=VARCHAR},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shenfenzhenghaoma != null" >
+        #{shenfenzhenghaoma,jdbcType=VARCHAR},
+      </if>
+      <if test="xingbie != null" >
+        #{xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuyaozhengzhuang != null" >
+        #{zhuyaozhengzhuang,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="lianxidizhi != null" >
+        #{lianxidizhi,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="chuangjianshijian != null" >
+        #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bingzhong != null" >
+        #{bingzhong,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="childckd.model.PatientJiuzhenxinxiExample" resultType="java.lang.Integer" >
+    select count(*) from patient_jiuzhenxinxi
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update patient_jiuzhenxinxi
+    <set >
+      <if test="record.jiuzhenxinxiid != null" >
+        jiuzhenxinxiid = #{record.jiuzhenxinxiid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userid != null" >
+        userid = #{record.userid,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shenfenzhenghaoma != null" >
+        shenfenzhenghaoma = #{record.shenfenzhenghaoma,jdbcType=VARCHAR},
+      </if>
+      <if test="record.xingbie != null" >
+        xingbie = #{record.xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhuyaozhengzhuang != null" >
+        zhuyaozhengzhuang = #{record.zhuyaozhengzhuang,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shoujihao != null" >
+        shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="record.age != null" >
+        age = #{record.age,jdbcType=INTEGER},
+      </if>
+      <if test="record.lianxidizhi != null" >
+        lianxidizhi = #{record.lianxidizhi,jdbcType=VARCHAR},
+      </if>
+      <if test="record.zhuangtai != null" >
+        zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="record.chuangjianshijian != null" >
+        chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.bingzhong != null" >
+        bingzhong = #{record.bingzhong,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update patient_jiuzhenxinxi
+    set jiuzhenxinxiid = #{record.jiuzhenxinxiid,jdbcType=VARCHAR},
+      userid = #{record.userid,jdbcType=VARCHAR},
+      name = #{record.name,jdbcType=VARCHAR},
+      shenfenzhenghaoma = #{record.shenfenzhenghaoma,jdbcType=VARCHAR},
+      xingbie = #{record.xingbie,jdbcType=VARCHAR},
+      zhuyaozhengzhuang = #{record.zhuyaozhengzhuang,jdbcType=VARCHAR},
+      shoujihao = #{record.shoujihao,jdbcType=VARCHAR},
+      age = #{record.age,jdbcType=INTEGER},
+      lianxidizhi = #{record.lianxidizhi,jdbcType=VARCHAR},
+      zhuangtai = #{record.zhuangtai,jdbcType=INTEGER},
+      chuangjianshijian = #{record.chuangjianshijian,jdbcType=TIMESTAMP},
+      bingzhong = #{record.bingzhong,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="childckd.model.PatientJiuzhenxinxi" >
+    update patient_jiuzhenxinxi
+    <set >
+      <if test="userid != null" >
+        userid = #{userid,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="shenfenzhenghaoma != null" >
+        shenfenzhenghaoma = #{shenfenzhenghaoma,jdbcType=VARCHAR},
+      </if>
+      <if test="xingbie != null" >
+        xingbie = #{xingbie,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuyaozhengzhuang != null" >
+        zhuyaozhengzhuang = #{zhuyaozhengzhuang,jdbcType=VARCHAR},
+      </if>
+      <if test="shoujihao != null" >
+        shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="lianxidizhi != null" >
+        lianxidizhi = #{lianxidizhi,jdbcType=VARCHAR},
+      </if>
+      <if test="zhuangtai != null" >
+        zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      </if>
+      <if test="chuangjianshijian != null" >
+        chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bingzhong != null" >
+        bingzhong = #{bingzhong,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="childckd.model.PatientJiuzhenxinxi" >
+    update patient_jiuzhenxinxi
+    set userid = #{userid,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      shenfenzhenghaoma = #{shenfenzhenghaoma,jdbcType=VARCHAR},
+      xingbie = #{xingbie,jdbcType=VARCHAR},
+      zhuyaozhengzhuang = #{zhuyaozhengzhuang,jdbcType=VARCHAR},
+      shoujihao = #{shoujihao,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      lianxidizhi = #{lianxidizhi,jdbcType=VARCHAR},
+      zhuangtai = #{zhuangtai,jdbcType=INTEGER},
+      chuangjianshijian = #{chuangjianshijian,jdbcType=TIMESTAMP},
+      bingzhong = #{bingzhong,jdbcType=VARCHAR}
+    where jiuzhenxinxiid = #{jiuzhenxinxiid,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -73,7 +73,7 @@ public class PatientJiuzhenxinxiController {
 	@RequestMapping("find_one")
 	public JsonResult<?> find_one(@RequestParam("jiuzhenxinxiid") String ppJiuzhenxinxiId){
 		try {
-			// 转诊信息
+
 			PatientJiuzhenxinxi mmJiuzhenxinxi = ddService.findOne(ppJiuzhenxinxiId);
 			if(mmJiuzhenxinxi == null) {
 				return JsonResult.getErrorResult("未查询到该就诊信息！");

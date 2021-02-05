@@ -17,6 +17,8 @@ var Patient_Vue = new Vue({
 		targetpage : "",
 		inputPageIndexValue : "",
 
+		fujianlist : [],
+
 	},
 
 	created : function() {
@@ -176,7 +178,19 @@ var Patient_Vue = new Vue({
 					if(ppData.result == "1"){
 
 						var data = ppData.resultContent;
-						_this.patient = data;
+						_this.patient = data.Jiuzhenxinxi;
+
+						var mmAttatchmentList = data.AttatchmentList;
+						// 绑定附件信息
+						_this.fujianlist = mmAttatchmentList;
+						//console.log(_this.fujianlist);
+						$("#uploaderFiles").html("");
+						for ( var i=0;i< _this.fujianlist.length;i++) {
+
+							var mmHtml = "<img name='imageurl' onclick=\"look('"+_this.fujianlist[i].url+"')\" src='"+_this.fujianlist[i].url+"' width=50 height=50 style='margin:10px;'/>";
+
+							$("#uploaderFiles").append(mmHtml);
+						}
 
 					}else{
 						layer.alert(ppData.message);

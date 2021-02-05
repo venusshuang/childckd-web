@@ -15,7 +15,7 @@ var vm_zhuanzhenYijian = new Vue({
 		
 		// 根据转诊id查询转诊信息
 		_this.findByZhuanzhenId();
-		
+
 		// 根据转诊id查询消息列表
 		_this.findXiaoxiListByOwnerId();
 		

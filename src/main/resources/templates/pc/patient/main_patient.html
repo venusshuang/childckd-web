@@ -54,7 +54,7 @@
 				<th style="text-align:center;vertical-align:middle;width: 80px;"><input style="zoom:150%; " type="checkbox" name="patientAllCheckbox"  @click="allCheckPatient()" value="" id="allCheckPatient"></th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">用户姓名</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">手机号码</th>
-				<th style="text-align:center;vertical-align:middle;width: 150px;">主要症状</th>
+				<th style="text-align:center;vertical-align:middle;width: 150px;">临床诊断</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">创建时间</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>
 			</thead>
@@ -63,7 +63,7 @@
 					<td style="text-align:center;vertical-align:middle;"><input style="zoom:150%; " type="checkbox" name="patientCheckbox" :value="patientitem.jiuzhenxinxiid" ></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="patientitem.name"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="patientitem.shoujihao"></td>
-					<td style="text-align:center;vertical-align:middle;" v-text="patientitem.zhuyaozhengzhuang"></td>
+					<td style="text-align:center;vertical-align:middle;" v-text="patientitem.text"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="patientitem.chuangjianshijian"></td>
 					<td style="text-align:center;vertical-align:middle;">
 						<button class="btn btn-danger" @click="toAddBlack(patientitem.jiuzhenxinxiid,patientitem.name,patientitem.shoujihao)">加入黑名单</button>
@@ -112,5 +112,11 @@
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 
 <link rel="stylesheet" href="/css/xadmin.css?ver=0.7">
+<script type="text/javascript">
 
+	function look(ppUrl)
+	{
+		window.open(ppUrl);
+	}
+</script>
 </html>

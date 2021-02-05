@@ -15,7 +15,7 @@ var vm_zhuanzhen = new Vue({
 
 		xiaoxilist : [],		// 消息列表
 		neirong : "",			// 消息内容
-
+		fujianlist : [],
 	},
 	created : function(){
 		var _this = this;
@@ -141,7 +141,20 @@ var vm_zhuanzhen = new Vue({
 					if(ppData.result == '1'){
 						var data = ppData.resultContent;
 
-						_this.zhuanzhen = data;
+						_this.zhuanzhen = data.Referra;
+
+						var mmAttatchmentList = data.AttatchmentList;
+						// 绑定附件信息
+						_this.fujianlist = mmAttatchmentList;
+						//console.log(_this.fujianlist);
+						$("#uploaderFiles").html("");
+
+						for ( var i=0;i< _this.fujianlist.length;i++) {
+
+							var mmHtml = "<img name='imageurl' onclick=\"look('"+_this.fujianlist[i].url+"')\" src='"+_this.fujianlist[i].url+"' width=100 height=100 style='margin:10px;'/>";
+
+							$("#uploaderFiles").append(mmHtml);
+						}
 
 					}else{
 						layer.alert(ppData.message);

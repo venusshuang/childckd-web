@@ -64,7 +64,20 @@ public class ReferralController {
 	@RequestMapping("find_one")
 	public JsonResult<?> find_one(@RequestParam("referraid") String ppReferraId){
 		try {
-			return JsonResult.getSuccessResult(ddService.findOne(ppReferraId));
+			// 转诊信息
+			Referral mmReferra = ddService.findOne(ppReferraId);
+			if(mmReferra == null) {
+				return JsonResult.getErrorResult("未查询到该转诊信息！");
+			}
+
+			// 附件信息
+			List<Attatchment> mmAttatchmentList = ddAttatchmentService.findByOwnerId(ppReferraId);
+
+			Map<String, Object> mmResultMap = new HashMap<String, Object>();
+			mmResultMap.put("Referra",mmReferra);
+			mmResultMap.put("AttatchmentList",mmAttatchmentList);
+
+			return JsonResult.getSuccessResult(mmResultMap);
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.error("ReferralController -> find_one: "+e.getMessage());

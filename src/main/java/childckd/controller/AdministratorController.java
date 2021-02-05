@@ -5,12 +5,12 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import childckd.model.Administrator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import childckd.model.Administrator;
 import childckd.service.AdministratorService;
 import childckd.util.BooleanMessage;
 import childckd.util.JsonResult;

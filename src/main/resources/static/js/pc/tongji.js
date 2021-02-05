@@ -1,5 +1,5 @@
-var Welcome = new Vue({
-	el : '#Welcome',
+var Tongji = new Vue({
+	el : '#tongji',
 	data : {
 		
 		tongjiList : [],

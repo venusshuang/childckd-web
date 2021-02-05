@@ -13,7 +13,7 @@
   </resultMap>
 
   <select id="findAdministratorByZhanghao" resultType="Map">
-  	select ad.administratorid,ad.zhanghao,ad.rolename,ad.beizhu
+  	select ad.administratorid,ad.zhanghao,ad.rolename,ad.beizhu,ad.parentadminid
 	from administrator AS ad
 	where ad.zhanghao like CONCAT('%',#{ppZhanghao},'%')
     order by ad.zhanghao

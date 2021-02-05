@@ -1,6 +1,6 @@
 package childckd.controller;
 
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,7 +22,9 @@ import childckd.util.StringHandle;
 public class AdministratorController {
 	@Autowired
 	AdministratorService ddService;
-	
+
+	List<Map<String, Object>> ppReturnAdminList =null;
+
 	@RequestMapping("login")
 	public JsonResult<?> login(
 			@RequestParam("zhanghao") String ppLoginName,
@@ -63,14 +65,54 @@ public class AdministratorController {
 	}
 	
 	@RequestMapping("findAdministratorByZhanghao")
-	public JsonResult<?> findAdministratorByZhanghao(@RequestParam("zhanghao") String ppZhanghao) {
+	public JsonResult<?> findAdministratorByZhanghao(@RequestParam("zhanghao") String ppZhanghao,HttpServletRequest request) {
 		try {
-			return JsonResult.getSuccessResult(ddService.findAdministratorByZhanghao(ppZhanghao));
+			String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
+			List<Map<String, Object>> mmAllAdminList=ddService.findAdministratorByZhanghao("");
+			System.out.println(mmAllAdminList);
+			Map<String, Object> mmMap = new HashMap<String, Object>();
+			ppReturnAdminList =new ArrayList<Map<String, Object>>();
+
+			Administrator mmAdministrator = ddService.findOne(mmAdministratorId);
+			mmMap.put("administratorid", mmAdministratorId);
+			mmMap.put("rolename", mmAdministrator.getRolename());
+			mmMap.put("zhanghao", mmAdministrator.getZhanghao());
+			mmMap.put("beizhu", mmAdministrator.getBeizhu());
+			mmMap.put("parentadminid", mmAdministrator.getParentadminid());
+			ppReturnAdminList.add(mmMap);
+
+
+			findAdminByStep(mmAllAdminList,mmAdministratorId);
+
+
+			return JsonResult.getSuccessResult(ppReturnAdminList);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return JsonResult.getErrorResult("administrator/findAdministratorByZhanghao:error " + e.getMessage());
 		}
 	}
+
+	void findAdminByStep(List<Map<String, Object>> ppAllAdminList,String ppAdministratorId)
+	{
+		for(int i=0;i<ppAllAdminList.size();i++)
+		{
+			if(ppAdministratorId.equals(ppAllAdminList.get(i).get("parentadminid").toString()))
+			{
+				Map<String, Object> ppMap = new HashMap<String, Object>();
+				ppMap.put("administratorid", ppAllAdminList.get(i).get("administratorid").toString());
+				ppMap.put("rolename", ppAllAdminList.get(i).get("rolename").toString());
+				ppMap.put("zhanghao", ppAllAdminList.get(i).get("zhanghao").toString());
+				ppMap.put("beizhu", ppAllAdminList.get(i).get("beizhu").toString());
+				ppMap.put("parentadminid", ppAdministratorId);
+				ppReturnAdminList.add(ppMap);
+				findAdminByStep(ppAllAdminList,ppAllAdminList.get(i).get("administratorid").toString());
+			}else
+			{
+				continue;
+			}
+		}
+	}
+
 	
 	@RequestMapping("deleteAdministrator")
 	public JsonResult<?> delete(@RequestParam("administratorid") String ppAdministratorId) 
@@ -127,7 +169,8 @@ public class AdministratorController {
 			@RequestParam("password") String ppPassword,
 			@RequestParam("roleid") String ppRoleId,
 			@RequestParam("rolename") String ppRoleName,
-			@RequestParam("beizhu") String ppBeizhu){
+			@RequestParam("beizhu") String ppBeizhu,
+			HttpServletRequest request){
 		try {
 			
 			Administrator mmAdministrator=ddService.findOne(ppAdministratorId);
@@ -145,8 +188,8 @@ public class AdministratorController {
 				mmAdministrator=new Administrator();
 				mmAdministrator.setAdministratorid(UUID.randomUUID().toString());
 			}
-
-			BooleanMessage mmBooleanMessage = checkInputData(mmAdministrator,ppZhanghao,ppPassword,ppRoleId,ppRoleName,ppBeizhu);
+			String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
+			BooleanMessage mmBooleanMessage = checkInputData(mmAdministrator,ppZhanghao,ppPassword,ppRoleId,ppRoleName,ppBeizhu,mmAdministratorId,isAddAdministrator);
 			
 			if(!mmBooleanMessage.isOk()) {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
@@ -166,7 +209,7 @@ public class AdministratorController {
 		}
 	}
 
-	private BooleanMessage checkInputData(Administrator mmAdministrator, String ppZhanghao, String ppPassword,String ppRoleId,String ppRoleName,String ppBeizhu) {
+	private BooleanMessage checkInputData(Administrator mmAdministrator, String ppZhanghao, String ppPassword,String ppRoleId,String ppRoleName,String ppBeizhu,String ppAdministratorId,boolean isAddAdministrator) {
 		ppZhanghao=ppZhanghao.trim();
 		ppPassword=ppPassword.trim();
 		ppBeizhu=ppBeizhu.trim();
@@ -200,6 +243,11 @@ public class AdministratorController {
 		mmAdministrator.setRolename(ppRoleName);
 		mmAdministrator.setBeizhu(ppBeizhu);
 		mmAdministrator.setZhuangtai(1);
+		if(isAddAdministrator)
+		{
+			mmAdministrator.setParentadminid(ppAdministratorId);
+		}
+
 		
 		return BooleanMessage.getSuccessMessage("输入信息合法");
 	}

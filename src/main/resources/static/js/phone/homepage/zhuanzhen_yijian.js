@@ -42,8 +42,8 @@ var vm_zhuanzhenYijian = new Vue({
 				if(ppData != null){
 					if(ppData.result == '1'){
 						var data = ppData.resultContent;
-						
-						_this.zhuanzhen = data;
+
+						_this.zhuanzhen = data.Referra;
 						
 					}else{
 						layer.alert(ppData.message);

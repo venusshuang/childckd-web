@@ -73,7 +73,16 @@ var vm_zhuanzhen_edit = new Vue({
 
 						// 绑定附件信息
 						_this.fujianlist = mmAttatchmentList;
-							
+						//console.log(_this.fujianlist);
+
+						$("#uploaderFiles").html("");
+						for ( var i=0;i< _this.fujianlist.length;i++) {
+
+							var mmHtml = "<img name='imageurl' onclick=\"look('"+_this.fujianlist[i].url+"')\" src='"+_this.fujianlist[i].url+"' width=200 height=200 style='margin:10px;'/>";
+
+							$("#uploaderFiles").append(mmHtml);
+						}
+
 						// 重新渲染页面，不然绑不到input框中
 						_this.$forceUpdate();
 						

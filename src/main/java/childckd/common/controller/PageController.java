@@ -551,6 +551,21 @@ public class PageController {
 		return "pc/welcome";
 	}
 
+	// 数据统计
+	@RequestMapping("/tongji.html")
+	public String tongji(HttpServletRequest request, ModelMap map) {
+		if(!isLoginPC(request)) {
+			return "redirect:/manage/login.html";
+		}
+
+		String mmRoleType = request.getSession().getAttribute("RoleType").toString();
+		String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
+		map.put("RoleType", mmRoleType);
+		map.put("AdministratorId", mmAdministratorId);
+
+		return "pc/tongji";
+	}
+
 	// 专家管理
 	@RequestMapping("/expert/main_expert.html")
 	public String MainExpert(HttpServletRequest request, ModelMap map) {

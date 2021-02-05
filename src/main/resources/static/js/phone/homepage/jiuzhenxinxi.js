@@ -241,7 +241,7 @@ var _jiuzhenxinxiVue = new Vue({
 								$("#uploaderFiles").html("");
 								for ( var i=0;i< _this.fujianlist.length;i++) {
 
-									var mmHtml = "<img name='imageurl' src='"+_this.fujianlist[i].url+"' width=200 height=200 style='margin:10px;'/>";
+									var mmHtml = "<img name='imageurl'  onclick=\"look('"+_this.fujianlist[i].url+"')\" src='"+_this.fujianlist[i].url+"' width=200 height=200 style='margin:10px;'/>";
 									
 									
 									$("#uploaderFiles").append(mmHtml);

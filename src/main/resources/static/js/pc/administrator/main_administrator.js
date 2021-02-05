@@ -22,9 +22,85 @@ var Administrator_Vue = new Vue({
 	
 	
 	methods : {
-		
-	
-	
+
+
+		setpermission : function(ppAdministratorId){
+			$('#editPermissionModal').modal();
+			$("#myModalLabel_Permission").html("管理员权限设置");
+			this.administratorid = ppAdministratorId;
+			this.bindPermission();
+			this.bindAdminPermission();
+		},
+
+		bindPermission : function(){
+
+			var _this = this;
+			layer.open({type:3});
+			$.post('/Role/findPermission',{
+				type : 'administrator',
+				rdm:Math.random()
+			},function(ppData){
+
+				layer.closeAll("loading");
+				if(ppData!=null){
+					if(ppData.result == '1'){
+						var data = ppData.resultContent;
+
+						var mmFirstPermission = data.FirstPermission;
+						var mmNotFirstPermission = data.NotFirstPermission;
+						var mmHtml="";
+						for(var i=0;i<mmFirstPermission.length;i++)
+						{
+
+							mmHtml+="<input style=\"zoom:150%;vertical-align:text-bottom\" type=\"checkbox\" name=\"permissionCheckbox\"  value=\""+mmFirstPermission[i].permissionid+"\" id=\"allCheckRole\">"+mmFirstPermission[i].permisssionname+"<br/>";
+							for(var j=0;j<mmNotFirstPermission.length;j++)
+							{
+								if(mmNotFirstPermission[j].fatherid==mmFirstPermission[i].permissionid)
+								{
+									mmHtml+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style=\"zoom:150%;vertical-align:text-bottom\" type=\"checkbox\" name=\"permissionCheckbox\"  value=\""+mmNotFirstPermission[j].permissionid+"\" id=\"allCheckRole\">"+mmNotFirstPermission[j].permisssionname+"<br/>";
+								}
+
+							}
+						}
+						$("#permission").html(mmHtml);
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json");
+		},
+
+
+		bindAdminPermission : function(){
+
+			var _this = this;
+			layer.open({type:3});
+			$.post('/Role/findPermissionByAdminid',{
+				administratorid : _this.administratorid,
+				rdm:Math.random()
+			},function(ppData){
+
+				layer.closeAll("loading");
+				if(ppData!=null){
+					if(ppData.result == '1'){
+						var data = ppData.resultContent;
+
+						for(var i=0;i<data.length;i++)
+						{
+
+							$("input[name='permissionCheckbox'][value="+data[i].permissionid+"]").attr("checked","checked");
+						}
+
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json");
+		},
+
+
 		bindAdministratorList : function(){
 			
 			var _this = this;

@@ -1,27 +1,68 @@
 package childckd.controller;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
+import childckd.model.AdminPermission;
 import childckd.model.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import javax.servlet.http.HttpServletRequest;
 
 import childckd.service.RoleService;
 import childckd.util.BooleanMessage;
 
 import childckd.util.JsonResult;
 import childckd.util.StringHandle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("Role")
 public class RoleController {
 	@Autowired
 	RoleService ddService;
-	
+
+	private Logger logger = LoggerFactory.getLogger(getClass());
+
+	@RequestMapping("findPermission")
+	public JsonResult<?> findPermission(@RequestParam("type") String ppType,HttpServletRequest request){
+		try {
+			String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
+			List<Map<String, Object>> mmFirstPermission = ddService.findFirstOrNotByFatherid(mmAdministratorId,1,ppType);
+
+
+			List<Map<String, Object>> mmNotFirstPermission = ddService.findFirstOrNotByFatherid(mmAdministratorId,0,ppType);
+
+			Map<String, Object> mmResultMap = new HashMap<String, Object>();
+			mmResultMap.put("FirstPermission",mmFirstPermission);
+			mmResultMap.put("NotFirstPermission",mmNotFirstPermission);
+
+			return JsonResult.getSuccessResult(mmResultMap);
+
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("ReferralController -> findPermission: "+e.getMessage());
+			return JsonResult.getErrorResult("根据当前登录的mmAdministratorId查找失败！");
+		}
+	}
+
+	@RequestMapping("findPermissionByAdminid")
+	public JsonResult<?> findPermissionByAdminid(@RequestParam("administratorid") String ppAdministratorId){
+		try {
+
+			List<AdminPermission> mmFirstPermission = ddService.findPermissionByAdminid(ppAdministratorId);
+			return JsonResult.getSuccessResult(mmFirstPermission);
+
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("ReferralController -> findPermissionByAdminid: "+e.getMessage());
+			return JsonResult.getErrorResult("根据AdministratorId查找失败！");
+		}
+	}
+
+
 	@RequestMapping("findRoleByRoleName")
 	public JsonResult<?> findRoleByRoleName(@RequestParam("rolename") String ppRoleName) {
 		try {

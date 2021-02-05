@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<div th:fragment="EditRolePermission">
-    <div id="editRolePermissionModal" style="" class="modal fade bs-example-modal-lg"
+<div th:fragment="EditPermission">
+    <div id="editPermissionModal" style="" class="modal fade bs-example-modal-lg"
          tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog" style="width: 550px">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"
                             aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel_rolePermission"></h4>
+                    <h4 class="modal-title" id="myModalLabel_Permission"></h4>
                 </div>
                 <div class="modal-body" style="overflow: auto;">
                     <div style="width: 400px; height:400px; overflow-y:auto; align:center; margin: 0 auto; margin-top: 15px">
@@ -18,7 +18,7 @@
                         <div class="form-group">
                             <div class="col-sm-12" style="text-align: center;">
                                 <input v-if="editFlag == '0'" type="button" class="btn btn-success"
-                                       value="保 存" @click="saveRolePermission()">
+                                       value="保 存" @click="savePermission()">
 
                                 <input type="button" class="btn btn-default" value="返 回"
                                        data-dismiss="modal">

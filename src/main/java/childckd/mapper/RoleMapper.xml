@@ -17,6 +17,20 @@
 	from role rl where rl.rolename like CONCAT('%',#{ppRoleName},'%') order by rl.chuangjianshijian desc
   </select>
 
+  <select id="findFirstOrNotByFatherid" resultType="Map">
+
+    SELECT p.permisssionname,p.permissionid,p.fatherid FROM
+    <if test='ppType=="administrator"'> `admin_permission` </if>
+    <if test='ppType=="role"'> `roles_permission` </if>
+        r
+    inner join `permission` p on p.permissionid=r.permissionid
+    where r.administratorid=#{ppAdministratorId}
+    <if test='ppState==1'> and p.fatherid=0 </if>
+    <if test='ppState==0'> and p.fatherid!=0 </if>
+    order by p.paixuhao
+
+  </select>
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >

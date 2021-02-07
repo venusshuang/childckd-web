@@ -1,10 +1,11 @@
 var Tongji = new Vue({
 	el : '#tongji',
 	data : {
-		
-		tongjiList : [],
-		tongjiList2 : [],
-		tongjiList3 : [],
+
+		renshuList : [],
+		nianlingList : [],
+		guahaoBingzhongList : [],
+		zhuyuanBingzhongList : [],
 		
 		starttime : '',
 		endtime : '',
@@ -15,7 +16,8 @@ var Tongji = new Vue({
 
 		_this.BindTongjiRenshu();
 		_this.BindTongjiNianling();
-		_this.BindTongjiBingzhong();
+		_this.BindTongjiGuahaoBingzhong();
+		_this.BindTongjiZhuanyuanBingzhong();
 	},
 
 	watch : {
@@ -23,7 +25,7 @@ var Tongji = new Vue({
 	},
 
 	methods : {
-
+		// 统计就诊患者中成功挂号并且审核通过的人数
 		BindTongjiRenshu : function() {
 			var _this = this;
 			layer.open({
@@ -41,8 +43,8 @@ var Tongji = new Vue({
 					var result = mmData.result;
 					var data = mmData.resultContent;
 					if (result == '1') {
-						_this.eChart("charts", [ '就诊患者人数统计' ], data);
-						_this.tongjiList = data;
+						_this.eChart("charts_renshu", [ '就诊患者人数统计' ], data);
+						_this.renshuList = data;
 					}
 				}
 			});
@@ -188,22 +190,22 @@ var Tongji = new Vue({
 					var result = mmData.result;
 					var data = mmData.resultContent;
 					if (result == '1') {
-						_this.eChart2("charts2", [ '就诊患者人数统计' ], data);
-						_this.tongjiList2 = data;
+						_this.eChart2("charts_nianling", [ '就诊患者年龄统计' ], data);
+						_this.nianlingList = data;
 					}
 				}
 			});
 		},
 
-		/* 柱状图 */
+		/* 饼图 */
 		eChart2 : function(imageId, typeArr, data) {
 			var ListFirstArr = new Array();
-			var XArr = new Array();
+			/*var XArr = new Array();
 			var dataArr = new Array();
 			for (var j = 0; j < data.length; j++) {
 				dataArr.push(data[j].COUNT);
 				XArr.push(data[j].SHIJIAN);
-			}
+			}*/
 			var item = {
 				name : '就诊患者年龄统计',
 				type : 'pie',
@@ -266,12 +268,38 @@ var Tongji = new Vue({
 			}
 			myChart.setOption(option);
 		},
-		
-		BindTongjiBingzhong : function() {
+
+		// 统计挂号中的就诊信息病种
+		BindTongjiGuahaoBingzhong : function() {
 			var _this = this;
 			layer.open({
-			    type: 3,
-			    content: "<div style='font-size:18px;font-weight:bold;padding-top:40px;width:200px;text-align:left;'>正在统计，请稍候。</div>"
+				type: 3,
+				content: "<div style='font-size:18px;font-weight:bold;padding-top:40px;width:200px;text-align:left;'>正在统计，请稍候。</div>"
+			});
+
+			$.post('/guahao/tongji_bingzhong', {
+				rdm : Math.random()
+			}, function(ppData) {
+				layer.closeAll("loading");
+				if (ppData != null) {
+					var mmData = ppData;
+					var message = mmData.message;
+					var result = mmData.result;
+					var data = mmData.resultContent;
+					if (result == '1') {
+						_this.eChart3("charts_guahaobingzhong", [ '就诊患者病种统计' ], data);
+						_this.guahaoBingzhongList = data;
+					}
+				}
+			});
+		},
+
+		// 统计住院信息中的病种
+		BindTongjiZhuanyuanBingzhong : function() {
+			var _this = this;
+			layer.open({
+				type: 3,
+				content: "<div style='font-size:18px;font-weight:bold;padding-top:40px;width:200px;text-align:left;'>正在统计，请稍候。</div>"
 			});
 
 			$.post('/zhuyuan/tongji_bingzhong', {
@@ -284,8 +312,8 @@ var Tongji = new Vue({
 					var result = mmData.result;
 					var data = mmData.resultContent;
 					if (result == '1') {
-						_this.eChart3("charts3", [ '住院患者病种统计' ], data);
-						_this.tongjiList3 = data;
+						_this.eChart3("charts_zhuanyuanbingzhong", [ '住院患者病种统计' ], data);
+						_this.zhuyuanBingzhongList = data;
 					}
 				}
 			});
@@ -301,7 +329,7 @@ var Tongji = new Vue({
 				XArr.push(data[j].BINGZHONG);
 			}
 			var item = {
-				name : '住院患者病种统计',
+				name : '患者病种统计',
 				type : 'bar',
 				data : dataArr
 			};

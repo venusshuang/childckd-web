@@ -280,5 +280,16 @@ public class GuahaoController {
 			return JsonResult.getErrorResult("年龄统计失败！");
 		}
 	}
-	
+
+	@RequestMapping("tongji_bingzhong")
+	public JsonResult<?>tongjiBingzhong(){
+		try {
+			List<Map<String, Object>> mmList = ddService.tongjiBingzhong();
+			return JsonResult.getSuccessResult(mmList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("GuahaoController -> tongjiBingzhong: "+e.getMessage());
+			return JsonResult.getErrorResult("统计病种失败！");
+		}
+	}
 }

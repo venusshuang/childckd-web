@@ -2,6 +2,7 @@ var vm_index = new Vue({
 	el : "#index_div",
 	data : {
 		roletype : $("#roletype").val(),
+		isfromlogin : $("#isfromlogin").val(),
 	},
 	created : function(){
 		var _this = this;
@@ -11,7 +12,7 @@ var vm_index = new Vue({
 			_this.bindAdminPermission();
 		},'1000');
 
-		if(this.isfromlogin == "yes"){
+		if(_this.isfromlogin == "yes"){
 			setTimeout(function(){
 				//	关闭所有tab页面
 				_this.clearTab();

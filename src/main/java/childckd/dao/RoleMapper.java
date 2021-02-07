@@ -32,5 +32,6 @@ public interface RoleMapper {
 
     int updateByPrimaryKey(Role record);
 
-    List<Map<String, Object>> findFirstOrNotByFatherid(String ppAdministratorId, int ppState,String ppType);
+    List<Map<String, Object>> findFirstOrNotByFatherid(String ppId, int ppState,String ppType);
+
 }

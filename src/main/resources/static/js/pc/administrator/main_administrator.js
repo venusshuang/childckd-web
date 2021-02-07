@@ -29,7 +29,7 @@ var Administrator_Vue = new Vue({
 			$("#myModalLabel_Permission").html("管理员权限设置");
 			this.administratorid = ppAdministratorId;
 			this.bindPermission();
-			this.bindAdminPermission();
+			//this.bindAdminPermission();
 		},
 
 		bindPermission : function(){
@@ -63,7 +63,7 @@ var Administrator_Vue = new Vue({
 							}
 						}
 						$("#permission").html(mmHtml);
-
+						_this.bindAdminPermission();
 					}else{
 						layer.alert(ppData.message);
 					}
@@ -221,8 +221,46 @@ var Administrator_Vue = new Vue({
 				},"json")
 			}
 		},
-		
-		
+
+		savePermission : function(){
+			var _this = this;
+
+			var mmPermissionIdList="";
+			$("[name=permissionCheckbox]:checked").each(function(){
+				mmPermissionIdList+="|"+this.value;
+			})
+			mmPermissionIdList=mmPermissionIdList!=""?mmPermissionIdList.substring(1):"";
+
+			if(mmPermissionIdList == ""){
+				layer.alert("请选择权限！");
+				return false;
+			}
+
+
+			layer.open({type:3});
+			$.post('/Role/savePermission',{
+				id:_this.administratorid,
+				type:'administrator',
+				permissionIdList:mmPermissionIdList,
+				random : Math.random()
+			},function(ppData){
+				if(ppData != null){
+					layer.closeAll("loading");
+					if(ppData.result == "1"){
+						layer.open({
+							time:1000,
+							btn:[],
+							content:"新增成功!",
+						});
+						//	$("#editRolePermissionModal").modal("hide");
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json")
+
+		},
 		
 		
 		

@@ -13,18 +13,19 @@
   </resultMap>
 
   <select id="findRoleByRoleName" resultType="Map">
-  	select rl.roleid,rl.rolename,rl.displayname,rl.beizhu
+  	select rl.roleid,rl.rolename,rl.displayname,rl.beizhu,rl.parentroleid
 	from role rl where rl.rolename like CONCAT('%',#{ppRoleName},'%') order by rl.chuangjianshijian desc
   </select>
 
   <select id="findFirstOrNotByFatherid" resultType="Map">
 
-    SELECT p.permisssionname,p.permissionid,p.fatherid FROM
+    SELECT p.permisssionname,p.permissionid,p.fatherid,p.url,p.permisssionname FROM
     <if test='ppType=="administrator"'> `admin_permission` </if>
     <if test='ppType=="role"'> `roles_permission` </if>
         r
     inner join `permission` p on p.permissionid=r.permissionid
-    where r.administratorid=#{ppAdministratorId}
+    where  <if test='ppType=="administrator"'> r.administratorid=#{ppId} </if>
+    <if test='ppType=="role"'> r.roleid=#{ppId} </if>
     <if test='ppState==1'> and p.fatherid=0 </if>
     <if test='ppState==0'> and p.fatherid!=0 </if>
     order by p.paixuhao

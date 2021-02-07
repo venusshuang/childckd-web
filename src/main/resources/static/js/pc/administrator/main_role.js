@@ -19,7 +19,85 @@ var Role_Vue = new Vue({
 	
 	
 	methods : {
-		
+		setpermission : function(ppRoleid){
+			var _this = this;
+			$('#editPermissionModal').modal();
+			$("#myModalLabel_Permission").html("角色权限设置");
+			_this.roleid = ppRoleid;
+			$("#permission").html("");
+			_this.bindPermission();
+			//_this.bindRolePermission();
+			//_this.$forceUpdate();
+		},
+
+		bindPermission : function(){
+
+			var _this = this;
+			layer.open({type:3});
+			$.post('/Role/findPermission',{
+				type : 'role',
+				rdm:Math.random()
+			},function(ppData){
+
+				layer.closeAll("loading");
+				if(ppData!=null){
+					if(ppData.result == '1'){
+						var data = ppData.resultContent;
+
+						var mmFirstPermission = data.FirstPermission;
+						var mmNotFirstPermission = data.NotFirstPermission;
+						var mmHtml="";
+						for(var i=0;i<mmFirstPermission.length;i++)
+						{
+
+							mmHtml+="<input style=\"zoom:150%;vertical-align:text-bottom\" type=\"checkbox\" name=\"permissionCheckbox\"  value=\""+mmFirstPermission[i].permissionid+"\" id=\"allCheckRole\">"+mmFirstPermission[i].permisssionname+"<br/>";
+							for(var j=0;j<mmNotFirstPermission.length;j++)
+							{
+								if(mmNotFirstPermission[j].fatherid==mmFirstPermission[i].permissionid)
+								{
+									mmHtml+="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input style=\"zoom:150%;vertical-align:text-bottom\" type=\"checkbox\" name=\"permissionCheckbox\"  value=\""+mmNotFirstPermission[j].permissionid+"\" id=\"allCheckRole\">"+mmNotFirstPermission[j].permisssionname+"<br/>";
+								}
+
+							}
+						}
+						$("#permission").html(mmHtml);
+
+						_this.bindRolePermission();
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json");
+		},
+
+		bindRolePermission : function(){
+
+			var _this = this;
+			layer.open({type:3});
+			$.post('/Role/findPermissionByRoleid',{
+				roleid : _this.roleid,
+				rdm:Math.random()
+			},function(ppData){
+
+				layer.closeAll("loading");
+				if(ppData!=null){
+					if(ppData.result == '1'){
+						var data = ppData.resultContent;
+
+
+						for(var i=0;i<data.length;i++)
+						{
+
+							$("input[name='permissionCheckbox'][value="+data[i].permissionid+"]").prop('checked',true);
+						}
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json");
+		},
 		 
 	
 		bindRoleList : function(){
@@ -122,6 +200,46 @@ var Role_Vue = new Vue({
 					}
 				},"json")
 			}
+		},
+
+		savePermission : function(){
+			var _this = this;
+
+			var mmPermissionIdList="";
+			$("[name=permissionCheckbox]:checked").each(function(){
+				mmPermissionIdList+="|"+this.value;
+			})
+			mmPermissionIdList=mmPermissionIdList!=""?mmPermissionIdList.substring(1):"";
+
+			if(mmPermissionIdList == ""){
+				layer.alert("请选择权限！");
+				return false;
+			}
+
+
+			layer.open({type:3});
+			$.post('/Role/savePermission',{
+				id:_this.roleid,
+				type:'role',
+				permissionIdList:mmPermissionIdList,
+				random : Math.random()
+			},function(ppData){
+				if(ppData != null){
+					layer.closeAll("loading");
+					if(ppData.result == "1"){
+						layer.open({
+							time:1000,
+							btn:[],
+							content:"新增成功!",
+						});
+						//	$("#editRolePermissionModal").modal("hide");
+
+					}else{
+						layer.alert(ppData.message);
+					}
+				}
+			},"json")
+
 		},
 		
 		

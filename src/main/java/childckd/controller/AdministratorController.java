@@ -23,7 +23,7 @@ public class AdministratorController {
 	@Autowired
 	AdministratorService ddService;
 
-	List<Map<String, Object>> ppReturnAdminList =null;
+    private List<Map<String, Object>> ppReturnAdminList =null;
 
 	@RequestMapping("login")
 	public JsonResult<?> login(
@@ -69,7 +69,6 @@ public class AdministratorController {
 		try {
 			String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
 			List<Map<String, Object>> mmAllAdminList=ddService.findAdministratorByZhanghao("");
-			System.out.println(mmAllAdminList);
 			Map<String, Object> mmMap = new HashMap<String, Object>();
 			ppReturnAdminList =new ArrayList<Map<String, Object>>();
 
@@ -79,6 +78,7 @@ public class AdministratorController {
 			mmMap.put("zhanghao", mmAdministrator.getZhanghao());
 			mmMap.put("beizhu", mmAdministrator.getBeizhu());
 			mmMap.put("parentadminid", mmAdministrator.getParentadminid());
+			mmMap.put("showshezhipermission", false);
 			ppReturnAdminList.add(mmMap);
 
 
@@ -104,6 +104,7 @@ public class AdministratorController {
 				ppMap.put("zhanghao", ppAllAdminList.get(i).get("zhanghao").toString());
 				ppMap.put("beizhu", ppAllAdminList.get(i).get("beizhu").toString());
 				ppMap.put("parentadminid", ppAdministratorId);
+				ppMap.put("showshezhipermission", true);
 				ppReturnAdminList.add(ppMap);
 				findAdminByStep(ppAllAdminList,ppAllAdminList.get(i).get("administratorid").toString());
 			}else
@@ -195,13 +196,10 @@ public class AdministratorController {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
 			}
 			
-			if(isAddAdministrator) {
-				return ddService.add(mmAdministrator) ? JsonResult.getSuccessResult("新增管理员成功！"):
-					JsonResult.getErrorResult("新增管理员失败！");
-			}else {
-				return ddService.modify(mmAdministrator) ? JsonResult.getSuccessResult("修改管理员成功！"):
-					JsonResult.getErrorResult("修改管理员失败！");
-			}
+
+			return ddService.addAdministratorId(mmAdministrator,ppRoleId,isAddAdministrator) ? JsonResult.getSuccessResult("执行成功！"):
+					JsonResult.getErrorResult("执行失败！");
+
 			
 		}catch(Exception e) {
 			e.printStackTrace();

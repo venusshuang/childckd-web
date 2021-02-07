@@ -52,7 +52,7 @@
 					<td style="text-align:center;vertical-align:middle;">
 						<button class="btn btn-danger" @click="toDelete(administratoritem.administratorid)">删 除</button>
 						<button class="btn btn-info" @click="perpareToModifyAdministrator(administratoritem.administratorid)">编 辑</button>
-						<button class="btn btn-info" @click="setpermission(administratoritem.administratorid)">设置权限</button>
+						<button v-if="administratoritem.showshezhipermission==true" class="btn btn-info" @click="setpermission(administratoritem.administratorid)">设置权限</button>
 					</td>
 					
 				</tr>

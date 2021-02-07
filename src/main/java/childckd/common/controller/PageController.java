@@ -530,8 +530,10 @@ public class PageController {
 
 		String mmRoleType = request.getSession().getAttribute("RoleType").toString();
 		String mmAdministratorId = request.getSession().getAttribute("AdministratorId").toString();
+		String mmIsfromlogin = request.getParameter("isfromlogin") == null ? "" : request.getParameter("isfromlogin").toString();
 		map.put("RoleType", mmRoleType);
 		map.put("AdministratorId", mmAdministratorId);
+		map.put("Isfromlogin", mmIsfromlogin);
 
 		return "pc/index";
 	}

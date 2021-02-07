@@ -57,7 +57,7 @@ var _loginVue = new Vue({
 							if(result == "1"){
 								_this.showMessage("登录成功！");
 								setTimeout(function(){
-									location.href="/index.html";
+									location.href="/index.html?isfromlogin=yes";
 								},'1000');
 							}else{
 								_this.showMessage(message);

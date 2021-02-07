@@ -147,7 +147,7 @@ public class RoleController {
 			return JsonResult.getSuccessResult(ppReturnRoleList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JsonResult.getErrorResult("Role/findRoleByRoleName:error " + e.getMessage());
+			return JsonResult.getErrorResult("Role/findRoleByRoleName:error :parentroleid为空" + e.getMessage());
 		}
 	}
 

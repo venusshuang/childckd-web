@@ -38,7 +38,9 @@ var vm_index = new Vue({
 
 						var mmFirstPermission = data.FirstPermission;
 						var mmNotFirstPermission = data.NotFirstPermission;
+						var mmNotFirstPermission_V1 = mmNotFirstPermission;
 						var mmHtml="";
+
 						for(var i=0;i<mmFirstPermission.length;i++)
 						{
 							mmHtml+="<li>";
@@ -58,13 +60,35 @@ var vm_index = new Vue({
 									mmHtml+="<cite>"+mmNotFirstPermission[j].permisssionname+"</cite>";
 									mmHtml+="</a>";
 									mmHtml+="</li>";
+									mmNotFirstPermission_V1[j].fatherid="存在";
+
 								}
 
 							}
 							mmHtml+="</ul>";
 							mmHtml+="</li>";
+
+
+
 						}
 
+						for(var j=0;j<mmNotFirstPermission_V1.length;j++)
+						{
+
+							if(mmNotFirstPermission_V1[j].fatherid!="存在")
+							{
+								mmHtml+="<li>";
+								mmHtml+="<a onclick=\"xadmin.add_tab('"+mmNotFirstPermission_V1[j].permisssionname+"','/"+mmNotFirstPermission_V1[j].url+"')\">";
+								mmHtml+="<i class=\"iconfont\">&#xe6a7;</i>";
+								mmHtml+="<cite>"+mmNotFirstPermission_V1[j].permisssionname+"</cite>";
+								mmHtml+="</a>";
+								mmHtml+="</li>";
+							}
+
+						}
+
+
+						//alert(mmNotFirst);
 						$("#permission").html(mmHtml);
 
 

@@ -88,7 +88,7 @@ public class AdministratorController {
 			return JsonResult.getSuccessResult(ppReturnAdminList);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return JsonResult.getErrorResult("administrator/findAdministratorByZhanghao:error " + e.getMessage());
+			return JsonResult.getErrorResult("administrator/findAdministratorByZhanghao:error：parentadminid为空 " + e.getMessage());
 		}
 	}
 

@@ -111,4 +111,7 @@ public class GuahaoService {
 		return ddMapper.tongjiNianling();
 	}
 
+	public List<Map<String, Object>> tongjiBingzhong() {
+		return ddMapper.tongjiBingzhong();
+	}
 }

@@ -12,6 +12,8 @@ public interface GuahaoMapper {
 	List<Map<String, Object>>tongjiRenshu();
 
 	List<Map<String, Object>>tongjiNianling();
+
+	List<Map<String, Object>> tongjiBingzhong();
 	
 	List<Map<String, Object>>findByDateAndUserId(@Param("userid")String ppUserId,@Param("date")String ppDate);
 	
@@ -61,4 +63,6 @@ public interface GuahaoMapper {
 			@Param("shenhejieguo") int ppShenhejieguo,
 			@Param("startindex") int mmStartIndex,
 			@Param("pagesize") int ppPageSize);
+
+
 }

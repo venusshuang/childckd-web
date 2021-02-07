@@ -33,12 +33,25 @@
 	FROM
 		dict_nianlingduan dn
 		LEFT JOIN patient_jiuzhenxinxi p ON p.age = dn.id
-		LEFT JOIN guahao g on g.jiuzhenxinxiid = p.jiuzhenxinxiid
-	WHERE g.shenhejieguo = 1
+		LEFT JOIN guahao g on g.jiuzhenxinxiid = p.jiuzhenxinxiid and g.shenhejieguo = 1
 	GROUP BY
 		dn.id 
 	ORDER BY
 		dn.ordernum ASC
+  </select>
+
+  <select id="tongjiBingzhong" resultType="map">
+  	SELECT
+		db.text AS BINGZHONG,
+		COUNT( g.guahaoid ) AS COUNT
+	FROM
+		dict_bingzhong db
+		LEFT JOIN patient_jiuzhenxinxi p ON p.age = db.id
+		LEFT JOIN guahao g on g.jiuzhenxinxiid = p.jiuzhenxinxiid and g.shenhejieguo = 1
+	GROUP BY
+		db.id
+	ORDER BY
+		db.ordernum ASC
   </select>
   
   <select id="findByDateAndUserId" resultType="map">

@@ -114,6 +114,23 @@ public class AdministratorController {
 		}
 	}
 
+	void findAdminByStep_V1(List<Map<String, Object>> ppAllAdminList,String ppAdministratorId)
+	{
+		for(int i=0;i<ppAllAdminList.size();i++)
+		{
+			if(ppAdministratorId.equals(ppAllAdminList.get(i).get("parentadminid").toString()))
+			{
+				Map<String, Object> ppMap = new HashMap<String, Object>();
+				ppMap.put("administratorid", ppAllAdminList.get(i).get("administratorid").toString());
+				ppReturnAdminList.add(ppMap);
+				findAdminByStep_V1(ppAllAdminList,ppAllAdminList.get(i).get("administratorid").toString());
+			}else
+			{
+				continue;
+			}
+		}
+	}
+
 	
 	@RequestMapping("deleteAdministrator")
 	public JsonResult<?> delete(@RequestParam("administratorid") String ppAdministratorId) 
@@ -127,8 +144,22 @@ public class AdministratorController {
 			if(mmAdministrator == null) {
 				return JsonResult.getErrorResult("要删除的管理员不存在");
 			}
-			
-			return ddService.delete(ppAdministratorId) == true ? JsonResult.getSuccessResult("删除管理员成功") : JsonResult.getErrorResult("删除管理员失败");
+
+			List<Map<String, Object>> mmAllAdminList=ddService.findAdministratorByZhanghao("");
+			Map<String, Object> mmMap = new HashMap<String, Object>();
+			ppReturnAdminList =new ArrayList<Map<String, Object>>();
+
+
+			mmMap.put("administratorid", ppAdministratorId);
+
+			ppReturnAdminList.add(mmMap);
+
+
+			findAdminByStep_V1(mmAllAdminList,ppAdministratorId);
+
+			boolean mmResult=ddService.deleteAdministratorListMap(ppReturnAdminList);
+
+			return mmResult == true ? JsonResult.getSuccessResult("删除管理员成功") : JsonResult.getErrorResult("删除管理员失败");
 		
 		} catch (Exception e) {
 			e.printStackTrace();

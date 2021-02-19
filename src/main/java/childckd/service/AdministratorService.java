@@ -124,5 +124,21 @@ public class AdministratorService {
 		List<Administrator> mmList = ddMapper.selectByExample(mmExample);
 		return mmList.size() > 0 ? mmList.get(0) : null;
 	}
+	@Transactional
+    public boolean deleteAdministratorListMap(List<Map<String, Object>> ppReturnAdminList) {
+		try
+		{
+			for (int i = 0 ; i <ppReturnAdminList.size() ; i++ )
+			{
+				delete(ppReturnAdminList.get(i).get("administratorid").toString());
+			}
 
+		}catch (Exception e) {
+
+			throw new RuntimeException("批量删除失败");
+
+		}
+
+		return true;
+    }
 }

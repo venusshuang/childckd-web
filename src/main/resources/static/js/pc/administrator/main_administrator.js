@@ -396,7 +396,7 @@ var Administrator_Vue = new Vue({
 		
 		toDelete : function(ppAdministratorId){
 			var _this = this;
-			layer.confirm("确定删除该管理员信息吗？",{
+			layer.confirm("确定删除该管理员信息吗？删除后，该管理员创建的下级管理员也将全部删除",{
 				btn : ['是','否']
 			},function(){
 				layer.open({type:3});

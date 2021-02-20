@@ -18,7 +18,7 @@
   </resultMap>
 
   <select id="findCustomAll" resultType="Map">
-     select bz.text,jz.jiuzhenxinxiid,jz.userid,jz.name,jz.shenfenzhenghaoma,jz.xingbie,jz.zhuyaozhengzhuang,jz.shoujihao,jz.age,jz.lianxidizhi,date_format(jz.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian
+     select bz.text,jz.jiuzhenxinxiid,jz.userid,jz.name,jz.shenfenzhenghaoma,jz.xingbie,jz.zhuyaozhengzhuang,jz.shoujihao,jz.age,jz.nianling,jz.lianxidizhi,date_format(jz.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian
      from patient_jiuzhenxinxi AS jz
      left JOIN dict_bingzhong AS bz ON jz.bingzhong = bz.id
      where jz.name like CONCAT('%',#{ppName},'%') and jz.shoujihao like CONCAT('%',#{ppShoujihao},'%')

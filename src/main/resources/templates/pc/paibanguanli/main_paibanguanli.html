@@ -57,7 +57,7 @@
 				<th style="text-align:center;vertical-align:middle;width: 150px;">排班日期</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">排班时间</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">预约人数</th>
-				<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>
+				<!--<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>-->
 			</thead>
 			<tbody>
 				<tr v-for="(paibanitem,index) in paibanlist" v-if="paibanlist!=null">
@@ -66,10 +66,10 @@
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.paibanriqi"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.shangxiawu"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.xianhaoshu"></td>
-					<td style="text-align:center;vertical-align:middle;">
+					<!--<td style="text-align:center;vertical-align:middle;">
 						<button class="btn btn-danger" @click="toDelete(paibanitem.paibanid)">删 除</button>
 						<button class="btn btn-info" @click="perpareToModifyPaiban(paibanitem.paibanid)">编 辑</button>
-					</td>
+					</td>-->
 					
 				</tr>
 				<tr v-if="paibanlist.length==0">

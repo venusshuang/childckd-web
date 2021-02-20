@@ -176,6 +176,7 @@ var _jiuzhenxinxiVue = new Vue({
 					age : _this.jiuzhenxinxi.age,
 					lianxidizhi : _this.jiuzhenxinxi.lianxidizhi,
 					bingzhong : _this.jiuzhenxinxi.bingzhong,
+					nianling:_this.jiuzhenxinxi.nianling,
 					imageurls : imageurls,
 					rdm:Math.random()
 				}, function(ppData) {
@@ -284,6 +285,7 @@ var _jiuzhenxinxiVue = new Vue({
 					age : _this.jiuzhenxinxi.age,
 					lianxidizhi : _this.jiuzhenxinxi.lianxidizhi,
 					bingzhong : _this.jiuzhenxinxi.bingzhong,
+					nianling:_this.jiuzhenxinxi.nianling,
 					imageurls : imageurls,
 					rdm:Math.random()
 				}, function(ppData) {
@@ -322,6 +324,7 @@ var _jiuzhenxinxiVue = new Vue({
 			_this.jiuzhenxinxi.shoujihao = !_this.jiuzhenxinxi.shoujihao ? "" : $.trim(_this.jiuzhenxinxi.shoujihao);
 			_this.jiuzhenxinxi.lianxidizhi = !_this.jiuzhenxinxi.lianxidizhi ? "" : $.trim(_this.jiuzhenxinxi.lianxidizhi);
 			_this.jiuzhenxinxi.zhuyaozhengzhuang = !_this.jiuzhenxinxi.zhuyaozhengzhuang ? "" : $.trim(_this.jiuzhenxinxi.zhuyaozhengzhuang);
+			_this.jiuzhenxinxi.nianling = !_this.jiuzhenxinxi.nianling ? "" : $.trim(_this.jiuzhenxinxi.nianling);
 
 			if(_this.jiuzhenxinxi.name == ""){
 				_this.showMessage("请填写姓名！");
@@ -346,6 +349,13 @@ var _jiuzhenxinxiVue = new Vue({
 			if(_this.jiuzhenxinxi.age == ""){
 				_this.showMessage("请选择年龄！");
 				return false;
+			}
+
+			if (_this.jiuzhenxinxi.age!='1'&&_this.jiuzhenxinxi.age!='2'){
+				if (_this.jiuzhenxinxi.nianling==""){
+					_this.showMessage("请填写具体年龄！");
+					return false;
+				}
 			}
 
 			if(_this.jiuzhenxinxi.bingzhong == ""){

@@ -119,6 +119,7 @@ public class PatientJiuzhenxinxiController {
 			@RequestParam("age") String ppAge,
 			@RequestParam("lianxidizhi") String ppLianxidizhi,
 			@RequestParam("bingzhong") String ppBingzhong,
+			@RequestParam("nianling") String ppNianling,
 			@RequestParam("imageurls")String ppImageUrls){
 		try{
 			ppName = ppName.trim();
@@ -127,6 +128,7 @@ public class PatientJiuzhenxinxiController {
 			ppShoujihao = ppShoujihao.trim();
 			ppAge = ppAge.trim();
 			ppLianxidizhi = ppLianxidizhi.trim();
+			ppNianling = ppNianling.trim();
 
 			PatientJiuzhenxinxi mmPatientJiuzhenxinxi = new PatientJiuzhenxinxi();
 
@@ -136,7 +138,7 @@ public class PatientJiuzhenxinxiController {
 
 			BooleanMessage mmBooleanMessage = checkInputData(mmPatientJiuzhenxinxi,
 					ppName,ppShenfenzhenghaoma,ppXingbie,ppZhuyaozhengzhuang,ppShoujihao,
-					ppAge,ppLianxidizhi,ppBingzhong);
+					ppAge,ppLianxidizhi,ppBingzhong,ppNianling);
 
 			if(!mmBooleanMessage.isOk()) {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
@@ -163,6 +165,7 @@ public class PatientJiuzhenxinxiController {
 			@RequestParam("age") String ppAge,
 			@RequestParam("lianxidizhi") String ppLianxidizhi,
 			@RequestParam("bingzhong") String ppBingzhong,
+			@RequestParam("nianling")String ppNianling,
 			@RequestParam("imageurls")String ppImageUrls){
 		try{
 			ppName = ppName.trim();
@@ -171,6 +174,7 @@ public class PatientJiuzhenxinxiController {
 			ppShoujihao = ppShoujihao.trim();
 			ppAge = ppAge.trim();
 			ppLianxidizhi = ppLianxidizhi.trim();
+			ppNianling = ppNianling.trim();
 
 			PatientJiuzhenxinxi mmPatientJiuzhenxinxi = ddService.findOne(ppJiuzhenxinxiId);
 			if(mmPatientJiuzhenxinxi == null) {
@@ -179,7 +183,7 @@ public class PatientJiuzhenxinxiController {
 
 			BooleanMessage mmBooleanMessage = checkInputData(mmPatientJiuzhenxinxi,
 					ppName,ppShenfenzhenghaoma,ppXingbie,ppZhuyaozhengzhuang,ppShoujihao,
-					ppAge,ppLianxidizhi,ppBingzhong);
+					ppAge,ppLianxidizhi,ppBingzhong,ppNianling);
 
 			if(!mmBooleanMessage.isOk()) {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
@@ -196,7 +200,7 @@ public class PatientJiuzhenxinxiController {
 	// 检查数据
 	private BooleanMessage checkInputData(PatientJiuzhenxinxi mmPatientJiuzhenxinxi, String ppName,
 			String ppShenfenzhenghaoma, String ppXingbie, String ppZhuyaozhengzhuang, String ppShoujihao,
-			String ppAge, String ppLianxidizhi, String ppBingzhong) {
+			String ppAge, String ppLianxidizhi, String ppBingzhong,String ppNianling) {
 		if("".equals(ppName)) {
 			return BooleanMessage.getErrorMessage("姓名不能为空！");
 		}
@@ -260,6 +264,14 @@ public class PatientJiuzhenxinxiController {
 		mmPatientJiuzhenxinxi.setZhuyaozhengzhuang(ppZhuyaozhengzhuang);
 		mmPatientJiuzhenxinxi.setBingzhong(ppBingzhong);
 		mmPatientJiuzhenxinxi.setZhuangtai(1);
+
+		if ("1".equals(ppAge)){
+			mmPatientJiuzhenxinxi.setNianling("0-6个月");
+		}else if ("2".equals(ppAge)){
+			mmPatientJiuzhenxinxi.setNianling("7-12个月");
+		}else{
+			mmPatientJiuzhenxinxi.setNianling(ppNianling);
+		}
 
 		return BooleanMessage.getSuccessMessage(mmPatientJiuzhenxinxi);
 	}

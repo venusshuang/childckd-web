@@ -72,7 +72,8 @@
 		date_format(p.paibanriqi,'%Y-%m-%d')AS paibanriqi,
 		pj.shenfenzhenghaoma,
 		pj.xingbie,
-		pj.age
+		pj.age,
+		pj.nianling
 	FROM
 		guahao g 
 	LEFT JOIN paibanguanli p ON p.paibanid = g.paibanid
@@ -158,11 +159,11 @@
 		pj.xingbie,
 		pj.zhuyaozhengzhuang,
 		pj.shoujihao,
-		nld.text as age,
+		pj.age,
 		pj.lianxidizhi,
 		pj.zhuangtai,
-		bz.text as bingzhongtext
-		
+		bz.text as bingzhongtext,
+		pj.nianling
 	FROM
 		guahao AS g
 		INNER JOIN paibanguanli AS pg ON g.paibanid = pg.paibanid
@@ -242,6 +243,7 @@
 		pj.zhuyaozhengzhuang,
 		pj.shoujihao,
 		pj.age,
+		pj.nianling,
 		pj.lianxidizhi,
 		pj.zhuangtai,
 		pj.chuangjianshijian,

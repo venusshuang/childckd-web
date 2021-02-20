@@ -17,6 +17,7 @@
     <result column="nianling" property="nianling" jdbcType="VARCHAR" />
   </resultMap>
 
+  <!--年龄-->
   <select id="findCustomAll" resultType="Map">
      select bz.text,jz.jiuzhenxinxiid,jz.userid,jz.name,jz.shenfenzhenghaoma,jz.xingbie,jz.zhuyaozhengzhuang,jz.shoujihao,jz.age,jz.nianling,jz.lianxidizhi,date_format(jz.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian
      from patient_jiuzhenxinxi AS jz

@@ -163,7 +163,8 @@
 		pj.lianxidizhi,
 		pj.zhuangtai,
 		bz.text as bingzhongtext,
-		pj.nianling
+		pj.nianling,
+		nld.text as age_text
 	FROM
 		guahao AS g
 		INNER JOIN paibanguanli AS pg ON g.paibanid = pg.paibanid

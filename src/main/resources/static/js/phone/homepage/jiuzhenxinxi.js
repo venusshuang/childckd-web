@@ -285,7 +285,7 @@ var _jiuzhenxinxiVue = new Vue({
 					age : _this.jiuzhenxinxi.age,
 					lianxidizhi : _this.jiuzhenxinxi.lianxidizhi,
 					bingzhong : _this.jiuzhenxinxi.bingzhong,
-					nianling:_this.jiuzhenxinxi.nianling,
+					nianling:_this.jiuzhenxinxi.nianling, //年龄
 					imageurls : imageurls,
 					rdm:Math.random()
 				}, function(ppData) {

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import childckd.model.PatientJiuzhenxinxi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import childckd.model.Attatchment;
-import childckd.model.PatientJiuzhenxinxi;
 import childckd.service.AttatchmentService;
 import childckd.service.PatientJiuzhenxinxiService;
 import childckd.util.BooleanMessage;
@@ -142,7 +142,7 @@ public class PatientJiuzhenxinxiController {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
 			}
 
-			return ddService.add_custom(mmPatientJiuzhenxinxi,ppImageUrls) ? JsonResult.getSuccessResult("新增成功！") : JsonResult.getErrorResult("新增失败！");
+			return ddService.add_custom(mmPatientJiuzhenxinxi, ppImageUrls) ? JsonResult.getSuccessResult("新增成功！") : JsonResult.getErrorResult("新增失败！");
 		}catch(Exception e) {
 			e.printStackTrace();
 			logger.error("PatientController -> add: "+e.getMessage());

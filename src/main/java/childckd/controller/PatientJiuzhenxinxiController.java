@@ -130,6 +130,13 @@ public class PatientJiuzhenxinxiController {
 			ppLianxidizhi = ppLianxidizhi.trim();
 			ppNianling = ppNianling.trim();
 
+			// 根据身份证号查询是否已存在相同身份证号的就诊信息，若存在则不能重复添加
+			List<PatientJiuzhenxinxi> mmPatientJiuzhenxinxiList = ddService.findByShenfenzhenghao(ppShenfenzhenghaoma);
+			if(mmPatientJiuzhenxinxiList.size() > 0){
+				return JsonResult.getErrorResult("新增失败！已存在相同证件号码的就诊信息");
+			}
+
+
 			PatientJiuzhenxinxi mmPatientJiuzhenxinxi = new PatientJiuzhenxinxi();
 
 			mmPatientJiuzhenxinxi.setJiuzhenxinxiid(UUID.randomUUID().toString());
@@ -179,6 +186,12 @@ public class PatientJiuzhenxinxiController {
 			PatientJiuzhenxinxi mmPatientJiuzhenxinxi = ddService.findOne(ppJiuzhenxinxiId);
 			if(mmPatientJiuzhenxinxi == null) {
 				return JsonResult.getErrorResult("不存在此就诊信息！");
+			}
+
+			// 根据身份证号查询是否已存在相同身份证号的就诊信息，若存在则不能重复添加
+			List<PatientJiuzhenxinxi> mmPatientJiuzhenxinxiList = ddService.findByShenfenzhenghaoNotIncludeThis(ppJiuzhenxinxiId,ppShenfenzhenghaoma);
+			if(mmPatientJiuzhenxinxiList.size() > 0){
+				return JsonResult.getErrorResult("修改失败！已存在相同证件号码的就诊信息");
 			}
 
 			BooleanMessage mmBooleanMessage = checkInputData(mmPatientJiuzhenxinxi,

@@ -188,8 +188,8 @@ var _jiuzhenxinxiVue = new Vue({
 								var result = mmData.result;
 								var message = mmData.message;
 								var data = mmData.resultContent;
+
 								if(result == "1"){
-									var _this = this;
 									$("#js_toast").show()
 									setTimeout(function(){
 										location.reload();

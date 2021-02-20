@@ -1,10 +1,7 @@
 package childckd.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -162,9 +159,30 @@ public class ScheduleController {
 	@RequestMapping("test_schedule")
 	@Scheduled(fixedRate = 86400000)
 	public void testSchedule() {
+
+		List<Date> mmTodayList = new ArrayList<>();
+
+		//一周后
 		Calendar calendar = Calendar.getInstance();  	// 获取当前时间
 		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 7);  // 当前日期是这一年中的第几天，然后加7
 		Date today = calendar.getTime();  				// 得到当前日期
+		mmTodayList.add(today);
+		//两周后
+		Calendar calendar2 = Calendar.getInstance();  	// 获取当前时间
+		calendar2.set(Calendar.DAY_OF_YEAR, calendar2.get(Calendar.DAY_OF_YEAR) + 14);  // 当前日期是这一年中的第几天，然后加7
+		Date today2 = calendar2.getTime();  				// 得到当前日期
+		mmTodayList.add(today2);
+		//三周后
+		Calendar calendar3 = Calendar.getInstance();  	// 获取当前时间
+		calendar3.set(Calendar.DAY_OF_YEAR, calendar3.get(Calendar.DAY_OF_YEAR) + 21);  // 当前日期是这一年中的第几天，然后加7
+		Date today3 = calendar3.getTime();  				// 得到当前日期
+		mmTodayList.add(today3);
+		//四周后
+//		Calendar calendar4 = Calendar.getInstance();  	// 获取当前时间
+//		calendar4.set(Calendar.DAY_OF_YEAR, calendar4.get(Calendar.DAY_OF_YEAR) + 28);  // 当前日期是这一年中的第几天，然后加7
+//		Date today4 = calendar4.getTime();  				// 得到当前日期
+//		mmTodayList.add(today4);
+
 		int mmXingqi = today.getDay();					// 获取星期数
 
 		if (mmXingqi == 0) {
@@ -191,43 +209,46 @@ public class ScheduleController {
 				Date mmEndtime = mmTingzhenList.get(j).getEndtime();
 				String mmIsAM = mmTingzhenList.get(j).getIsam().toString().equals("1") ? "上午" : "";
 				String mmIsPM = mmTingzhenList.get(j).getIspm().toString().equals("1") ? "下午" : "";
-				
-				// 如果 周排班中的专家id=停诊中的专家id、待排班日期在停诊起止日期内、上下午也对应  则这条记录不能插入排班表
-				if(mmExpertId.equals(mmExpertId1) && today.after(mmStarttime) && today.before(mmEndtime) && (mmShangxiawu.equals(mmIsAM) || mmShangxiawu.equals(mmIsPM) )) {
-					mmScheduleList.remove(i);
-					break;
-				}			
-			}		
-			
-			
+
+				for (int k=0;k<mmTodayList.size();k++){
+					Date mmToday = mmTodayList.get(k);
+					// 如果 周排班中的专家id=停诊中的专家id、待排班日期在停诊起止日期内、上下午也对应  则这条记录不能插入排班表
+					if(mmExpertId.equals(mmExpertId1) && mmToday.after(mmStarttime) && mmToday.before(mmEndtime) && (mmShangxiawu.equals(mmIsAM) || mmShangxiawu.equals(mmIsPM) )) {
+						mmScheduleList.remove(i);
+						break;
+					}
+				}
+			}
 		}
-		
-		// 剩余有效的周排班，插入到排班管理中
-		for(int k = 0 ; k < mmScheduleList.size() ; k++) {
-			
-			String mmExpertId = mmScheduleList.get(k).getExpertid();
-			String mmXingming = mmScheduleList.get(k).getZhuanjiaxingming();
-			String mmGuahaoleibie = mmScheduleList.get(k).getGuahaoleibie();
-			String mmShangxiawu = mmScheduleList.get(k).getShangxiawu();
-			int mmXianhaoshu = mmScheduleList.get(k).getXianhaoshu();
-			float mmJiage = mmScheduleList.get(k).getJiage();
-			
-			Paibanguanli mmPaibanguanli = new Paibanguanli();
-			mmPaibanguanli.setPaibanid(UUID.randomUUID().toString());
-			mmPaibanguanli.setExpertid(mmExpertId);
-			mmPaibanguanli.setName(mmXingming);
-			mmPaibanguanli.setGuahaoleibie(mmGuahaoleibie);
-			mmPaibanguanli.setPaibanriqi(today);
-			mmPaibanguanli.setShangxiawu(mmShangxiawu);
-			mmPaibanguanli.setXianhaoshu(mmXianhaoshu);
-			mmPaibanguanli.setShengyuhaoshu(mmXianhaoshu);
-			mmPaibanguanli.setJiage(mmJiage);
-			mmPaibanguanli.setZhuangtai(1);
-			
-			ddPaibanguanliService.add(mmPaibanguanli);
-			
+
+		for (int i=0;i<mmTodayList.size();i++){
+			Date mmToday = mmTodayList.get(i);
+
+			// 剩余有效的周排班，插入到排班管理中
+			for(int k = 0 ; k < mmScheduleList.size() ; k++) {
+
+				String mmExpertId = mmScheduleList.get(k).getExpertid();
+				String mmXingming = mmScheduleList.get(k).getZhuanjiaxingming();
+				String mmGuahaoleibie = mmScheduleList.get(k).getGuahaoleibie();
+				String mmShangxiawu = mmScheduleList.get(k).getShangxiawu();
+				int mmXianhaoshu = mmScheduleList.get(k).getXianhaoshu();
+				float mmJiage = mmScheduleList.get(k).getJiage();
+
+				Paibanguanli mmPaibanguanli = new Paibanguanli();
+				mmPaibanguanli.setPaibanid(UUID.randomUUID().toString());
+				mmPaibanguanli.setExpertid(mmExpertId);
+				mmPaibanguanli.setName(mmXingming);
+				mmPaibanguanli.setGuahaoleibie(mmGuahaoleibie);
+				mmPaibanguanli.setPaibanriqi(mmToday);
+				mmPaibanguanli.setShangxiawu(mmShangxiawu);
+				mmPaibanguanli.setXianhaoshu(mmXianhaoshu);
+				mmPaibanguanli.setShengyuhaoshu(mmXianhaoshu);
+				mmPaibanguanli.setJiage(mmJiage);
+				mmPaibanguanli.setZhuangtai(1);
+
+				ddPaibanguanliService.add(mmPaibanguanli);
+			}
 		}
-		
 	}
 
 }

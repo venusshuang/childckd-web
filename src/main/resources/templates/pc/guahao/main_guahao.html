@@ -118,7 +118,7 @@
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.bingzhongtext"></td>
 					<!--年龄-->
 					<td style="text-align:center;vertical-align:middle;" v-if="guahaoitem.age=='1'||guahaoitem.age=='2'" v-html="guahaoitem.nianling"></td>
-					<td style="text-align:center;vertical-align:middle;" v-else><span v-html="guahaoitem.nianling"></span><span>岁</span></td>
+					<td style="text-align:center;vertical-align:middle;" v-else><span v-if="guahaoitem.nianling!=null&&guahaoitem.nianling!=''" v-html="guahaoitem.nianling"></span><span v-else>/</span><span>岁</span></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.shoujihao"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.zhuanjiaxingming"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.paibanriqi"></td>

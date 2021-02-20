@@ -193,6 +193,7 @@ public class GuahaoController {
 			
 			String mmName = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId).getName();
 
+			// 挂号
 			String mmGuahaoId = UUID.randomUUID().toString();
 			Guahao mmGuahao = new Guahao();
 			mmGuahao.setGuahaoid(mmGuahaoId);

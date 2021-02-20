@@ -15,6 +15,8 @@ import childckd.service.InfoService;
 @Controller
 public class PageController {
 
+	//哈哈
+
 	@Autowired
 	InfoCategoryService ddInfoCategoryService;
 	@Autowired

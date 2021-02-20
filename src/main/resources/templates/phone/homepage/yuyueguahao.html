@@ -48,7 +48,6 @@
 		                	<span v-if="paibanitem.shengyuhaoshu > 0" class="weui-form-preview__label" style="font-size:40px;font-weight:bold;color:#00baad;line-height:150px;margin-left: 100px;" v-html='"余号："+paibanitem.shengyuhaoshu'></span>
 		                	<span v-if="paibanitem.shengyuhaoshu > 0" @click="toGuahao(paibanitem.paibanid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">预约</span>
 		                	<span v-if="paibanitem.shengyuhaoshu <= 0" @click="toGuahao(paibanitem.paibanid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">加号</span>
-		                	<!-- <span v-if="paibanitem.shengyuhaoshu <= 0" style="height:100px;float:right;font-size:40px;text-align:center;color:red;">已超过限号数，如需加号需要审核</span> -->
 		                	
 	                	</div>
 	                	<div @click="toDetail(paibanitem.paibanid)">

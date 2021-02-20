@@ -3,13 +3,13 @@ package childckd.service;
 import java.util.List;
 import java.util.Map;
 
+import childckd.model.PatientJiuzhenxinxi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import childckd.dao.ZhuyuanMapper;
 import childckd.model.News;
-import childckd.model.PatientJiuzhenxinxi;
 import childckd.model.Zhuyuan;
 import childckd.model.ZhuyuanExample;
 
@@ -49,7 +49,7 @@ public class ZhuyuanService {
 
 
 	@Transactional
-	public boolean add_custom(Zhuyuan ppZhuyuan, PatientJiuzhenxinxi ppPatientJiuzhenxinxi,String ppImageUrls) {
+	public boolean add_custom(Zhuyuan ppZhuyuan, PatientJiuzhenxinxi ppPatientJiuzhenxinxi, String ppImageUrls) {
 		if(!add(ppZhuyuan)) {
 			throw new RuntimeException("添加住院信息失败！");
 		}

@@ -34,7 +34,18 @@ public class PaiBanGuanLiService {
 	}
 	
 	public List<Map<String,Object>> findPaiBanGuanLiByNameAndDateAndShangxiawu(String ppName, String mmPaiBanRiQi, String ppShangxiawu) {
-		return ddMapper.findPaiBanGuanLiByNameAndDateAndShangxiawu(ppName,mmPaiBanRiQi,ppShangxiawu);
+		List<Map<String,Object>> mmPaibanList = ddMapper.findPaiBanGuanLiByNameAndDateAndShangxiawu(ppName,mmPaiBanRiQi,ppShangxiawu);
+
+		// 处理剩余号数 改为动态的限号数-审核通过的数量
+		for(int i = 0 ; i < mmPaibanList.size() ; i++){
+			Map<String,Object> mmPaiban = mmPaibanList.get(i);
+			String mmPaibanId = mmPaiban.get("paibanid").toString();
+			int mmXianhaoshu = Integer.parseInt(mmPaiban.get("xianhaoshu").toString());
+			int mmCountTongguo = countFindYuyue(mmPaibanId,1);
+			mmPaiban.put("shengyuhaoshu",mmXianhaoshu-mmCountTongguo);
+		}
+
+		return mmPaibanList;
 	}
 
 	public Paibanguanli findOne(String ppPaiBanId) {

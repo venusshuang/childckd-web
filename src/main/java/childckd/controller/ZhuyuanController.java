@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
+import childckd.model.PatientJiuzhenxinxi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import childckd.model.News;
-import childckd.model.PatientJiuzhenxinxi;
 import childckd.model.Zhuyuan;
 import childckd.service.ZhuyuanService;
 import childckd.util.BooleanMessage;
@@ -183,8 +183,8 @@ public class ZhuyuanController {
 	}
 
 	private BooleanMessage checkInputData(Zhuyuan mmZhuyuan, PatientJiuzhenxinxi mmPatientJiuzhenxinxi, String ppName,
-			String ppShenfenzhenghaoma, String ppXingbie, String ppAge, String ppBingzhong,
-			String ppShoujihao, String ppLianxidizhi) {
+										  String ppShenfenzhenghaoma, String ppXingbie, String ppAge, String ppBingzhong,
+										  String ppShoujihao, String ppLianxidizhi) {
 		if("".equals(ppName)) {
 			return BooleanMessage.getErrorMessage("姓名不能为空！");
 		}

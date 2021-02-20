@@ -20,7 +20,7 @@
 		COUNT( z.xingming ) AS COUNT 
 	FROM
 		dict_bingzhong db
-		LEFT JOIN zhuyuan z ON z.bingzhong = db.id 
+		LEFT JOIN zhuyuan z ON z.bingzhong = db.id and z.shenhejieguo = 1
 	GROUP BY
 		db.id 
 	ORDER BY

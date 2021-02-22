@@ -197,6 +197,78 @@ var Zhuyuan_Vue = new Vue({
 			$("input[name='YuyueResult'][value="+ppShenhejieguo+"]").prop("checked",true); 
 			this.shenheyijian = ppShenhejieguo==0 ? "" : ppShenheyijian;
 		},
+
+		// 点击“删除”按钮
+		toDelete : function(ppZhuyuanid){
+			var _this = this;
+
+			layer.confirm("是否确定删除该住院信息？",{
+				btn : ['是','否']
+			},function(){
+				layer.open({type:3});
+
+				$.post("/zhuyuan/delete", {
+					zhuyuanid : ppZhuyuanid,
+					rdm : Math.random()
+				}, function(ppData) {
+					if (ppData != null) {
+						layer.closeAll("loading");
+
+						if(ppData.result != "1"){
+							layer.alert(ppData.message);
+						}else{
+							layer.open({
+								time:1000,
+								btn:[],
+								content:"删除成功!",
+							});
+							_this.bindZhuyuanList();
+						}
+					}
+				},"json");
+			})
+		},
+
+		toDeleteChecked : function(){
+			var _this = this;
+
+			var mmZhuyuanIdList = "";
+			$("[name=shenheCheckbox]:checked").each(function(){
+				mmZhuyuanIdList += "," + this.value;
+			})
+			mmZhuyuanIdList = mmZhuyuanIdList != "" ? mmZhuyuanIdList.substring(1) : "";
+
+			if(mmZhuyuanIdList == ""){
+				layer.alert("请选择要删除的住院信息！");
+				return false;
+			}
+
+			layer.confirm('是否确定删除？',{
+				btn : ['是','否']
+			},function(){
+				layer.open({type:3});
+
+				$.post('/zhuyuan/delete_by_zhuyuanidlist',{
+					ZhuyuanIdList : mmZhuyuanIdList,
+					rdm : Math.random()
+				},function(ppData){
+					layer.closeAll("loading");
+
+					if(ppData != null){
+						if(ppData.result == '1'){
+
+							layer.alert("批量删除成功!");
+							_this.bindZhuyuanList();
+							$("input[name='shenheAllCheckbox']").prop('checked',false);
+
+						}else{
+							layer.alert(ppData.message);
+						}
+					}
+				},"json");
+
+			})
+		},
 		
 		
 		toShenhe : function(){

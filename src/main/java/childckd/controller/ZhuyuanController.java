@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-import childckd.model.PatientJiuzhenxinxi;
+import childckd.model.*;
+import childckd.service.PaiBanGuanLiService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import childckd.model.News;
-import childckd.model.Zhuyuan;
 import childckd.service.ZhuyuanService;
 import childckd.util.BooleanMessage;
 import childckd.util.JsonResult;
@@ -28,6 +27,7 @@ import childckd.util.StringHandle;
 public class ZhuyuanController {
 	@Autowired
 	ZhuyuanService ddService;
+
 
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -50,6 +50,45 @@ public class ZhuyuanController {
 			e.printStackTrace();
 			logger.error("ZhuyuanController -> findCustomAll: " + e.getMessage());
 			return JsonResult.getErrorResult("查找所有失败！");
+		}
+	}
+
+	@RequestMapping("delete")
+	public JsonResult<?> delete(@RequestParam("zhuyuanid") String ppZhuyuanId){
+		try {
+
+			if("".equals(ppZhuyuanId)) {
+				return JsonResult.getErrorResult("住院id不能为空");
+			}
+
+			Zhuyuan mmZhuyuan = ddService.findOne(ppZhuyuanId);
+			if(mmZhuyuan == null) {
+				return JsonResult.getErrorResult("要删除的住院信息不存在");
+			}
+
+			return ddService.delete(ppZhuyuanId) == true ? JsonResult.getSuccessResult("删除成功") : JsonResult.getErrorResult("删除失败");
+		}catch(Exception e) {
+			e.printStackTrace();
+			logger.error("ZhuyuanController -> delete: "+e.getMessage());
+			return JsonResult.getErrorResult("根据住院id删除住院信息失败！");
+		}
+	}
+
+	@RequestMapping("delete_by_zhuyuanidlist")
+	public JsonResult<?> delete_by_zhuyuanidlist(@RequestParam("ZhuyuanIdList") String ppZhuyuanIdList) {
+		try {
+
+			String[] mmList=ppZhuyuanIdList.split("\\|");
+			if(mmList==null)
+			{
+				return JsonResult.getErrorResult("住院id参数为空");
+			}
+			boolean mmResult=ddService.deleteZhuyuanIdList(mmList);
+			return mmResult==true? JsonResult.getSuccessResult("批量删除成功"):JsonResult.getErrorResult("批量删除失败");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.getErrorResult("ZhuyuanController/delete_by_zhuyuanidlist:error " + e.getMessage());
 		}
 	}
 

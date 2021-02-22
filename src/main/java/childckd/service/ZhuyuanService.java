@@ -92,6 +92,27 @@ public class ZhuyuanService {
 	public List<Map<String, Object>> tongjiBingzhong() {
 		return ddMapper.tongjiBingzhong();
 	}
-	
 
+
+    public boolean delete(String ppZhuyuanId) {
+		return ddMapper.deleteByPrimaryKey(ppZhuyuanId) == 1;
+    }
+
+	@Transactional
+	public boolean deleteZhuyuanIdList(String[] mmList) {
+		try
+		{
+			for (int i = 0 ; i <mmList.length ; i++ )
+			{
+				delete(mmList[i]);
+			}
+
+		}catch (Exception e) {
+
+			throw new RuntimeException("批量删除失败");
+
+		}
+
+		return true;
+	}
 }

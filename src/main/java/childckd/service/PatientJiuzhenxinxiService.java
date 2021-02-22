@@ -109,4 +109,19 @@ public class PatientJiuzhenxinxiService {
 	}
 
 
+    public List<PatientJiuzhenxinxi> findByShenfenzhenghao(String ppShenfenzhenghaoma) {
+		PatientJiuzhenxinxiExample mmExample = new PatientJiuzhenxinxiExample();
+		PatientJiuzhenxinxiExample.Criteria mmCriteria = mmExample.createCriteria();
+		mmCriteria.andShenfenzhenghaomaEqualTo(ppShenfenzhenghaoma).andZhuangtaiEqualTo(1);
+		List<PatientJiuzhenxinxi> mmList = ddMapper.selectByExample(mmExample);
+		return mmList;
+    }
+
+	public List<PatientJiuzhenxinxi> findByShenfenzhenghaoNotIncludeThis(String ppJiuzhenxinxiId, String ppShenfenzhenghaoma) {
+		PatientJiuzhenxinxiExample mmExample = new PatientJiuzhenxinxiExample();
+		PatientJiuzhenxinxiExample.Criteria mmCriteria = mmExample.createCriteria();
+		mmCriteria.andShenfenzhenghaomaEqualTo(ppShenfenzhenghaoma).andZhuangtaiEqualTo(1).andJiuzhenxinxiidNotEqualTo(ppJiuzhenxinxiId);
+		List<PatientJiuzhenxinxi> mmList = ddMapper.selectByExample(mmExample);
+		return mmList;
+	}
 }

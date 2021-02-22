@@ -163,15 +163,15 @@ public class ScheduleController {
 		List<Date> mmTodayList = new ArrayList<>();
 
 		//一周后
-		Calendar calendar = Calendar.getInstance();  	// 获取当前时间
-		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 7);  // 当前日期是这一年中的第几天，然后加7
-		Date today = calendar.getTime();  				// 得到当前日期
-		mmTodayList.add(today);
-		//两周后
-		Calendar calendar2 = Calendar.getInstance();  	// 获取当前时间
-		calendar2.set(Calendar.DAY_OF_YEAR, calendar2.get(Calendar.DAY_OF_YEAR) + 14);  // 当前日期是这一年中的第几天，然后加7
-		Date today2 = calendar2.getTime();  				// 得到当前日期
-		mmTodayList.add(today2);
+//		Calendar calendar = Calendar.getInstance();  	// 获取当前时间
+//		calendar.set(Calendar.DAY_OF_YEAR, calendar.get(Calendar.DAY_OF_YEAR) + 7);  // 当前日期是这一年中的第几天，然后加7
+//		Date today = calendar.getTime();  				// 得到当前日期
+//		mmTodayList.add(today);
+//		//两周后
+//		Calendar calendar2 = Calendar.getInstance();  	// 获取当前时间
+//		calendar2.set(Calendar.DAY_OF_YEAR, calendar2.get(Calendar.DAY_OF_YEAR) + 14);  // 当前日期是这一年中的第几天，然后加7
+//		Date today2 = calendar2.getTime();  				// 得到当前日期
+//		mmTodayList.add(today2);
 		//三周后
 		Calendar calendar3 = Calendar.getInstance();  	// 获取当前时间
 		calendar3.set(Calendar.DAY_OF_YEAR, calendar3.get(Calendar.DAY_OF_YEAR) + 21);  // 当前日期是这一年中的第几天，然后加7
@@ -183,7 +183,7 @@ public class ScheduleController {
 //		Date today4 = calendar4.getTime();  				// 得到当前日期
 //		mmTodayList.add(today4);
 
-		int mmXingqi = today.getDay();					// 获取星期数
+		int mmXingqi = today3.getDay();					// 获取星期数
 
 		if (mmXingqi == 0) {
 			mmXingqi = 7;

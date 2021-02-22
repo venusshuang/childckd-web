@@ -120,7 +120,7 @@ var Tool_Vue = new Vue({
 					break;
 					}
 				}
-			_this.eGFR=_this.shenchang*_this.K*_this.src;
+			_this.eGFR=_this.shenchang*_this.K/_this.src;
 			
 		},
 		

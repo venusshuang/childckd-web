@@ -53,6 +53,7 @@ public class GuahaoController {
 			PageInfo mmPageInfo = new PageInfo(ppPageIndex, ppPageSize, mmCount);
 			List<Map<String, Object>> mmList = ddService.findCustomAll(ppXingming, ppShoujihao,ppBingzhong,ppExpertId, ppYuyueriqi,ppShenhejieguo, ppPageIndex, ppPageSize);
 
+			//查询当天之前未审核的预约，自动驳回并发送信息
 			List<Map<String,Object>>mmDaishenheList = ddService.findDaishenheBeforeToday();
 			if (mmDaishenheList.size()!=0){
 				for (int i=0;i<mmDaishenheList.size();i++){

@@ -347,7 +347,7 @@ var _jiuzhenxinxiVue = new Vue({
 			}
 
 			if(_this.jiuzhenxinxi.age == ""){
-				_this.showMessage("请选择年龄！");
+				_this.showMessage("请选择年龄段！");
 				return false;
 			}
 

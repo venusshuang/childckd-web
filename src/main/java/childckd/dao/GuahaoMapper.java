@@ -24,6 +24,8 @@ public interface GuahaoMapper {
 
 	List<Map<String, Object>> findYuyueByUserId(@Param("userid") String ppUserId);
 
+	List<Map<String,Object>>findDaishenheBeforeToday();
+
 	int countByExample(GuahaoExample example);
 
 	int deleteByExample(GuahaoExample example);

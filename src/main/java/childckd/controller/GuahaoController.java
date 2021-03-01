@@ -53,6 +53,41 @@ public class GuahaoController {
 			PageInfo mmPageInfo = new PageInfo(ppPageIndex, ppPageSize, mmCount);
 			List<Map<String, Object>> mmList = ddService.findCustomAll(ppXingming, ppShoujihao,ppBingzhong,ppExpertId, ppYuyueriqi,ppShenhejieguo, ppPageIndex, ppPageSize);
 
+			List<Map<String,Object>>mmDaishenheList = ddService.findDaishenheBeforeToday();
+			if (mmDaishenheList.size()!=0){
+				for (int i=0;i<mmDaishenheList.size();i++){
+					String mmGuahaoId = mmDaishenheList.get(i).get("guahaoid").toString();
+					Guahao mmGuahao = ddService.findOne(mmGuahaoId);
+					if (mmGuahao == null) {
+						return JsonResult.getErrorResult("该挂号不存在");
+					}
+					Paibanguanli mmPaibanguanli = ddPaiBanGuanLiService.findOne(mmGuahao.getPaibanid());
+					if (mmPaibanguanli == null) {
+						return JsonResult.getErrorResult("该排班不存在");
+					}
+					mmGuahao.setShenhejieguo(2);
+					mmGuahao.setShenheshijian(new Date());
+					mmGuahao.setShenheyijian("超时自动驳回");
+
+					News mmNews = new News();
+					mmNews.setNewsid(UUID.randomUUID().toString());
+					mmNews.setFajianren("1");
+					mmNews.setFajianrenname(mmPaibanguanli.getName());
+					mmNews.setShoujianren(mmGuahao.getUserid());
+					mmNews.setShoujianrenname(mmGuahao.getName());
+					mmNews.setNeirong("超时自动驳回预约");
+					mmNews.setNewstype(1);// 1:挂号
+					mmNews.setZhuangtai(0);
+					mmNews.setChuangjianshijian(new Date());
+					mmNews.setOwnerid(mmGuahaoId);
+
+					boolean mmResult = ddService.shenhe(mmGuahao, mmNews);
+					if (!mmResult){
+						return JsonResult.getErrorResult("驳回超时预约失败："+mmGuahaoId);
+					}
+				}
+			}
+
 			Map<String, Object> mmMap = new HashMap<String, Object>();
 			mmMap.put("List", mmList);
 			mmMap.put("PageInfo", mmPageInfo);

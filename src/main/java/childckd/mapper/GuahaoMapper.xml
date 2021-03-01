@@ -186,8 +186,11 @@
 	<if test='yuyueriqi!=null and yuyueriqi!=""'>
 		AND date_format(pg.paibanriqi,'%Y-%m-%d') = #{yuyueriqi}
 	</if>
+    <if test='yuyueriqi==null or yuyueriqi==""'>
+        AND  pg.paibanriqi>=date_format(Now(),'%Y-%m-%d')
+    </if>
 	
-	ORDER BY pg.paibanriqi DESC
+	ORDER BY pg.paibanriqi asc
 	
 	LIMIT #{startindex},#{pagesize}
   </select>
@@ -214,6 +217,9 @@
 	<if test='yuyueriqi!=null and yuyueriqi!=""'>
 		AND date_format(pg.paibanriqi,'%Y-%m-%d') = #{yuyueriqi}
 	</if>
+  <if test='yuyueriqi==null or yuyueriqi==""'>
+          AND  pg.paibanriqi>=date_format(Now(),'%Y-%m-%d')
+    </if>
 	ORDER BY g.chuangjianshijian DESC
   </select>
   

@@ -45,7 +45,6 @@ public interface PaibanguanliMapper {
 
 	Object CountByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi);
 
-	
 
-	
+    List<Paibanguanli> findDayByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi);
 }

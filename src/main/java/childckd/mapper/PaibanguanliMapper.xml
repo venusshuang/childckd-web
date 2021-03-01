@@ -40,7 +40,7 @@
 	where pbgl.name like CONCAT('%',#{ppName},'%') 
 	 <if test='mmPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{mmPaiBanRiQi} </if>
 	 <if test='ppShangxiawu!=""'> and pbgl.shangxiawu = #{ppShangxiawu} </if>
-    order by pbgl.paibanriqi asc,pbgl.shangxiawu asc
+    order by pbgl.paibanriqi desc,pbgl.shangxiawu asc
   </select>
 
 
@@ -50,7 +50,7 @@
     where 1=1
     <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
     <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
-    order by pbgl.paibanriqi asc
+    order by pbgl.paibanriqi desc
     LIMIT #{startindex},#{pagesize}
   </select>
 

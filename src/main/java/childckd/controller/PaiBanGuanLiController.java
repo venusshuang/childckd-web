@@ -49,45 +49,50 @@ public class PaiBanGuanLiController {
 			return JsonResult.getErrorResult("paibanguanli/findPaiBanGuanLiByNameAndDate:error " + e.getMessage());
 		}
 	}
-	
+
 	@RequestMapping("findByExpertidAndPaibanriqi")
 	public JsonResult<?> findByExpertidAndPaibanriqi(@RequestParam("expertid") String ppExpertId,@RequestParam("paibanriqi") String ppPaiBanRiQi,@RequestParam("pageindex") int ppPageIndex, @RequestParam("pagesize") int ppPageSize) {
 		try {
 			int mmCount = ddService.CountByExpertidAndPaibanriqi(ppExpertId,ppPaiBanRiQi);
 			PageInfo mmPageInfo = new PageInfo(ppPageIndex, ppPageSize, mmCount);
 			List<Map<String, Object>>mmList = ddService.findByExpertidAndPaibanriqi(ppExpertId,ppPaiBanRiQi, ppPageIndex, ppPageSize);
-			
+
 			String mmExpertName=null;
-			String mmPaibanid=null;
-			int mmAllowYuyueCount=0;
-			int mmConfirmYuyueCount=0;
-			int mmUnConfirmYuyueCount=0;
+			String mmExpertId=null;
+			String mmAllowYuyueCount=null;
+			String mmConfirmYuyueCount=null;
+			String mmUnConfirmYuyueCount=null;
 			String mmPaibanriqi=null;
-			
+
 			Map<String, Object> mmMap = new HashMap<String, Object>();
-			
+
+			Map<String, Object> mmCountMap = new HashMap<String, Object>();
+
 			List<Map<String, Object>> mmListMap =new ArrayList<Map<String, Object>>();
 
 			for(int i=0;i<mmList.size();i++)
 			{
 				mmMap = new HashMap<String, Object>();
-				mmPaibanid=mmList.get(i).get("paibanid").toString();
-				mmAllowYuyueCount= (int) mmList.get(i).get("xianhaoshu");
+
+
+				mmExpertId=mmList.get(i).get("expertid").toString();
 				mmExpertName=mmList.get(i).get("name").toString();
 				mmPaibanriqi=mmList.get(i).get("paibanriqi").toString();
-				mmConfirmYuyueCount=ddService.countFindYuyue(mmPaibanid,1);
-				mmUnConfirmYuyueCount=ddService.countFindYuyue(mmPaibanid,0);
-				
+				mmCountMap= yuyueCount(mmExpertId,mmPaibanriqi);
+				mmAllowYuyueCount=mmCountMap.get("AllowYuyueCount").toString();
+				mmConfirmYuyueCount=mmCountMap.get("ConfirmYuyueCount").toString();
+				mmUnConfirmYuyueCount=mmCountMap.get("UnConfirmYuyueCount").toString();
+
 				mmMap.put("Paibanriqi", mmPaibanriqi);
 				mmMap.put("ExpertName", mmExpertName);
 				mmMap.put("AllowYuyueCount", mmAllowYuyueCount);
 				mmMap.put("ConfirmYuyueCount", mmConfirmYuyueCount);
 				mmMap.put("UnConfirmYuyueCount", mmUnConfirmYuyueCount);
-				
+
 				mmListMap.add(mmMap);
-				
+
 			}
-			
+
 			Map<String, Object> mmMapResult = new HashMap<String, Object>();
 			mmMapResult.put("List", mmListMap);
 			mmMapResult.put("PageInfo", mmPageInfo);
@@ -97,6 +102,32 @@ public class PaiBanGuanLiController {
 			e.printStackTrace();
 			return JsonResult.getErrorResult("paibanguanli/findByExpertidAndPaibanriqi:error " + e.getMessage());
 		}
+	}
+
+	public Map<String, Object> yuyueCount(@RequestParam("expertid") String ppExpertId,@RequestParam("paibanriqi") String ppPaiBanRiQi)
+	{
+
+		List<Paibanguanli>mmList = ddService.findDayByExpertidAndPaibanriqi(ppExpertId,ppPaiBanRiQi);
+		String mmPaibanid=null;
+		int mmAllowYuyueCount=0;
+		int mmConfirmYuyueCount=0;
+		int mmUnConfirmYuyueCount=0;
+
+		Map<String, Object> mmMap = new HashMap<String, Object>();
+
+		for(int i=0;i<mmList.size();i++)
+		{
+			mmPaibanid=mmList.get(i).getPaibanid();
+			mmAllowYuyueCount+= mmList.get(i).getXianhaoshu();
+			mmConfirmYuyueCount+=ddService.countFindYuyue(mmPaibanid,1);
+			mmUnConfirmYuyueCount+=ddService.countFindYuyue(mmPaibanid,0);
+		}
+
+		mmMap.put("AllowYuyueCount", mmAllowYuyueCount);
+		mmMap.put("ConfirmYuyueCount", mmConfirmYuyueCount);
+		mmMap.put("UnConfirmYuyueCount", mmUnConfirmYuyueCount);
+
+		return mmMap;
 	}
 	
 	

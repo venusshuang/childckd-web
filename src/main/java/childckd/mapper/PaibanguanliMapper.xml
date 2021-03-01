@@ -40,28 +40,36 @@
 	where pbgl.name like CONCAT('%',#{ppName},'%') 
 	 <if test='mmPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{mmPaiBanRiQi} </if>
 	 <if test='ppShangxiawu!=""'> and pbgl.shangxiawu = #{ppShangxiawu} </if>
-    order by pbgl.paibanriqi desc,pbgl.shangxiawu desc
+    order by pbgl.paibanriqi asc,pbgl.shangxiawu asc
   </select>
-  
-  
+
+
   <select id="findByExpertidAndPaibanriqi" resultType="Map">
-  	select pbgl.paibanid,pbgl.expertid,pbgl.name,pbgl.shangxiawu,pbgl.xianhaoshu,pbgl.shengyuhaoshu,date_format(pbgl.paibanriqi,'%Y-%m-%d') as paibanriqi
-	from paibanguanli AS pbgl 
-	where 1=1
-	 <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
-	 <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
-    order by pbgl.paibanriqi desc,pbgl.shangxiawu desc
+    select distinct pbgl.expertid,pbgl.name,date_format(pbgl.paibanriqi,'%Y-%m-%d') as paibanriqi
+    from paibanguanli AS pbgl
+    where 1=1
+    <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
+    <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
+    order by pbgl.paibanriqi asc
     LIMIT #{startindex},#{pagesize}
   </select>
-  
+
   <select id="CountByExpertidAndPaibanriqi" resultType="Object">
-  	select count(*)
-	from paibanguanli AS pbgl 
-	where 1=1
-	 <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
-	 <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
-    order by pbgl.paibanriqi desc,pbgl.shangxiawu desc
-    
+    select count(distinct pbgl.expertid,DATE_FORMAT(pbgl.paibanriqi,'%Y-%m-%d'))
+    from paibanguanli AS pbgl
+    where 1=1
+    <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
+    <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
+    order by pbgl.paibanriqi desc
+
+  </select>
+
+  <select id="findDayByExpertidAndPaibanriqi" resultType="childckd.model.Paibanguanli">
+    select pbgl.paibanid,pbgl.xianhaoshu, pbgl.expertid,pbgl.name,date_format(pbgl.paibanriqi,'%Y-%m-%d') as paibanriqi
+    from paibanguanli AS pbgl
+    where  date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi}
+      and pbgl.expertid = #{ppExpertId}
+    order by pbgl.paibanriqi desc
   </select>
   
   

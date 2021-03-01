@@ -187,7 +187,7 @@
 		AND date_format(pg.paibanriqi,'%Y-%m-%d') = #{yuyueriqi}
 	</if>
 	
-	ORDER BY pg.paibanriqi DESC
+	ORDER BY pg.paibanriqi asc
 	
 	LIMIT #{startindex},#{pagesize}
   </select>

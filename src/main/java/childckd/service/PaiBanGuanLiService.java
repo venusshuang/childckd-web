@@ -103,7 +103,8 @@ public class PaiBanGuanLiService {
 		
 	}
 
-	
 
-	
+	public List<Paibanguanli> findDayByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi) {
+		return ddMapper.findDayByExpertidAndPaibanriqi(ppExpertId,ppPaiBanRiQi);
+	}
 }

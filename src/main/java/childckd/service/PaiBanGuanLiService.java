@@ -32,6 +32,12 @@ public class PaiBanGuanLiService {
 	public List<Map<String,Object>> find_custom_one(String ppPaibanId) {
 		return ddMapper.find_custom_one(ppPaibanId);
 	}
+
+	public List<Paibanguanli> findByExpertIdAndDateAndShangxiawu(String ppExpertId,Date ppDate,String ppShangxiawu){
+		PaibanguanliExample mmExample = new PaibanguanliExample();
+		mmExample.createCriteria().andExpertidEqualTo(ppExpertId).andPaibanriqiEqualTo(ppDate).andShangxiawuEqualTo(ppShangxiawu);
+		return ddMapper.selectByExample(mmExample);
+	}
 	
 	public List<Map<String,Object>> findPaiBanGuanLiByNameAndDateAndShangxiawu(String ppName, String mmPaiBanRiQi, String ppShangxiawu) {
 		List<Map<String,Object>> mmPaibanList = ddMapper.findPaiBanGuanLiByNameAndDateAndShangxiawu(ppName,mmPaiBanRiQi,ppShangxiawu);

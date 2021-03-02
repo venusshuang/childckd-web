@@ -227,6 +227,7 @@ public class ScheduleController {
 			// 剩余有效的周排班，插入到排班管理中
 			for(int k = 0 ; k < mmScheduleList.size() ; k++) {
 
+
 				String mmExpertId = mmScheduleList.get(k).getExpertid();
 				String mmXingming = mmScheduleList.get(k).getZhuanjiaxingming();
 				String mmGuahaoleibie = mmScheduleList.get(k).getGuahaoleibie();
@@ -234,19 +235,25 @@ public class ScheduleController {
 				int mmXianhaoshu = mmScheduleList.get(k).getXianhaoshu();
 				float mmJiage = mmScheduleList.get(k).getJiage();
 
-				Paibanguanli mmPaibanguanli = new Paibanguanli();
-				mmPaibanguanli.setPaibanid(UUID.randomUUID().toString());
-				mmPaibanguanli.setExpertid(mmExpertId);
-				mmPaibanguanli.setName(mmXingming);
-				mmPaibanguanli.setGuahaoleibie(mmGuahaoleibie);
-				mmPaibanguanli.setPaibanriqi(mmToday);
-				mmPaibanguanli.setShangxiawu(mmShangxiawu);
-				mmPaibanguanli.setXianhaoshu(mmXianhaoshu);
-				mmPaibanguanli.setShengyuhaoshu(mmXianhaoshu);
-				mmPaibanguanli.setJiage(mmJiage);
-				mmPaibanguanli.setZhuangtai(1);
+				//生成排班时，判断重复，如果已生成，就不重复生成
+				List<Paibanguanli>mmList = ddPaibanguanliService.findByExpertIdAndDateAndShangxiawu(mmExpertId,mmToday,mmShangxiawu);
+				if (mmList.size()<1){
 
-				ddPaibanguanliService.add(mmPaibanguanli);
+					Paibanguanli mmPaibanguanli = new Paibanguanli();
+					mmPaibanguanli.setPaibanid(UUID.randomUUID().toString());
+					mmPaibanguanli.setExpertid(mmExpertId);
+					mmPaibanguanli.setName(mmXingming);
+					mmPaibanguanli.setGuahaoleibie(mmGuahaoleibie);
+					mmPaibanguanli.setPaibanriqi(mmToday);
+					mmPaibanguanli.setShangxiawu(mmShangxiawu);
+					mmPaibanguanli.setXianhaoshu(mmXianhaoshu);
+					mmPaibanguanli.setShengyuhaoshu(mmXianhaoshu);
+					mmPaibanguanli.setJiage(mmJiage);
+					mmPaibanguanli.setZhuangtai(1);
+
+					ddPaibanguanliService.add(mmPaibanguanli);
+				}
+
 			}
 		}
 	}

@@ -50,7 +50,10 @@
     where 1=1
     <if test='ppPaiBanRiQi!=""'> and date_format(pbgl.paibanriqi, '%Y-%m-%d' ) = #{ppPaiBanRiQi} </if>
     <if test='ppExpertId!=""'> and pbgl.expertid = #{ppExpertId} </if>
-    order by pbgl.paibanriqi desc
+    <if test='ppPaiBanRiQi==null or ppPaiBanRiQi==""'>
+      AND  pbgl.paibanriqi>=date_format(Now(),'%Y-%m-%d')
+    </if>
+    order by pbgl.paibanriqi asc
     LIMIT #{startindex},#{pagesize}
   </select>
 

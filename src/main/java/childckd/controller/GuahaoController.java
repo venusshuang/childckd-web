@@ -53,6 +53,42 @@ public class GuahaoController {
 			PageInfo mmPageInfo = new PageInfo(ppPageIndex, ppPageSize, mmCount);
 			List<Map<String, Object>> mmList = ddService.findCustomAll(ppXingming, ppShoujihao,ppBingzhong,ppExpertId, ppYuyueriqi,ppShenhejieguo, ppPageIndex, ppPageSize);
 
+			//查询当天之前未审核的预约，自动驳回并发送信息
+			List<Map<String,Object>>mmDaishenheList = ddService.findDaishenheBeforeToday();
+			if (mmDaishenheList.size()!=0){
+				for (int i=0;i<mmDaishenheList.size();i++){
+					String mmGuahaoId = mmDaishenheList.get(i).get("guahaoid").toString();
+					Guahao mmGuahao = ddService.findOne(mmGuahaoId);
+					if (mmGuahao == null) {
+						return JsonResult.getErrorResult("该挂号不存在");
+					}
+					Paibanguanli mmPaibanguanli = ddPaiBanGuanLiService.findOne(mmGuahao.getPaibanid());
+					if (mmPaibanguanli == null) {
+						return JsonResult.getErrorResult("该排班不存在");
+					}
+					mmGuahao.setShenhejieguo(2);
+					mmGuahao.setShenheshijian(new Date());
+					mmGuahao.setShenheyijian("超时自动驳回");
+
+					News mmNews = new News();
+					mmNews.setNewsid(UUID.randomUUID().toString());
+					mmNews.setFajianren("1");
+					mmNews.setFajianrenname(mmPaibanguanli.getName());
+					mmNews.setShoujianren(mmGuahao.getUserid());
+					mmNews.setShoujianrenname(mmGuahao.getName());
+					mmNews.setNeirong("超时自动驳回预约");
+					mmNews.setNewstype(1);// 1:挂号
+					mmNews.setZhuangtai(0);
+					mmNews.setChuangjianshijian(new Date());
+					mmNews.setOwnerid(mmGuahaoId);
+
+					boolean mmResult = ddService.shenhe(mmGuahao, mmNews);
+					if (!mmResult){
+						return JsonResult.getErrorResult("驳回超时预约失败："+mmGuahaoId);
+					}
+				}
+			}
+
 			Map<String, Object> mmMap = new HashMap<String, Object>();
 			mmMap.put("List", mmList);
 			mmMap.put("PageInfo", mmPageInfo);
@@ -177,7 +213,7 @@ public class GuahaoController {
 			@RequestParam("userid") String ppUserId, 
 			@RequestParam("paibanid") String ppPaibanId) {
 		try {
-			
+			// 黑名单之内的用户无法预约
 			Blacklist mmBlack = ddBlackService.findOneByUserId(ppJiuzhenxinxiId);
 			if (mmBlack != null) {
 				return JsonResult.getErrorResult("该就诊信息在黑名单中，无法预约！");
@@ -189,8 +225,18 @@ public class GuahaoController {
 				return JsonResult.getErrorResult("该排班不存在");
 			}
 			int mmXianhaoshu = mmPaibanguanli.getXianhaoshu();
+			String mmExpertId = mmPaibanguanli.getExpertid();
+
+			// 获取排班信息中的排班时间，若在这天已有挂号信息，则不能重复挂号
+			Date mmPaibanriqi = mmPaibanguanli.getPaibanriqi();
+			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+			String dateString = formatter.format(mmPaibanriqi);
+			List<Map<String, Object>> mmGuahaoList = ddService.findByDateAndUserId(ppUserId, dateString);
+			if (mmGuahaoList.size()>0) {
+				return JsonResult.getErrorResult("请勿重复挂号");
+			}
 			
-			
+			// 获取患者姓名
 			String mmName = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId).getName();
 
 			// 挂号
@@ -206,32 +252,23 @@ public class GuahaoController {
 			
 			// 消息
 			News mmNews = null;
-			
-			// 若排班信息中的剩余号数小于1，则挂号为待审核状态，否则直接通过审核 并且 发送消息   20210129修改 20210220注释
-			/*int mmShengyuhaoshu = mmPaibanguanli.getShengyuhaoshu();
-			if (mmShengyuhaoshu < 1) {
-				mmGuahao.setShenhejieguo(0);	// 待审核
-			}else {
-				mmGuahao.setShenhejieguo(1);	// 审核通过
-				mmGuahao.setShenheshijian(new Date());
-				
-				// 往消息中插入一条数据
-				mmNews = new News();
-				mmNews.setNewsid(UUID.randomUUID().toString());
-				mmNews.setFajianren("guahaoguanliyuan");
-				mmNews.setFajianrenname("挂号管理员");
-				mmNews.setShoujianren(ppUserId);
-				mmNews.setShoujianrenname(mmName);
-				mmNews.setNeirong("限号数之内的预约直接通过!");
-				mmNews.setNewstype(1);		// 1:挂号
-				mmNews.setZhuangtai(0);
-				mmNews.setChuangjianshijian(new Date());
-				mmNews.setOwnerid(mmGuahaoId);
-			}*/
 
-			//	若审核通过的数量小于限号数，则直接通过审核 并且 发送消息，否则挂号为待审核状态 20210220修改
-			int mmCountTongguo = ddPaiBanGuanLiService.countFindYuyue(ppPaibanId,1);
-			if(mmCountTongguo < mmXianhaoshu){
+			int mmDangtianZongxianhaoshu = 0;
+			int mmDangtianTongguoshu = 0;
+			// 根据专家id和排版日期查找审核通过数量和限号数
+			List<Paibanguanli> mmPaibanguanliList = ddPaiBanGuanLiService.findDayByExpertidAndPaibanriqi(mmExpertId,dateString);
+			for(int i = 0 ; i < mmPaibanguanliList.size() ; i++){
+				Paibanguanli mmTempPaibanguanli = mmPaibanguanliList.get(i);
+				String mmTempPaibanId = mmTempPaibanguanli.getPaibanid();
+				mmDangtianZongxianhaoshu += mmTempPaibanguanli.getXianhaoshu();
+
+				// 当天通过数之和
+				mmDangtianTongguoshu += ddPaiBanGuanLiService.countFindYuyue(mmTempPaibanId,1);
+			}
+
+
+			// 这个专家在这一天排版中的所有通过数量 小于 这个专家在这一天排版中的限号数之和 ，则直接通过审核 并且 发送消息，否则挂号为待审核状态 20210301修改
+			if(mmDangtianTongguoshu < mmDangtianZongxianhaoshu){
 				mmGuahao.setShenhejieguo(1);	// 审核通过
 				mmGuahao.setShenheyijian("限号数之内的预约直接通过!");
 				mmGuahao.setShenheshijian(new Date());
@@ -253,15 +290,34 @@ public class GuahaoController {
 				mmGuahao.setShenhejieguo(0);	// 待审核
 			}
 
+
+
+			//	若审核通过的数量小于限号数，则直接通过审核 并且 发送消息，否则挂号为待审核状态 20210220修改 20210301注释
+			/*int mmCountTongguo = ddPaiBanGuanLiService.countFindYuyue(ppPaibanId,1);
+			if(mmCountTongguo < mmXianhaoshu){
+				mmGuahao.setShenhejieguo(1);	// 审核通过
+				mmGuahao.setShenheyijian("限号数之内的预约直接通过!");
+				mmGuahao.setShenheshijian(new Date());
+
+				// 往消息中插入一条数据
+				mmNews = new News();
+				mmNews.setNewsid(UUID.randomUUID().toString());
+				mmNews.setFajianren("guahaoguanliyuan");
+				mmNews.setFajianrenname("挂号管理员");
+				mmNews.setShoujianren(ppUserId);
+				mmNews.setShoujianrenname(mmName);
+				mmNews.setNeirong("限号数之内的预约直接通过!");
+				mmNews.setNewstype(1);		// 1:挂号
+				mmNews.setZhuangtai(0);
+				mmNews.setChuangjianshijian(new Date());
+				mmNews.setOwnerid(mmGuahaoId);
+
+			}else{
+				mmGuahao.setShenhejieguo(0);	// 待审核
+			}*/
+
 			
-			// 获取排班信息中的排班时间，若在这天已有挂号信息，则不能重复挂号
-			Date mmPaibanriqi = mmPaibanguanli.getPaibanriqi();
-			SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-			String dateString = formatter.format(mmPaibanriqi);
-			List<Map<String, Object>> mmGuahaoList = ddService.findByDateAndUserId(ppUserId, dateString);
-			if (mmGuahaoList.size()>0) {
-				return JsonResult.getErrorResult("请勿重复挂号");
-			}
+
 
 			// 当剩余号数大于0,剩余号数减1 20210129修改 20210220注释
 			/*if (mmShengyuhaoshu > 0) {
@@ -271,7 +327,7 @@ public class GuahaoController {
 
 			boolean mmResult = ddService.addCustom(mmGuahao, mmPaibanguanli,mmNews);
 			
-			if (mmCountTongguo < mmXianhaoshu) {
+			if (mmDangtianTongguoshu < mmDangtianZongxianhaoshu) {
 				return mmResult ? JsonResult.getSuccessResult("预约成功！") : JsonResult.getErrorResult("预约失败！");
 			}
 			

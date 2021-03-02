@@ -262,6 +262,17 @@
 		INNER JOIN expert AS e ON e.expertid = pg.expertid
   	WHERE g.guahaoid = #{guahaoid}
   </select>
+
+    <select id="findDaishenheBeforeToday" resultType="map">
+        SELECT
+            *
+        FROM
+            guahao t
+            INNER JOIN paibanguanli p ON p.paibanid = t.paibanid
+        WHERE
+            t.shenhejieguo = 0
+            AND DATE_SUB( curdate( ), INTERVAL 0 DAY ) > DATE_FORMAT( p.paibanriqi, '%Y-%m-%d' )
+    </select>
   
   <sql id="Example_Where_Clause" >
     <where >

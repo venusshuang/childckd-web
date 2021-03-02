@@ -39,10 +39,33 @@ public class PaiBanGuanLiService {
 		// 处理剩余号数 改为动态的限号数-审核通过的数量
 		for(int i = 0 ; i < mmPaibanList.size() ; i++){
 			Map<String,Object> mmPaiban = mmPaibanList.get(i);
+			String mmExpertId = mmPaiban.get("expertid") == null ? "" : mmPaiban.get("expertid").toString();
+			String mmPaibanriqi =  mmPaiban.get("paibanriqi") == null ? "" : mmPaiban.get("paibanriqi").toString();
 			String mmPaibanId = mmPaiban.get("paibanid").toString();
 			int mmXianhaoshu = Integer.parseInt(mmPaiban.get("xianhaoshu").toString());
 			int mmCountTongguo = countFindYuyue(mmPaibanId,1);
-			mmPaiban.put("shengyuhaoshu",mmXianhaoshu-mmCountTongguo);
+
+			int mmDangtianZongxianhaoshu = 0;
+			int mmDangtianTongguoshu = 0;
+			// 根据专家id和排版日期查找审核通过数量和限号数
+			List<Paibanguanli> mmPaibanguanliList = findDayByExpertidAndPaibanriqi(mmExpertId,mmPaibanriqi);
+			for(int j = 0 ; j < mmPaibanguanliList.size() ; j++){
+				Paibanguanli mmTempPaibanguanli = mmPaibanguanliList.get(j);
+				String mmTempPaibanId = mmTempPaibanguanli.getPaibanid();
+				mmDangtianZongxianhaoshu += mmTempPaibanguanli.getXianhaoshu();
+
+				// 当天通过数之和
+				mmDangtianTongguoshu += countFindYuyue(mmTempPaibanId,1);
+			}
+
+			// 这个专家在这一天排版中的所有通过数量 小于 这个专家在这一天排版中的限号数之和 ，则剩余号数为实际号数 否则限号数为0
+			if (mmDangtianTongguoshu < mmDangtianZongxianhaoshu) {
+				mmPaiban.put("shengyuhaoshu",mmXianhaoshu-mmCountTongguo);
+			}else{
+				mmPaiban.put("shengyuhaoshu",0);
+			}
+
+
 		}
 
 		return mmPaibanList;

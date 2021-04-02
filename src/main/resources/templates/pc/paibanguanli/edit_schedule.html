@@ -43,6 +43,27 @@
 							</div>
 
 							<div class="form-group">
+								<label class="col-sm-3 control-label">
+									<span class="required">*</span>加号病种
+								</label>
+								<div class="col-sm-8">
+									<select style="max-height:10px;overflow: auto;float:right"  title="请选择"  id="jiahaobingzhong" class="selectpicker show-tick form-control" multiple data-live-search="false">
+										<option v-for="bingzhongitem in bingzhonglist" v-html="bingzhongitem.text" :value="bingzhongitem.id"></option>
+									</select>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label class="col-sm-3 control-label">
+									<span class="required">*</span>加号数
+								</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="jiahaoshu">
+								</div>
+							</div>
+
+
+							<div class="form-group">
 								<div class="col-sm-12" style="text-align: center;">
 									<input type="button" class="btn btn-success"
 										value="保 存" @click="saveSchedule()">

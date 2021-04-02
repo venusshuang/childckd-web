@@ -1,8 +1,9 @@
 package childckd.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
+import childckd.dao.DictBingzhongMapper;
+import childckd.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import childckd.model.Paibanguanli;
-import childckd.model.Schedule;
-import childckd.model.Tingzhen;
 import childckd.service.ExpertService;
 import childckd.service.PaiBanGuanLiService;
 import childckd.service.ScheduleService;
@@ -36,11 +34,15 @@ public class ScheduleController {
 	PaiBanGuanLiService ddPaibanguanliService;
 	@Autowired
 	TingzhenService ddTingzhenService;
+	@Autowired
+	DictBingzhongMapper ddDictBingzhongMapper;
 
 	@RequestMapping("save")
 	public JsonResult<?> save(@RequestParam("scheduleid") String ppScheduleId, @RequestParam("xingqi") int ppXingqi, @RequestParam("expertid") String ppExpertId,
 			@RequestParam("guahaoleibie") String ppGuahaoleibie, @RequestParam("shangxiawu") String ppShangxiawu, @RequestParam("xianhaoshu") int ppXianhaoshu, @RequestParam("jiage") float ppJiage,
-			@RequestParam("zhuangtai") int ppZhuangtai) {
+			@RequestParam("zhuangtai") int ppZhuangtai,
+		    @RequestParam("jiahaobingzhong") String ppJiahaobingzhong,
+		    @RequestParam("jiahaoshu") int ppJiahaoshu) {
 		try {
 			Schedule mmSchedule = new Schedule();
 
@@ -56,6 +58,8 @@ public class ScheduleController {
 				mmSchedule.setXianhaoshu(ppXianhaoshu);
 				mmSchedule.setJiage(ppJiage);
 				mmSchedule.setZhuangtai(ppZhuangtai);
+				mmSchedule.setJiahaobingzhong(ppJiahaobingzhong);
+				mmSchedule.setJiahaoshu(ppJiahaoshu);
 				mmResult = ddService.modify(mmSchedule);
 			} else {// add
 				mmSchedule.setId(UUID.randomUUID().toString());
@@ -67,6 +71,8 @@ public class ScheduleController {
 				mmSchedule.setXianhaoshu(ppXianhaoshu);
 				mmSchedule.setJiage(ppJiage);
 				mmSchedule.setZhuangtai(ppZhuangtai);
+				mmSchedule.setJiahaobingzhong(ppJiahaobingzhong);
+				mmSchedule.setJiahaoshu(ppJiahaoshu);
 				mmResult = ddService.add(mmSchedule);
 			}
 
@@ -79,10 +85,64 @@ public class ScheduleController {
 
 	}
 	
+	/*@RequestMapping("find_by_xingqi_and_shangxiawu")
+	public JsonResult<?>findByXingqiAndShangxiawu(@RequestParam("xingqi")int ppXingqi,@RequestParam("shangxiawu")String ppShangxiawu){
+		try {
+			DictBingzhongExample mmExample = new DictBingzhongExample();
+			mmExample.createCriteria().andStatusEqualTo(100);
+			List<DictBingzhong> mmList_Bingzhong = ddDictBingzhongMapper.selectByExample(mmExample);
+
+			List<Schedule> mmList = ddService.findByXingqiAndShangxiawu(ppXingqi, ppShangxiawu);
+			String mmJiahaobingzhong="";
+			System.out.println("CHUSHI");
+			for(int i=0;i<mmList.size();i++)
+			{
+				mmJiahaobingzhong=mmList.get(i).getJiahaobingzhong();
+				System.out.println(mmJiahaobingzhong);
+				if(!"".equals(mmJiahaobingzhong)&&mmJiahaobingzhong!=null)
+				{
+					String[] mmArray_Jiahaobingzhong=mmJiahaobingzhong.split(",");
+					System.out.println(mmArray_Jiahaobingzhong);
+					mmJiahaobingzhong="";
+					for(int j = 0 ; j <mmArray_Jiahaobingzhong.length ; j++)
+					{
+						//mmList_Bingzhong.stream().filter(bingzhong->Integer.parseInt(mmArray_Jiahaobingzhong[j])==Integer.parseInt(bingzhong.getId());
+
+						for(int k = 0 ; k <mmList_Bingzhong.size() ; k++)
+						{
+							if(mmList_Bingzhong.get(k).getId().equals(mmArray_Jiahaobingzhong[j]))
+							{
+								mmJiahaobingzhong+=mmList_Bingzhong.get(k).getText()+",";
+							}
+						}
+
+					}
+					if(mmJiahaobingzhong.endsWith(","))
+					{
+						mmJiahaobingzhong=mmJiahaobingzhong.substring(0,mmJiahaobingzhong.length()-1);
+					}
+				}
+
+				mmList.get(i).setJiahaobingzhong(mmJiahaobingzhong);
+			}
+
+
+			return JsonResult.getSuccessResult(mmList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("ScheduleController -> find_by_xingqi_and_shangxiawu: " + e.getMessage());
+			return JsonResult.getErrorResult("根据星期上下午查询周排班失败！");
+		}
+	}*/
+
+
 	@RequestMapping("find_by_xingqi_and_shangxiawu")
 	public JsonResult<?>findByXingqiAndShangxiawu(@RequestParam("xingqi")int ppXingqi,@RequestParam("shangxiawu")String ppShangxiawu){
 		try {
+
+
 			List<Schedule> mmList = ddService.findByXingqiAndShangxiawu(ppXingqi, ppShangxiawu);
+
 			return JsonResult.getSuccessResult(mmList);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -234,6 +294,9 @@ public class ScheduleController {
 				String mmShangxiawu = mmScheduleList.get(k).getShangxiawu();
 				int mmXianhaoshu = mmScheduleList.get(k).getXianhaoshu();
 				float mmJiage = mmScheduleList.get(k).getJiage();
+				int mmJiahaoshu = mmScheduleList.get(k).getJiahaoshu()==null?0:mmScheduleList.get(k).getJiahaoshu();
+
+				String mmJiahaobingzhong = mmScheduleList.get(k).getJiahaobingzhong();
 
 				//生成排班时，判断重复，如果已生成，就不重复生成
 				List<Paibanguanli>mmList = ddPaibanguanliService.findByExpertIdAndDateAndShangxiawu(mmExpertId,mmToday,mmShangxiawu);
@@ -249,6 +312,8 @@ public class ScheduleController {
 					mmPaibanguanli.setXianhaoshu(mmXianhaoshu);
 					mmPaibanguanli.setShengyuhaoshu(mmXianhaoshu);
 					mmPaibanguanli.setJiage(mmJiage);
+					mmPaibanguanli.setJiahaobingzhong(mmJiahaobingzhong);
+					mmPaibanguanli.setJiahaoshu(mmJiahaoshu);
 					mmPaibanguanli.setZhuangtai(1);
 
 					ddPaibanguanliService.add(mmPaibanguanli);

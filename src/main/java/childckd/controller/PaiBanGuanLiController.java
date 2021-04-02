@@ -38,6 +38,17 @@ public class PaiBanGuanLiController {
 			return JsonResult.getErrorResult("paibanguanli/findWeekPaibanByExpertId:error " + e.getMessage());
 		}
 	}
+
+	@RequestMapping("findPaiBanGuanLiByExpertidAndDate")
+	public JsonResult<?> findPaiBanGuanLiByExpertidAndDate(@RequestParam("expertid_search") String ppExpertid_search,@RequestParam("paibanriqi") String ppPaiBanRiQi,@RequestParam("shangxiawu") String ppShangxiawu) {
+		try {
+			//Date mmPaiBanRiQi = DateUtil.convertShortStringToDate(ppPaiBanRiQi);
+			return JsonResult.getSuccessResult(ddService.findPaiBanGuanLiByExpertidAndDate(ppExpertid_search,ppPaiBanRiQi,ppShangxiawu));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return JsonResult.getErrorResult("paibanguanli/findPaiBanGuanLiByNameAndDate:error " + e.getMessage());
+		}
+	}
 	
 	@RequestMapping("findPaiBanGuanLiByNameAndDateAndShangxiawu")
 	public JsonResult<?> findPaiBanGuanLiByNameAndDateAndShangxiawu(@RequestParam("name") String ppName,@RequestParam("paibanriqi") String ppPaiBanRiQi,@RequestParam("shangxiawu") String ppShangxiawu) {
@@ -141,7 +152,9 @@ public class PaiBanGuanLiController {
 			@RequestParam("shangxiawu") String ppShangXiaWu,
 			@RequestParam("xianhaoshu") int ppXianHaoShu,
 			@RequestParam("shengyuhaoshu") int ppShengYuHaoShu,
-			@RequestParam("jiage") float ppJiaGe){
+			@RequestParam("jiage") float ppJiaGe,
+			@RequestParam("jiahaobingzhong") String jiahaobingzhong,
+			@RequestParam("jiahaoshu") int jiahaoshu){
 		try {
 			Paibanguanli mmPaibanguanli=ddService.findOne(ppPaiBanId);
 			
@@ -153,10 +166,22 @@ public class PaiBanGuanLiController {
 				mmPaibanguanli.setPaibanid(UUID.randomUUID().toString());
 			}
 
-			BooleanMessage mmBooleanMessage = checkInputData(mmPaibanguanli,ppExpertId,ppName,ppPaiBanRiQi,ppShangXiaWu,ppXianHaoShu,ppJiaGe);
+			BooleanMessage mmBooleanMessage = checkInputData(mmPaibanguanli,ppExpertId,ppName,ppPaiBanRiQi,ppShangXiaWu,ppXianHaoShu,ppJiaGe,isAddPaibanguanli,jiahaobingzhong,jiahaoshu);
 			
 			if(!mmBooleanMessage.isOk()) {
 				return JsonResult.getErrorResult(mmBooleanMessage.getMessage().toString());
+			}
+
+			if(!isAddPaibanguanli)
+			{
+
+				Map<String, Object> mmCountMap= yuyueCount(ppExpertId,ppPaiBanRiQi);
+				String mmConfirmYuyueCount =mmCountMap.get("ConfirmYuyueCount").toString();
+
+				if((ppXianHaoShu+mmPaibanguanli.getJiahaoshu())<Integer.parseInt(mmConfirmYuyueCount))
+				{
+					return JsonResult.getErrorResult("当前日期的预约号数已超过要修改的限号数，不允许修改！");
+				}
 			}
 			
 			if(isAddPaibanguanli) {
@@ -173,7 +198,7 @@ public class PaiBanGuanLiController {
 		}
 	}
 
-	private BooleanMessage checkInputData(Paibanguanli mmPaibanguanli,String ppExpertId,String ppName,String ppPaiBanRiQi, String ppShangXiaWu,int ppXianHaoShu,float ppJiaGe) {
+	private BooleanMessage checkInputData(Paibanguanli mmPaibanguanli,String ppExpertId,String ppName,String ppPaiBanRiQi, String ppShangXiaWu,int ppXianHaoShu,float ppJiaGe,boolean isAddPaibanguanli,String ppJiahaobingzhong,int ppJiahaoshu) {
 		
 
 		if("".equals(ppExpertId)) 
@@ -188,29 +213,46 @@ public class PaiBanGuanLiController {
 		{
 			return BooleanMessage.getErrorMessage("排班时间不能为空");
 		}
-		if("".equals(String.valueOf(ppXianHaoShu))||ppXianHaoShu==0) 
+		/*if("".equals(String.valueOf(ppXianHaoShu))||ppXianHaoShu==0)
 		{
 			return BooleanMessage.getErrorMessage("预约人数不能为空或0");
-		}
+		}*/
 		
 		if("".equals(ppJiaGe)) 
 		{
 			return BooleanMessage.getErrorMessage("价格不能为空");
 		}
-		
-		
-		
-		
+
+		/*if("".equals(ppJiahaobingzhong))
+		{
+			return BooleanMessage.getErrorMessage("加号病种不能为空");
+		}*/
+
+	/*	if("".equals(ppJiahaoshu))
+		{
+			return BooleanMessage.getErrorMessage("加号数不能为空");
+		}*/
+
 		mmPaibanguanli.setExpertid(ppExpertId);
-		mmPaibanguanli.setName(ppName);
-		mmPaibanguanli.setGuahaoleibie("专家号");
-		Date mmPaiBanRiQi = DateUtil.convertShortStringToDate(ppPaiBanRiQi);
-		mmPaibanguanli.setPaibanriqi(mmPaiBanRiQi);
-		mmPaibanguanli.setShangxiawu(ppShangXiaWu);
-		mmPaibanguanli.setXianhaoshu(ppXianHaoShu);
-		mmPaibanguanli.setShengyuhaoshu(ppXianHaoShu);
-		mmPaibanguanli.setJiage(ppJiaGe);
-		mmPaibanguanli.setZhuangtai(1);
+		if(isAddPaibanguanli)
+		{
+			mmPaibanguanli.setName(ppName);
+			mmPaibanguanli.setGuahaoleibie("专家号");
+			Date mmPaiBanRiQi = DateUtil.convertShortStringToDate(ppPaiBanRiQi);
+			mmPaibanguanli.setPaibanriqi(mmPaiBanRiQi);
+			mmPaibanguanli.setShangxiawu(ppShangXiaWu);
+			mmPaibanguanli.setXianhaoshu(ppXianHaoShu);
+			mmPaibanguanli.setShengyuhaoshu(ppXianHaoShu);
+			mmPaibanguanli.setJiage(ppJiaGe);
+			mmPaibanguanli.setZhuangtai(1);
+			mmPaibanguanli.setJiahaobingzhong(ppJiahaobingzhong);
+			mmPaibanguanli.setJiahaoshu(ppJiahaoshu);
+		}else
+		{
+			mmPaibanguanli.setXianhaoshu(ppXianHaoShu);
+			mmPaibanguanli.setJiahaobingzhong(ppJiahaobingzhong);
+			mmPaibanguanli.setJiahaoshu(ppJiahaoshu);
+		}
 
 		return BooleanMessage.getSuccessMessage("输入信息合法");
 	}

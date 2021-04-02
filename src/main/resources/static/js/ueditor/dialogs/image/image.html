@@ -12,17 +12,26 @@
 		<div id="imageTab">
 			<div id="tabHeads" class="tabhead">
 				<span tabSrc="remote" class="focus"><var id="lang_tab_remote"></var></span>
-				<span tabSrc="local"><var id="lang_tab_local"></var></span> <span
+				<!-- <span tabSrc="local"><var id="lang_tab_local"></var></span> <span
 					tabSrc="imgManager"><var id="lang_tab_imgManager"></var></span> <span
-					tabSrc="imgSearch"><var id="lang_tab_imgSearch"></var></span>
+					tabSrc="imgSearch"><var id="lang_tab_imgSearch"></var></span> -->
 			</div>
 			<div id="tabBodys" class="tabbody">
+			
+			
 				<div id="remote" class="panel">
 					<table cellpadding="0" cellspacing="0">
 						<tr>
 							<td class="label"><label for="url"><var
 										id="lang_input_url"></var></label></td>
-							<td><input id="url" type="text" /></td>
+							<td>
+								<div id="filelist3" style="display:none;"></div>
+								<div id="container3" style="width:100px;float:left;">
+									<input type="button" id="pickfiles3" value="上传" style="width:85px;"/>
+								</div>
+								<input style="width:400px;float:left;" id="url" type="text" placeholder="图片链接"/>
+								<div id="UploadedFiles"></div>
+							</td>
 						</tr>
 						<tr>
 							<td class="label"><label for="width"><var
@@ -60,6 +69,9 @@
 						<input id="lock" type="checkbox" checked="checked">
 					</div>
 				</div>
+				
+				
+				
 				<div id="local" class="panel">
 					<div id="flashContainer"></div>
 					<div>
@@ -104,7 +116,13 @@
 	<script type="text/javascript" src="../tangram.js"></script>
 	<script type="text/javascript" src="image.js"></script>
 
+	<script type="text/javascript" src="../../../../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../../../../js/plupload/plupload.js"></script>
+	<script type="text/javascript" src="../../../../js/plupload/plupload.full.js"></script>
+	<script type="text/javascript" src="../../../../js/upload_image.js"></script>
 	<script type="text/javascript">
+		InitUpLoader3();
+		
         //全局变量
         var imageUrls = [],          //用于保存从服务器返回的图片信息数组
             selectedImageCount = 0;  //当前已选择的但未上传的图片数量

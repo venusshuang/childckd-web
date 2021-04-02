@@ -38,6 +38,18 @@ html,body{
 	z-index: 99
 }
 
+.top1{
+	width:100%;
+	height:200px;
+	line-height:200px;
+	color:#fff;
+	font-size:60px;
+	font-weight:bold;
+	background-color:#00baad;
+	position: fixed;
+	z-index: 99
+}
+
 .index_menu1{
 	border-radius:20px;
 	width:48%;
@@ -112,6 +124,14 @@ html,body{
 .manage_title{
 	margin-top:300px;
 	text-align:center;
+	font-size:75px;
+	font-weight:bold;
+	color:#fff;
+}
+
+.manage_title1{
+	margin-top:50px;
+	text-align:center;
 	font-size:65px;
 	font-weight:bold;
 	color:#fff;
@@ -142,6 +162,8 @@ html,body{
 	margin-top:40px;
 	text-align:center;
 }
+
+
 
 .input_div #message{
 	width:100%;

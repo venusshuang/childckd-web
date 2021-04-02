@@ -7,7 +7,7 @@ var uploader_info = new plupload.Uploader({
 	runtimes : 'gears,html5,html4,flash,silverlight,browserplus',
 	browse_button : 'pickfiles',
 	container: 'container',
-	max_file_size : '500kb',
+	max_file_size : '10000kb',
 	url : '../upload/UploadImage',
 	//resize : {width : 320, height : 240, quality : 90},
 	flash_swf_url : '../js/plupload/plupload.flash.swf',

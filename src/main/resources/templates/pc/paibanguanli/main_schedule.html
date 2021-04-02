@@ -60,11 +60,24 @@
 
 </body>
 
-<script src="../js/pc/paiban/main_schedule.js?ver=2.9"></script>
+<script src="../js/pc/paiban/main_schedule.js?ver=1.2"></script>
 <link href="../css/main.css?ver=1.0" rel="stylesheet" type="text/css"></link>
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 
 <link rel="stylesheet" href="/css/xadmin.css?ver=0.7">
+
+
+<!-- Latest compiled and minified CSS -->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">-->
+<link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/css/bootstrap-select.css" rel="stylesheet">
+
+<!-- Latest compiled and minified JavaScript -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>-->
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/i18n/defaults-*.min.js"></script>-->
+
     
 <script type="text/javascript">
 var mmXingqi = "";
@@ -96,6 +109,7 @@ function toShowSchedule(ppScheduleId,ppXingqi,ppShangxiawu){
 
 function bindOneSchedule(){
 
+	$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
 	$.post('/schedule/find_one', {
 		scheduleid : mmScheduleId,
 		rdm : Math.random()
@@ -109,6 +123,19 @@ function bindOneSchedule(){
 				$("#input_expertid").val(data.expertid);
 				$("#input_jiage").val(data.jiage);
 				$("#input_xianhaoshu").val(data.xianhaoshu);
+
+
+				$("#jiahaoshu").val(data.jiahaoshu);
+				if(data.jiahaobingzhong)
+				{
+
+					var arr=data.jiahaobingzhong.split(',');
+					$("#jiahaobingzhong").val(arr);
+					$("#jiahaobingzhong").selectpicker('val', arr);
+				}else
+				{
+					$("#jiahaobingzhong").val([]);
+				}
 				
 			}else{
 				layer.alert(ppData.message);
@@ -180,6 +207,7 @@ function clearInput(){
 	$("#input_expertid").val("");
 	$("#input_jiage").val("");
 	$("#input_xianhaoshu").val("");
+	$("#jiahaoshu").val("");
 }
 
 

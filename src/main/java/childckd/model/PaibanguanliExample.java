@@ -754,6 +754,136 @@ public class PaibanguanliExample {
             addCriterion("zhuangtai not between", value1, value2, "zhuangtai");
             return (Criteria) this;
         }
+
+        public Criteria andJiahaobingzhongIsNull() {
+            addCriterion("jiahaobingzhong is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongIsNotNull() {
+            addCriterion("jiahaobingzhong is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongEqualTo(String value) {
+            addCriterion("jiahaobingzhong =", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongNotEqualTo(String value) {
+            addCriterion("jiahaobingzhong <>", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongGreaterThan(String value) {
+            addCriterion("jiahaobingzhong >", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongGreaterThanOrEqualTo(String value) {
+            addCriterion("jiahaobingzhong >=", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongLessThan(String value) {
+            addCriterion("jiahaobingzhong <", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongLessThanOrEqualTo(String value) {
+            addCriterion("jiahaobingzhong <=", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongLike(String value) {
+            addCriterion("jiahaobingzhong like", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongNotLike(String value) {
+            addCriterion("jiahaobingzhong not like", value, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongIn(List<String> values) {
+            addCriterion("jiahaobingzhong in", values, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongNotIn(List<String> values) {
+            addCriterion("jiahaobingzhong not in", values, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongBetween(String value1, String value2) {
+            addCriterion("jiahaobingzhong between", value1, value2, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaobingzhongNotBetween(String value1, String value2) {
+            addCriterion("jiahaobingzhong not between", value1, value2, "jiahaobingzhong");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuIsNull() {
+            addCriterion("jiahaoshu is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuIsNotNull() {
+            addCriterion("jiahaoshu is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuEqualTo(Integer value) {
+            addCriterion("jiahaoshu =", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuNotEqualTo(Integer value) {
+            addCriterion("jiahaoshu <>", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuGreaterThan(Integer value) {
+            addCriterion("jiahaoshu >", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuGreaterThanOrEqualTo(Integer value) {
+            addCriterion("jiahaoshu >=", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuLessThan(Integer value) {
+            addCriterion("jiahaoshu <", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuLessThanOrEqualTo(Integer value) {
+            addCriterion("jiahaoshu <=", value, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuIn(List<Integer> values) {
+            addCriterion("jiahaoshu in", values, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuNotIn(List<Integer> values) {
+            addCriterion("jiahaoshu not in", values, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuBetween(Integer value1, Integer value2) {
+            addCriterion("jiahaoshu between", value1, value2, "jiahaoshu");
+            return (Criteria) this;
+        }
+
+        public Criteria andJiahaoshuNotBetween(Integer value1, Integer value2) {
+            addCriterion("jiahaoshu not between", value1, value2, "jiahaoshu");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

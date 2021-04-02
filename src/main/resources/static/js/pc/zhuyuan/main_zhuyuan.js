@@ -197,6 +197,20 @@ var Zhuyuan_Vue = new Vue({
 			$("input[name='YuyueResult'][value="+ppShenhejieguo+"]").prop("checked",true); 
 			this.shenheyijian = ppShenhejieguo==0 ? "" : ppShenheyijian;
 		},
+		toSetNeirong:function(ppState)
+		{
+			var _this = this;
+			if(ppState==1)
+			{
+				$("#shenheyijian").html("你孩子预约住院已审核，请耐心等待电话通知入院。");
+				_this.shenheyijian="你孩子预约住院已审核，请耐心等待电话通知入院。";
+			}else if(ppState==0)
+			{
+				$("#shenheyijian").html("");
+				_this.shenheyijian="";
+			}
+
+		},
 
 		// 点击“删除”按钮
 		toDelete : function(ppZhuyuanid){

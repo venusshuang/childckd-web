@@ -19,7 +19,11 @@
 					专家姓名
 				</label>
 				<div class="col-sm-5">
-					<input id="name" v-model="name" class="form-control"  type="text"  style="margin-left:10px;float:left;background-color:#fff;"  />	
+					<!--<input id="name" v-model="name" class="form-control"  type="text"  style="margin-left:10px;float:left;background-color:#fff;"  />-->
+					<select class="input form-control" v-model="expertid_search" id="expertid_search" style="text-align:center;" >
+						<option value="" selected>--请选择--</option>
+						<option v-for="expertitem in expertlist" :value="expertitem.expertid">{{expertitem.name}}</option>
+					</select>
 				</div>
 				<label class="col-sm-1 control-label">
 					排班日期
@@ -57,8 +61,8 @@
 				<th style="text-align:center;vertical-align:middle;width: 150px;">排班日期</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">排班时间</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">预约人数</th>
-				<!--已生成的不修改删除-->
-				<!--<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>-->
+
+				<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>
 			</thead>
 			<tbody>
 				<tr v-for="(paibanitem,index) in paibanlist" v-if="paibanlist!=null">
@@ -67,11 +71,11 @@
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.paibanriqi"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.shangxiawu"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="paibanitem.xianhaoshu"></td>
-					<!--已生成的不修改删除-->
-					<!--<td style="text-align:center;vertical-align:middle;">
-						<button class="btn btn-danger" @click="toDelete(paibanitem.paibanid)">删 除</button>
+
+					<td style="text-align:center;vertical-align:middle;">
+						<!--<button class="btn btn-danger" @click="toDelete(paibanitem.paibanid)">删 除</button>-->
 						<button class="btn btn-info" @click="perpareToModifyPaiban(paibanitem.paibanid)">编 辑</button>
-					</td>-->
+					</td>
 					
 				</tr>
 				<tr v-if="paibanlist.length==0">
@@ -97,6 +101,18 @@
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 
 <link rel="stylesheet" href="/css/xadmin.css?ver=0.6">
-    
+
+<!-- Latest compiled and minified CSS -->
+<!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">-->
+<link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/css/bootstrap-select.css" rel="stylesheet">
+
+<!-- Latest compiled and minified JavaScript -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>-->
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/js/bootstrap-select.min.js"></script>
+
+<!-- (Optional) Latest compiled and minified JavaScript translation files -->
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/i18n/defaults-*.min.js"></script>-->
+
+
 
 </html>

@@ -102,14 +102,19 @@ var _yuyueguahaoVue = new Vue({
 			},"json");
 		},
 		
-		toDetail:function(ppPaibanId){
+		toDetail:function(ppPaibanId,ppShengyuhaoshu){
 			var _this = this;
-			
-			location.href="/homepage/yuyueguahao_detail.html?paibanid="+ppPaibanId+"&jiuzhenxinxiid="+_this.jiuzhenxinxiid;
+			location.href="/homepage/yuyueguahao_detail.html?paibanid="+ppPaibanId+"&jiuzhenxinxiid="+_this.jiuzhenxinxiid+"&shengyuhaoshu="+ppShengyuhaoshu;
 		},
+
+		close:function(ppId){
+			$("#"+ppId).hide();
+		},
+
+
 		
 		// 挂号
-		toGuahao : function(ppPaibanId){
+		toGuahao : function(ppPaibanId,ppExpertid){
 			var _this = this;
 			layer.open({type:3});
 			
@@ -122,18 +127,73 @@ var _yuyueguahaoVue = new Vue({
 				layer.closeAll("loading");
 				if(ppData!=null){
 					if(ppData.result == '1'){
-						$(".weui-toast__content").html(ppData.resultContent);
-						$("#js_toast").show()
-						setTimeout(function(){
-							location.href="/homepage/yuyueguahao.html?jiuzhenxinxiid="+_this.jiuzhenxinxiid;
-						},'3000');
+						//$(".weui-toast__content").html(ppData.resultContent);
+
+						if(ppExpertid=="0401181f-ad2f-4ad7-8518-c7c631bd9d0a")
+						{
+							if(ppData.resultContent=="夏教授待审核！")
+							{
+								$("#js_toast2").show();
+							}else if(ppData.resultContent=="夏教授审核通过！")
+							{
+								$("#js_toast3").show()
+							}
+
+
+						}else
+						{
+							if(ppData.resultContent=="待审核！")
+							{
+								$("#js_toast4").show();
+							}else if(ppData.resultContent=="审核通过！")
+							{
+								$("#js_toast").show()
+							}
+
+
+							setTimeout(function(){
+								location.href="/homepage/yuyueguahao.html?jiuzhenxinxiid="+_this.jiuzhenxinxiid;
+							},'3000');
+						}
+
+
+
 					}else{
-						$(".weui-toast__content").html(ppData.message);
+						/*$(".weui-toast__content").html(ppData.message);
 						$("#js_toast").show()
 						setTimeout(function(){
 							location.href="/homepage/yuyueguahao.html?jiuzhenxinxiid="+_this.jiuzhenxinxiid;
-						},'3000');
+						},'3000');*/
+
+						if(ppData.message=="该就诊信息在黑名单中，无法预约！")
+						{
+							$("#js_toast").show()
+							$(".weui-toast__content").html("该就诊信息在黑名单中，无法预约！");
+							setTimeout(function(){
+								location.href="/homepage/yuyueguahao.html?jiuzhenxinxiid="+_this.jiuzhenxinxiid;
+							},'3000');
+
+						}else if(ppData.message=="请勿重复挂号")
+						{
+							$("#js_toast").show()
+							$(".weui-toast__content").html("请勿重复挂号");
+							setTimeout(function(){
+								location.href="/homepage/yuyueguahao.html?jiuzhenxinxiid="+_this.jiuzhenxinxiid;
+							},'3000');
+						}else {
+
+
+							if (ppExpertid == "0401181f-ad2f-4ad7-8518-c7c631bd9d0a") {
+								$("#js_faild").show()
+							} else {
+								$("#js_faild2").show()
+							}
+						}
+
+
 					}
+
+
 				}
 			},"json");
 		},

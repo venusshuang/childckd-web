@@ -236,9 +236,9 @@ public class InfoController {
 		if (StringHandle.getStringByteLength(ppInfotitle2) > 300) {
 			return BooleanMessage.getErrorMessage("副标题长度不可超过300字节");
 		}
-		if (StringHandle.getStringByteLength(ppSummary) > 500) {
+		/*if (StringHandle.getStringByteLength(ppSummary) > 500) {
 			return BooleanMessage.getErrorMessage("简介长度不可超过500字节");
-		}
+		}*/
 		if (StringHandle.getStringByteLength(ppSource) > 100) {
 			return BooleanMessage.getErrorMessage("来源长度不可超过100字节");
 		}

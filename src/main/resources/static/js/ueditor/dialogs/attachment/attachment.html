@@ -10,10 +10,18 @@
 <body>
 	<div class="wrapper">
 		<div class="controller">
+			<div id="filelist3" style="display:none;"></div>
+			<div id="container3" style="width:100px;float:left;">
+				<input type="button" id="pickfiles3" value="上传" />
+			</div>
+			<input style="float:left;width:300px;" id="fujianurl" type="text" placeholder="附件链接"/>
+			<div id="UploadedFiles"></div>
 			<!--<span id="divStatus"></span>-->
-			<span id="spanButtonPlaceHolder"></span>
+			<!-- <span id="spanButtonPlaceHolder"></span> -->
 		</div>
-		<div class="fieldset flash" id="fsUploadProgress"></div>
+		<div class="fieldset flash" id="fsUploadProgress">
+			
+		</div>
 		<span id="startUpload" style="display: none;"></span>
 
 	</div>
@@ -26,8 +34,18 @@
 		src="../../third-party/swfupload/fileprogress.js"></script>
 	<script type="text/javascript" src="callbacks.js"></script>
 	<script type="text/javascript" src="fileTypeMaps.js"></script>
+	
+	
+	<script type="text/javascript" src="../../../../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../../../../js/plupload/plupload.js"></script>
+	<script type="text/javascript" src="../../../../js/plupload/plupload.full.js"></script>
+	<script type="text/javascript" src="../../../../js/upload_fujian.js?ver=1.0"></script>
+	
 	<script type="text/javascript">
-    var swfupload,
+	
+	InitUpLoader3();
+	
+    /* var swfupload,
         filesList=[];
     editor.setOpt({
         fileFieldName:"upfile"
@@ -126,7 +144,7 @@
         dialog.oncancel = function(){
             swfupload.destroy();
         }
-    };
+    }; */
 </script>
 
 </body>

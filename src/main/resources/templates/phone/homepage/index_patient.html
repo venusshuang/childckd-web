@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="../../css/phone/homepage.css?ver=1.2" rel="stylesheet" type="text/css"></link>
+<link href="../../css/phone/homepage.css?ver=1.21" rel="stylesheet" type="text/css"></link>
 <title>首页</title>
 </head>
 <body>
@@ -12,9 +12,14 @@
 	<div class="container" style="overflow:auto;" id="indexpage">
 		<input type="hidden" th:value="${UserType}" id="usertype">
 		<input type="hidden" th:value="${UserId}" id="userid">
-	
-		<div class="top">
-			首页
+
+		<div class="top1">
+			<a  href="../../homepage/login.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+
+			<span style="margin-left:50px">东总儿童肾病诊疗中心</span>
+
+
+
 		</div>
 		
 		<div style="width:100%;margin-top:220px;">
@@ -26,7 +31,7 @@
 							<div class="index_menu1_pic">
 								<img src="../../image/menu-guahao.png" width=100% height=100%/>
 							</div>
-							<div class="index_menu1_title">挂号</div>
+							<div class="index_menu1_title">预约挂号</div>
 							<div class="index_menu1_summary">预约出诊号</div>
 						</div>
 					</a>
@@ -102,6 +107,13 @@
 
 <script type="text/javascript" charset="utf-8" src="../../js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../js/vue.js"></script>
-
+<script type="text/javascript">
+	$(function (){
+		if($("#userid").val().indexOf("旧系统")!=-1)
+		{
+			alert("系统更新，请至【预约挂号】->【修改】当中修改个人信息，或【新增挂号信息】。如已修改，请忽略。");
+		}
+	})
+</script>
 
 </html>

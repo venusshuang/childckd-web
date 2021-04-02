@@ -9,9 +9,11 @@
 		
 		<input type="hidden" th:value="${UserType}" id="usertype">
 		<input type="hidden" th:value="${UserId}" id="userid">
-	
-		<div class="top">
-			我的预约
+
+		<div class="top1">
+			<a  href="../../homepage/index_patient.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+
+			<span style="margin-left:240px">我的预约</span>
 		</div>
 		
 		<div style="width:100%;margin-top:200px;overflow-y:auto;" class="listPart">
@@ -24,10 +26,19 @@
 		            	<div class="weui-form-preview__bd">
 			                <div class="weui-form-preview__item">
 			                    <label class="weui-form-preview__label" style="font-size:50px;color:#00baad;font-weight:bolder;">预约挂号</label>
+
 		                    	<span v-if="yuyueitem.shenhejieguo=='0'||yuyueitem.shenhejieguo=='1'" @click="toCancelGuahao(yuyueitem.id)" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:20px;">取消预约</span>
 		                    	<span v-else-if="yuyueitem.shenhejieguo=='2'" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:red;border-radius:50px;margin-top:20px;">系统取消</span>
 		                    	<span v-else-if="yuyueitem.shenhejieguo=='3'" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:red;border-radius:50px;margin-top:20px;">用户取消</span>
 		                    </div>
+
+							<div class="weui-form-preview__item">
+								<label class="weui-form-preview__label" style="font-size:40px;color:#000;">预约状态：</label>
+								<span v-if="yuyueitem.shenhejieguo=='0'" class="weui-form-preview__value" style="font-weight: 700;font-size:40px;text-align:left;color:red;" >待审核</span>
+								<span v-else-if="yuyueitem.shenhejieguo=='1'" class="weui-form-preview__value" style="font-weight: 700;font-size:40px;text-align:left;color:red;" >预约通过</span>
+								<span v-else-if="yuyueitem.shenhejieguo=='2'||yuyueitem.shenhejieguo=='3'" class="weui-form-preview__value" style="font-weight: 700;font-size:40px;text-align:left;color:red;" >预约失败</span>
+							</div>
+
 			                <div class="weui-form-preview__item">
 			                    <label class="weui-form-preview__label" style="font-size:40px;color:#000;">预约专家：</label>
 			                    <span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.zhuanjianame"></span>
@@ -35,7 +46,7 @@
 
 							<div class="weui-form-preview__item">
 								<label class="weui-form-preview__label" style="font-size:40px;color:#000;">预约日期：</label>
-								<span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.chuangjianshijian"></span>
+								<span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.paibanriqi"></span>
 							</div>
 
 			                <div class="weui-form-preview__item"> 
@@ -54,10 +65,19 @@
 		            	<div class="weui-form-preview__bd">
 			                <div class="weui-form-preview__item">
 			                    <label class="weui-form-preview__label" style="font-size:50px;color:#00baad;font-weight:bolder;">预约住院</label>
-			                    <span v-if="yuyueitem.shenhejieguo=='0'||yuyueitem.shenhejieguo=='1'" @click="toCancelZhuyuan(yuyueitem.id)" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:20px;">取消预约</span>
+
+					            <span v-if="yuyueitem.shenhejieguo=='0'||yuyueitem.shenhejieguo=='1'" @click="toCancelZhuyuan(yuyueitem.id)" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:20px;">取消预约</span>
 		                    	<span v-else-if="yuyueitem.shenhejieguo=='2'" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:red;border-radius:50px;margin-top:20px;">系统取消</span>
 		                    	<span v-else-if="yuyueitem.shenhejieguo=='3'" class="weui-form-preview__value" style="width:200px;height:80px;float:right;margin-left:30px;font-size:40px;line-height:80px;text-align:center;color:#fff;background-color:red;border-radius:50px;margin-top:20px;">用户取消</span>
 			                </div>
+
+							<div class="weui-form-preview__item">
+								<label class="weui-form-preview__label" style="font-size:40px;color:#000;">预约状态：</label>
+								<span v-if="yuyueitem.shenhejieguo=='0'" class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" >待审核</span>
+								<span v-else-if="yuyueitem.shenhejieguo=='1'" class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;">预约通过</span>
+								<span v-else-if="yuyueitem.shenhejieguo=='2'||yuyueitem.shenhejieguo=='3'" class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" >预约失败</span>
+							</div>
+
 			                <div class="weui-form-preview__item">
 			                    <label class="weui-form-preview__label" style="font-size:40px;color:#000;">住院病种：</label>
 			                    <span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.bingzhong"></span>
@@ -65,7 +85,7 @@
 
 							<div class="weui-form-preview__item">
 								<label class="weui-form-preview__label" style="font-size:40px;color:#000;">预约日期：</label>
-								<span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.chuangjianshijian"></span>
+								<span class="weui-form-preview__value" style="font-size:40px;text-align:left;color:#555;" v-html="yuyueitem.paibanriqi"></span>
 							</div>
 
 			                <div class="weui-form-preview__item"> 

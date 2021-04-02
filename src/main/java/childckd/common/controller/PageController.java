@@ -167,7 +167,7 @@ public class PageController {
 	// 手机端智慧诊疗
 	@RequestMapping("/homepage/zhihuizhenliao.html")
 	public String zhihuizhenliao(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -175,7 +175,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhihuizhenliao";
 	}
@@ -183,7 +183,7 @@ public class PageController {
 	// 手机端智慧诊疗之营养管理
 	@RequestMapping("/homepage/zhzl_yingyangguanli.html")
 	public String zhzl_yingyangguanli(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -191,7 +191,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_yingyangguanli";
 	}
@@ -199,7 +199,7 @@ public class PageController {
 	//手机端智慧诊疗之体表面积
 	@RequestMapping("/homepage/zhzl_tbmj.html")
 	public String zhzl_tbmj(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -207,7 +207,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_tbmj";
 	}
@@ -215,7 +215,7 @@ public class PageController {
 	//手机端智慧诊疗之尿肌酐
 	@RequestMapping("/homepage/zhzl_njg.html")
 	public String zhzl_njg(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -223,7 +223,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_njg";
 	}
@@ -231,7 +231,7 @@ public class PageController {
 	//手机端智慧诊疗之eGFR
 	@RequestMapping("/homepage/zhzl_eGFR.html")
 	public String zhzl_eGFR(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -239,7 +239,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_eGFR";
 	}
@@ -247,7 +247,7 @@ public class PageController {
 	//手机端智慧诊疗之高尿酸血症
 	@RequestMapping("/homepage/zhzl_gns.html")
 	public String zhzl_gns(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -255,7 +255,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_gns";
 	}
@@ -263,7 +263,7 @@ public class PageController {
 	//手机端智慧诊疗之EER
 	@RequestMapping("/homepage/zhzl_eer.html")
 	public String zhzl_eer(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -271,7 +271,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_eer";
 	}
@@ -279,7 +279,7 @@ public class PageController {
 	//手机端智慧诊疗之sle
 	@RequestMapping("/homepage/zhzl_sle.html")
 	public String zhzl_sle(HttpServletRequest request, ModelMap map) {
-		if(!isLoginPhone(request)) {
+		/*if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -287,7 +287,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);
+		map.put("UserId", mmUserId);*/
 
 		return "phone/homepage/zhzl_sle";
 	}
@@ -355,10 +355,12 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 		String mmJiuzhenxinxiId = request.getParameter("jiuzhenxinxiid") == null ? "" : request.getParameter("jiuzhenxinxiid").toString();
 		String mmPaibanId = request.getParameter("paibanid") == null ? "" : request.getParameter("paibanid").toString();		map.put("UserType", mmUserType);
+		String mmShengyuhaoshu = request.getParameter("shengyuhaoshu") == null ? "" : request.getParameter("shengyuhaoshu").toString();		map.put("Shengyuhaoshu", mmShengyuhaoshu);
 		map.put("UserId", mmUserId);
 		map.put("UserType", mmUserType);
 		map.put("JiuzhenxinxiId", mmJiuzhenxinxiId);
-		map.put("PaibanId", mmPaibanId);		
+		map.put("PaibanId", mmPaibanId);
+		map.put("Shengyuhaoshu", mmShengyuhaoshu);
 		return "phone/homepage/yuyueguahao_detail";
 	}
 

@@ -27,4 +27,6 @@ public interface TingzhenMapper {
     int updateByPrimaryKeySelective(Tingzhen record);
 
     int updateByPrimaryKey(Tingzhen record);
+
+    List<Tingzhen> findTingzhenbythis(String ppExpertId, String ppPaiBanRiQi,String ppShangxiawu);
 }

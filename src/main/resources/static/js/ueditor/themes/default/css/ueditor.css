@@ -57,7 +57,7 @@ div.edui-box {
 
 /* control layout */
 .edui-default .edui-button-body,.edui-splitbutton-body,.edui-menubutton-body,.edui-combox-body
-	{
+{
 	position: relative;
 }
 
@@ -125,7 +125,7 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-button,.edui-default .edui-toolbar .edui-splitbutton,.edui-default .edui-toolbar .edui-menubutton,.edui-default .edui-toolbar .edui-combox
-	{
+{
 	margin: 1px;
 }
 /*UI工具栏、编辑区域、底部*/
@@ -154,7 +154,7 @@ div.edui-box {
 	background-color: #fafafa;
 	background-image: -moz-linear-gradient(top, #ffffff, #f2f2f2);
 	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff),
-		to(#f2f2f2));
+	to(#f2f2f2));
 	background-image: -webkit-linear-gradient(top, #ffffff, #f2f2f2);
 	background-image: -o-linear-gradient(top, #ffffff, #f2f2f2);
 	background-image: linear-gradient(to bottom, #ffffff, #f2f2f2);
@@ -164,7 +164,7 @@ div.edui-box {
 	-moz-border-radius: 4px;
 	border-radius: 4px;
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',
-		endColorstr='#fff2f2f2', GradientType=0);
+	endColorstr='#fff2f2f2', GradientType=0);
 	*zoom: 1;
 	-webkit-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
 	-moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.065);
@@ -229,7 +229,7 @@ div.edui-box {
 	width: 100%;
 	height: 12px;
 	margin-top: 10px;
-	background: url(../images/scale.png) no-repeat;
+	background: url(/js/ueditor/themes/default/images/scale.png) no-repeat;
 	cursor: se-resize;
 }
 
@@ -260,7 +260,7 @@ div.edui-box {
 	/*-webkit-box-shadow: 2px 2px 3px #818181;*/
 	/*-moz-box-shadow: 2px 2px 3px #818181;*/
 	/*filter: progid:DXImageTransform.Microsoft.Blur(PixelRadius = '2', MakeShadow = 'true', ShadowOpacity = '0.5');*/
-	
+
 }
 
 .edui-default .edui-editor-toolbarmsg {
@@ -354,7 +354,7 @@ div.edui-box {
 }
 
 .edui-default .edui-for-rowspacingtop .edui-listitem-label,.edui-default .edui-for-rowspacingbottom .edui-listitem-label
-	{
+{
 	min-width: 53px;
 	_width: 53px;
 	padding: 2px 5px;
@@ -384,11 +384,11 @@ div.edui-box {
 .edui-default .edui-menu-body {
 	_width: 150px;
 	min-width: 170px;
-	background: url("../images/sparator_v.png") repeat-y 25px;
+	background: url("/js/ueditor/themes/default/images/sparator_v.png") repeat-y 25px;
 }
 
 .edui-default .edui-menuitem-body {
-	
+
 }
 
 .edui-default .edui-menuitem {
@@ -400,8 +400,8 @@ div.edui-box {
 .edui-default .edui-menuitem .edui-icon {
 	width: 20px !important;
 	height: 20px !important;
-	background: url(../images/icons.png) 0 -4000px;
-	background: url(../images/icons.gif) 0 -4000px\9;
+	background: url(/js/ueditor/themes/default/images/icons.png) 0 -4000px;
+	background: url(/js/ueditor/themes/default/images/icons.gif) 0 -4000px\9;
 }
 
 .edui-default .edui-menuitem .edui-label {
@@ -412,7 +412,7 @@ div.edui-box {
 }
 
 .edui-default .edui-state-checked .edui-menuitem-body {
-	background: url("../images/icons-all.gif") no-repeat 6px -205px;
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat 6px -205px;
 }
 
 .edui-default .edui-state-disabled .edui-menuitem-label {
@@ -431,8 +431,8 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-combox-body .edui-arrow {
-	background: url(../images/icons.png) -741px 0;
-	_background: url(../images/icons.gif) -741px 0;
+	background: url(/js/ueditor/themes/default/images/icons.png) -741px 0;
+	_background: url(/js/ueditor/themes/default/images/icons.gif) -741px 0;
 	height: 20px;
 	width: 9px;
 }
@@ -459,7 +459,7 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-state-hover .edui-combox-body .edui-arrow
-	{
+{
 	border-left: 1px solid #dcac6c;
 }
 
@@ -484,11 +484,11 @@ div.edui-box {
 }
 /*普通按钮样式及状态*/
 .edui-default .edui-toolbar .edui-button .edui-icon,.edui-default .edui-toolbar .edui-menubutton .edui-icon,.edui-default .edui-toolbar .edui-splitbutton .edui-icon
-	{
+{
 	height: 20px !important;
 	width: 20px !important;
-	background-image: url(../images/icons.png);
-	background-image: url(../images/icons.gif) \9;
+	background-image: url(/js/ueditor/themes/default/images/icons.png);
+	background-image: url(/js/ueditor/themes/default/images/icons.gif) \9;
 }
 
 .edui-default .edui-toolbar .edui-button .edui-button-wrap {
@@ -497,14 +497,14 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-button .edui-state-hover .edui-button-wrap
-	{
+{
 	background-color: #fff5d4;
 	padding: 0;
 	border: 1px solid #dcac6c;
 }
 
 .edui-default .edui-toolbar .edui-button .edui-state-checked .edui-button-wrap
-	{
+{
 	background-color: #ffe69f;
 	padding: 0;
 	border: 1px solid #dcac6c;
@@ -514,7 +514,7 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-button .edui-state-active .edui-button-wrap
-	{
+{
 	background-color: #ffffff;
 	padding: 0;
 	border: 1px solid gray;
@@ -938,15 +938,15 @@ div.edui-box {
 }
 /*splitbutton*/
 .edui-default .edui-toolbar .edui-splitbutton-body .edui-arrow,.edui-default .edui-toolbar .edui-menubutton-body .edui-arrow
-	{
-	background: url(../images/icons.png) -741px 0;
-	_background: url(../images/icons.gif) -741px 0;
+{
+	background: url(/js/ueditor/themes/default/images/icons.png) -741px 0;
+	_background: url(/js/ueditor/themes/default/images/icons.gif) -741px 0;
 	height: 20px;
 	width: 9px;
 }
 
 .edui-default .edui-toolbar .edui-splitbutton .edui-splitbutton-body,.edui-default .edui-toolbar .edui-menubutton .edui-menubutton-body
-	{
+{
 	padding: 1px;
 }
 
@@ -971,21 +971,21 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-splitbutton .edui-state-hover .edui-splitbutton-body,.edui-default .edui-toolbar .edui-menubutton .edui-state-hover .edui-menubutton-body
-	{
+{
 	background-color: #fff5d4;
 	border: 1px solid #dcac6c;
 	padding: 0;
 }
 
 .edui-default .edui-toolbar .edui-splitbutton .edui-state-checked .edui-splitbutton-body,.edui-default .edui-toolbar .edui-menubutton .edui-state-checked .edui-menubutton-body
-	{
+{
 	background-color: #FFE69F;
 	border: 1px solid #DCAC6C;
 	padding: 0;
 }
 
 .edui-default .edui-toolbar .edui-splitbutton .edui-state-active .edui-splitbutton-body,.edui-default .edui-toolbar .edui-menubutton .edui-state-active .edui-menubutton-body
-	{
+{
 	background-color: #ffffff;
 	border: 1px solid gray;
 	padding: 0;
@@ -997,20 +997,20 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-splitbutton .edui-state-opened .edui-splitbutton-body,.edui-default .edui-toolbar .edui-menubutton .edui-state-opened .edui-menubutton-body
-	{
+{
 	background-color: white;
 	border: 1px solid gray;
 	padding: 0;
 }
 
 .edui-default .edui-for-insertorderedlist .edui-bordereraser,.edui-default .edui-for-lineheight .edui-bordereraser,.edui-default .edui-for-rowspacingtop .edui-bordereraser,.edui-default .edui-for-rowspacingbottom .edui-bordereraser,.edui-default .edui-for-insertunorderedlist .edui-bordereraser
-	{
+{
 	background-color: white;
 }
 
 /* 解决嵌套导致的图标问题 */
 .edui-default .edui-for-insertorderedlist .edui-popup-body .edui-icon,.edui-default .edui-for-lineheight .edui-popup-body .edui-icon,.edui-default .edui-for-rowspacingtop .edui-popup-body .edui-icon,.edui-default .edui-for-rowspacingbottom .edui-popup-body .edui-icon,.edui-default .edui-for-insertunorderedlist .edui-popup-body .edui-icon
-	{
+{
 	/*background-position: 0 -40px;*/
 	background-image: none;
 }
@@ -1128,7 +1128,7 @@ div.edui-box {
 .edui-default .edui-dialog-titlebar {
 	height: 26px;
 	border-bottom: 1px solid #c6c6c6;
-	background: url(../images/dialog-title-bg.png) repeat-x bottom;
+	background: url(/js/ueditor/themes/default/images/dialog-title-bg.png) repeat-x bottom;
 	position: relative;
 	cursor: move;
 }
@@ -1154,12 +1154,12 @@ div.edui-box {
 	height: 20px;
 	width: 20px;
 	cursor: pointer;
-	background: url("../images/icons-all.gif") no-repeat 0 -59px;
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat 0 -59px;
 }
 
 .edui-default .edui-dialog-closebutton .edui-state-hover .edui-button-body
-	{
-	background: url("../images/icons-all.gif") no-repeat 0 -89px;
+{
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat 0 -89px;
 }
 
 .edui-default .edui-dialog-foot {
@@ -1176,7 +1176,7 @@ div.edui-box {
 }
 
 .edui-default .edui-dialog-buttons .edui-button .edui-button-body {
-	background: url("../images/icons-all.gif") no-repeat;
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat;
 	height: 24px;
 	width: 96px;
 	font-size: 12px;
@@ -1186,8 +1186,8 @@ div.edui-box {
 }
 
 .edui-default .edui-dialog-buttons .edui-button .edui-state-hover .edui-button-body
-	{
-	background: url("../images/icons-all.gif") no-repeat 0 -30px;
+{
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat 0 -30px;
 }
 
 .edui-default .edui-dialog iframe {
@@ -1420,12 +1420,12 @@ div.edui-box {
 }
 
 .edui-default .edui-for-inserttable  .edui-splitbutton-body .edui-arrow
-	{
+{
 	width: 0
 }
 
 .edui-default .edui-toolbar .edui-for-inserttable  .edui-state-active .edui-splitborder
-	{
+{
 	border-left: 1px solid transparent;
 }
 
@@ -1451,13 +1451,13 @@ div.edui-box {
 }
 
 .edui-default .edui-tablepicker .edui-pickarea {
-	background: url("../images/unhighlighted.gif") repeat;
+	background: url("/js/ueditor/themes/default/images/unhighlighted.gif") repeat;
 	height: 220px;
 	width: 220px;
 }
 
 .edui-default .edui-tablepicker .edui-pickarea .edui-overlay {
-	background: url("../images/highlighted.gif") repeat;
+	background: url("/js/ueditor/themes/default/images/highlighted.gif") repeat;
 }
 
 /* 颜色弹出菜单 */
@@ -1512,11 +1512,11 @@ div.edui-box {
 }
 
 .arrow_down {
-	background: white url('../images/arrow_down.png') no-repeat center;
+	background: white url('/js/ueditor/themes/default/images/arrow_down.png') no-repeat center;
 }
 
 .arrow_up {
-	background: white url('../images/arrow_up.png') no-repeat center;
+	background: white url('/js/ueditor/themes/default/images/arrow_up.png') no-repeat center;
 }
 /*高级的样式*/
 .edui-colorpicker-adv {
@@ -1547,7 +1547,7 @@ div.edui-box {
 	left: 0;
 	width: 150px;
 	height: 150px;
-	background: url("../images/tangram-colorpicker.png") -160px -200px;
+	background: url("/js/ueditor/themes/default/images/tangram-colorpicker.png") -160px -200px;
 }
 
 .edui-colorpicker-padDot {
@@ -1557,7 +1557,7 @@ div.edui-box {
 	width: 11px;
 	height: 11px;
 	overflow: hidden;
-	background: url(../images/tangram-colorpicker.png) 0px -200px repeat-x;
+	background: url(/js/ueditor/themes/default/images/tangram-colorpicker.png) 0px -200px repeat-x;
 	z-index: 1000;
 }
 
@@ -1567,8 +1567,8 @@ div.edui-box {
 	top: 13px;
 	width: 19px;
 	height: 152px;
-	background: url(../images/tangram-colorpicker.png) -179px -12px
-		no-repeat;
+	background: url(/js/ueditor/themes/default/images/tangram-colorpicker.png) -179px -12px
+	no-repeat;
 }
 
 .edui-colorpicker-slider {
@@ -1629,7 +1629,7 @@ div.edui-box {
 	height: 20px;
 	width: 20px;
 	padding: 1px;
-	background-image: url(../images/table-cell-align.png);
+	background-image: url(/js/ueditor/themes/default/images/table-cell-align.png);
 }
 
 .edui-default .edui-cellalignpicker-body .edui-left {
@@ -1645,33 +1645,33 @@ div.edui-box {
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-state-hover .edui-left
-	{
+{
 	background-position: -73px 0;
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-state-hover .edui-center
-	{
+{
 	background-position: -98px 0;
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-state-hover .edui-right
-	{
+{
 	background-position: -124px 0;
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-cellalign-selected .edui-left
-	{
+{
 	background-position: -146px 0;
 	backgroun-color: #f1f4f5;
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-cellalign-selected .edui-center
-	{
+{
 	background-position: -245px 0;
 }
 
 .edui-default .edui-cellalignpicker-body td.edui-cellalign-selected .edui-right
-	{
+{
 	background-position: -271px 0;
 }
 /*分隔线*/
@@ -1679,8 +1679,8 @@ div.edui-box {
 	width: 2px;
 	height: 20px;
 	margin: 2px 4px 2px 3px;
-	background: url(../images/icons.png) -180px 0;
-	background: url(../images/icons.gif) -180px 0 \9;
+	background: url(/js/ueditor/themes/default/images/icons.png) -180px 0;
+	background: url(/js/ueditor/themes/default/images/icons.gif) -180px 0 \9;
 }
 
 /*颜色按钮 */
@@ -1718,7 +1718,7 @@ div.edui-box {
 }
 
 .edui-default .edui-toolbar .edui-for-emotion  .edui-state-active .edui-splitborder
-	{
+{
 	border-left: 1px solid transparent;
 }
 /*contextmenu*/
@@ -1726,7 +1726,7 @@ div.edui-box {
 	height: 20px;
 	width: 20px;
 	float: right;
-	background: url("../images/icons-all.gif") no-repeat 10px -233px;
+	background: url("/js/ueditor/themes/default/images/icons-all.gif") no-repeat 10px -233px;
 }
 
 .edui-default .edui-menu-body .edui-menuitem {
@@ -1761,7 +1761,7 @@ div.edui-box {
 .edui-default  .edui-pasteicon {
 	width: 100%;
 	height: 100%;
-	background-image: url('../images/wordpaste.png');
+	background-image: url('/js/ueditor/themes/default/images/wordpaste.png');
 	background-position: 0 0;
 }
 
@@ -1792,13 +1792,13 @@ div.edui-box {
 }
 
 .edui-default  .edui-pastecontainer .edui-button .edui-richtxticon,.edui-default  .edui-pastecontainer .edui-button .edui-tagicon,.edui-default  .edui-pastecontainer .edui-button .edui-plaintxticon
-	{
+{
 	float: left;
 	cursor: pointer;
 	width: 29px;
 	height: 29px;
 	margin-left: 5px;
-	background-image: url('../images/wordpaste.png');
+	background-image: url('/js/ueditor/themes/default/images/wordpaste.png');
 	background-repeat: no-repeat;
 }
 
@@ -1816,16 +1816,16 @@ div.edui-box {
 }
 
 .edui-default  .edui-pastecontainer .edui-button .edui-state-hover .edui-richtxticon
-	{
+{
 	background-position: -109px -34px;
 }
 
 .edui-default  .edui-pastecontainer .edui-button .edui-state-hover .edui-tagicon
-	{
+{
 	background-position: -148px -34px;
 }
 
 .edui-default  .edui-pastecontainer .edui-button  .edui-state-hover .edui-plaintxticon
-	{
+{
 	background-position: -72px -34px;
 }

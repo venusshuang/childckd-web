@@ -10,9 +10,11 @@
 		<input type="hidden" th:value="${UserType}" id="usertype">
 		<input type="hidden" th:value="${UserId}" id="userid">
 		<input type="hidden" th:value="${JiuzhenxinxiId}" id="jiuzhenxinxiid">
-	
-		<div class="top">
-			预约挂号
+
+		<div class="top1">
+			<a  href="../../homepage/jiuzhenxinxi_list.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+
+			<span style="margin-left:240px">预约挂号</span>
 		</div>
 		
 		
@@ -55,11 +57,12 @@
 		                	</div>
 		                    <span class="weui-form-preview__label" style="margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#000;line-height:150px;" v-html="paibanitem.name"></span>
 		                	<span v-if="paibanitem.shengyuhaoshu > 0" class="weui-form-preview__label" style="font-size:40px;font-weight:bold;color:#00baad;line-height:150px;margin-left: 100px;" v-html='"余号："+paibanitem.shengyuhaoshu'></span>
-		                	<span v-if="paibanitem.shengyuhaoshu > 0" @click="toGuahao(paibanitem.paibanid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">预约</span>
-		                	<span v-if="paibanitem.shengyuhaoshu <= 0" @click="toGuahao(paibanitem.paibanid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">加号</span>
+		                	<span v-if="paibanitem.shengyuhaoshu > 0" @click="toGuahao(paibanitem.paibanid,paibanitem.expertid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">预约</span>
+		                	<span v-if="paibanitem.shengyuhaoshu >-999 && paibanitem.shengyuhaoshu <= 0" @click="toGuahao(paibanitem.paibanid,paibanitem.expertid)" class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:#fff;background-color:#00baad;border-radius:50px;margin-top:30px;">加号</span>
+							<span v-if="paibanitem.shengyuhaoshu == -9999"  class="weui-form-preview__value" style="width:200px;height:100px;float:right;margin-left:30px;font-size:40px;line-height:100px;text-align:center;color:red;background-color:#00baad;border-radius:50px;margin-top:30px;">停诊</span>
 		                	
 	                	</div>
-	                	<div @click="toDetail(paibanitem.paibanid)">
+	                	<div @click="toDetail(paibanitem.paibanid,paibanitem.shengyuhaoshu)">
 			                <div class="weui-form-preview__item">
 			                	<span class="weui-form-preview__label" style="margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#888;line-height:100px;" v-html="paibanitem.zhiwu"></span>
 			                	<span class="weui-form-preview__value" style="float:right;font-size:40px;font-weight:bold;text-align:left;color:#888;line-height:100px;" v-html='paibanitem.jiage+"元"'></span>
@@ -79,6 +82,50 @@
 					<p class="weui-toast__content" style="font-size:50px;">预约成功</p>
 				</div>
 			</div>
+
+			<div id="js_toast4" style="display: none;width:500px;height:500px;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast" style="width:500px;height:500px;">
+					<i class="weui-icon-success-no-circle weui-icon_toast" style="width:600px;height:200px;"></i>
+					<p class="weui-toast__content" style="font-size:50px;">预约待审核，请及时关注我的预约或者我的消息。</p>
+				</div>
+			</div>
+
+			<div id="js_toast2" style="display: none;width:1000px;height:600px;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast" style="width:1000px;height:600px;background-color:#f7f7f7">
+					<!--					<p class="weui-toast__content" style="font-size:50px;text-align:left">各位患儿与家长好，您当前日期预约失败。</p>-->
+					<p class="weui-toast__content" style="font-size:50px;text-align:left;color:black">各位患儿与家长好，您当前日期<font style="color: red">预约待审核，请及时关注我的预约或者我的消息</font>。<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，祝孩子早日康复。</p>
+					<input style=" margin-right: -800px; width: 150px;height: 100px;font-size:40px;margin-top: 40px;text-align: center" type="button" value="确定" @click="close('js_toast2')" />
+				</div>
+			</div>
+
+			<div id="js_toast3" style="display: none;width:1000px;height:600px;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast" style="width:1000px;height:600px;background-color:#f7f7f7">
+					<!--					<p class="weui-toast__content" style="font-size:50px;text-align:left">各位患儿与家长好，您当前日期预约失败。</p>-->
+					<p class="weui-toast__content" style="font-size:50px;text-align:left;color:black">各位患儿与家长好，您当前日期<font style="color: red">预约成功</font>。<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，祝孩子早日康复。</p>
+					<input style=" margin-right: -800px; width: 150px;height: 100px;font-size:40px;margin-top: 40px;text-align: center" type="button" value="确定" @click="close('js_toast3')" />
+				</div>
+			</div>
+
+			<div id="js_faild" style="display: none;width:1000px;height:900px;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast" style="width:1000px;height:900px;background-color:#f7f7f7">
+<!--					<p class="weui-toast__content" style="font-size:50px;text-align:left">各位患儿与家长好，您当前日期预约失败。</p>-->
+					<p class="weui-toast__content" style="font-size:50px;text-align:left;color:black">各位患儿与家长好，您当前日期<font style="color: red">预约失败</font>。<br/>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限的，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复。</p>
+					<input style=" margin-right: -800px; width: 150px;height: 100px;font-size:40px;margin-top: 40px;text-align: center" type="button" value="确定" @click="close('js_faild')" />
+				</div>
+			</div>
+
+			<div id="js_faild2" style="display: none;width:500px;height:500px;">
+				<div class="weui-mask_transparent"></div>
+				<div class="weui-toast" style="width:500px;height:500px;">
+					<p class="weui-toast__content" style="font-size:50px;">您当前日期预约失败。</p>
+					<input style="width: 150px;height: 100px;font-size:40px;margin-top: 40px" type="button" value="确  定" @click="close('js_faild2')" />
+
+				</div>
+			</div>
 			
 		</div>
 
@@ -92,8 +139,8 @@
 <script type="text/javascript" charset="utf-8" src="../../js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../js/layer/layer.js"></script>
 <link rel="stylesheet" href="../../css/weui.css"/>
-<link href="../../css/phone/homepage.css?ver=1.7" rel="stylesheet" type="text/css"></link>
-<script src="../../js/phone/homepage/yuyueguahao.js?ver=1.16"></script>
+<link href="../../css/phone/homepage.css?ver=1.8" rel="stylesheet" type="text/css"></link>
+<script src="../../js/phone/homepage/yuyueguahao.js?ver=1.7"></script>
 <style>
 	.currentday{
 		background-color:#00baad;

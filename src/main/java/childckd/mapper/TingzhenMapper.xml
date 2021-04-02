@@ -72,6 +72,18 @@
   <sql id="Base_Column_List" >
     tingzhenid, expertid, name, starttime, endtime, isam, ispm, zhuangtai
   </sql>
+
+  <select id="findTingzhenbythis" resultType="childckd.model.Tingzhen">
+    select *
+    from Tingzhen AS t
+    where t.expertid = #{ppExpertId}
+
+    <if test='ppShangxiawu=="上午"'> and t.isam = 1 </if>
+    <if test='ppShangxiawu=="下午"'> and t.ispm = 1 </if>
+    and date_format(#{ppPaiBanRiQi}, '%Y-%m-%d' )>=date_format(t.starttime, '%Y-%m-%d' )
+    and date_format(t.endtime, '%Y-%m-%d' )>=date_format(#{ppPaiBanRiQi}, '%Y-%m-%d' )
+  </select>
+
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="childckd.model.TingzhenExample" >
     select
     <if test="distinct" >

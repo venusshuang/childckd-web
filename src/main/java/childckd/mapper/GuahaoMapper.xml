@@ -99,6 +99,7 @@
 		p.`name` AS zhuanjianame,
 		pj.shenfenzhenghaoma,
 		pj.xingbie,
+        date_format(p.paibanriqi,'%Y-%m-%d')AS paibanriqi,
 		pj.age
 	FROM
 		guahao g 
@@ -124,6 +125,7 @@
 		'住院' AS zhuanjianame,
 		pj.shenfenzhenghaoma,
 		pj.xingbie,
+        date_format(z.chuangjianshijian,'%Y-%m-%d')AS paibanriqi,
 		pj.age
 	FROM
 		zhuyuan z
@@ -131,7 +133,7 @@
 	LEFT JOIN patient_jiuzhenxinxi pj on pj.jiuzhenxinxiid = z.jiuzhenxinxiid
 	WHERE z.userid = #{userid}
 	
-	ORDER BY chuangjianshijian DESC
+	ORDER BY shenheshijian DESC
   </select>
   
   <select id="findCustomAll" resultType="map">

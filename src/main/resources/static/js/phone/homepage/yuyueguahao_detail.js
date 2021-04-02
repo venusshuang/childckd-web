@@ -5,6 +5,7 @@ var _yuyueguahaoDetailVue = new Vue({
 		userid : $("#userid").val(),
 		jiuzhenxinxiid : $("#jiuzhenxinxiid").val(),
 		paibanid : $("#paibanid").val(),
+		shengyuhaoshu : $("#shengyuhaoshu").val(),
 		
 		paiban : {},
 		weekpaibanlist : [],
@@ -15,7 +16,6 @@ var _yuyueguahaoDetailVue = new Vue({
 	},
 	created : function(){
 		var _this = this;
-		
 		_this.bindPaiban();
 	},
 	methods:{
@@ -92,10 +92,10 @@ var _yuyueguahaoDetailVue = new Vue({
 			},"json");
 		},
 		
-		toDetail:function(ppPaibanId){
+		toDetail:function(ppPaibanId,ppShengyuhaoshu){
 			var _this = this;
 			
-			location.href="/homepage/yuyueguahao_detail.html?paibanid="+ppPaibanId+"&jiuzhenxinxiid="+_this.jiuzhenxinxiid;
+			location.href="/homepage/yuyueguahao_detail.html?paibanid="+ppPaibanId+"&jiuzhenxinxiid="+_this.jiuzhenxinxiid+"&shengyuhaoshu="+ppShengyuhaoshu;
 		},
 		
 		showDetail:function(){

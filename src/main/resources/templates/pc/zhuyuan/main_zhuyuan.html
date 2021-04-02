@@ -86,6 +86,7 @@
 				<th style="text-align:center;vertical-align:middle;width: 150px;">年龄</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">手机号</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">病种</th>
+				<th style="text-align:center;vertical-align:middle;width: 150px;">创建日期</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">处理结果</th>
 				<th style="text-align:center;vertical-align:middle;width: 150px;">操作</th>
 			</thead>
@@ -100,6 +101,7 @@
 					<td style="text-align:center;vertical-align:middle;" v-text="zhuyuanitem.age"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="zhuyuanitem.shoujihao"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="zhuyuanitem.text"></td>
+					<td style="text-align:center;vertical-align:middle;" v-text="zhuyuanitem.chuangjianshijian"></td>
 					<td style="text-align:center;vertical-align:middle;" >
 						<span v-if="zhuyuanitem.shenhejieguo == '0'" style="color:blue">待审核</span>
 						<span v-if="zhuyuanitem.shenhejieguo == '1'" style="color:green">通过</span>
@@ -152,7 +154,7 @@
 
 </body>
 
-<script src="../js/pc/zhuyuan/main_zhuyuan.js?ver=1.4"></script>
+<script src="../js/pc/zhuyuan/main_zhuyuan.js?ver=1.6"></script>
 <link href="../css/main.css?ver=1.0" rel="stylesheet" type="text/css"></link>
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 <link rel="stylesheet" href="/css/xadmin.css?ver=0.6">

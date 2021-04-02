@@ -7,16 +7,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import childckd.model.Tingzhen;
 import org.apache.ibatis.annotations.Param;
 
 public interface PaibanguanliMapper {
-	
-	List<Map<String, Object>>findWeekPaibanByExpertId(@Param("expertid")String ppExpertId);
-	
-	List<Map<String,Object>> find_custom_one(String ppPaibanId);
-	
-	List<Map<String, Object>> findPaiBanGuanLiByNameAndDateAndShangxiawu(String ppName, String mmPaiBanRiQi, String ppShangxiawu);
-	
+    List<Map<String, Object>>findWeekPaibanByExpertId(@Param("expertid")String ppExpertId);
+
+    List<Map<String,Object>> find_custom_one(String ppPaibanId);
+
+    List<Map<String, Object>> findPaiBanGuanLiByNameAndDateAndShangxiawu(String ppName, String mmPaiBanRiQi, String ppShangxiawu);
+
+    List<Map<String, Object>> findPaiBanGuanLiByExpertidAndDate(String ppExpertid, String mmPaiBanRiQi, String ppShangxiawu);
+
     int countByExample(PaibanguanliExample example);
 
     int deleteByExample(PaibanguanliExample example);
@@ -39,12 +41,13 @@ public interface PaibanguanliMapper {
 
     int updateByPrimaryKey(Paibanguanli record);
 
-	Object countFindYuyue(@Param("Paibanid") String mmPaibanid, @Param("Shenhejieguo") int ppShenhejieguo);
 
-	List<Map<String, Object>> findByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi,@Param("startindex") int mmStartIndex, @Param("pagesize") int ppPageSize);
 
-	Object CountByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi);
+    List<Map<String, Object>> findByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi,@Param("startindex") int mmStartIndex, @Param("pagesize") int ppPageSize);
+
+    Object CountByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi);
 
 
     List<Paibanguanli> findDayByExpertidAndPaibanriqi(String ppExpertId, String ppPaiBanRiQi);
+
 }

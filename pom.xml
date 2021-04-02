@@ -72,6 +72,14 @@
 			<artifactId>nekohtml</artifactId>
 			<version>1.9.22</version>
 		</dependency>
+
+		<dependency>
+			<groupId>com.baidu</groupId>
+			<artifactId>ueditor</artifactId>
+			<version>1.0.0</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/src/main/resources/static/lib/ueditor-1.0.0.jar</systemPath>
+		</dependency>
         
         <dependency>
         <groupId>javax.xml.bind</groupId>
@@ -120,6 +128,12 @@
 				<groupId>org.mybatis.generator</groupId>
 				<artifactId>mybatis-generator-maven-plugin</artifactId>
 				<version>1.3.2</version>
+				<configuration>
+					<!--配置文件的位置-->
+					<configurationFile>src/main/resources/generatorConfig.xml</configurationFile>
+					<overwrite>true</overwrite>
+					<verbose>true</verbose>
+				</configuration>
 			</plugin>
 		</plugins>
 

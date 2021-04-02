@@ -1,12 +1,9 @@
 package childckd.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
+import childckd.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import childckd.model.Blacklist;
-import childckd.model.Guahao;
-import childckd.model.News;
-import childckd.model.Paibanguanli;
 import childckd.service.BlackService;
 import childckd.service.GuahaoService;
 import childckd.service.PaiBanGuanLiService;
@@ -218,12 +211,19 @@ public class GuahaoController {
 			if (mmBlack != null) {
 				return JsonResult.getErrorResult("该就诊信息在黑名单中，无法预约！");
 			}
+
+
+
+
 			
 			// 获取排班信息
 			Paibanguanli mmPaibanguanli = ddPaiBanGuanLiService.findOne(ppPaibanId);
 			if (mmPaibanguanli == null) {
 				return JsonResult.getErrorResult("该排班不存在");
 			}
+
+
+
 			int mmXianhaoshu = mmPaibanguanli.getXianhaoshu();
 			String mmExpertId = mmPaibanguanli.getExpertid();
 
@@ -235,20 +235,12 @@ public class GuahaoController {
 			if (mmGuahaoList.size()>0) {
 				return JsonResult.getErrorResult("请勿重复挂号");
 			}
-			
-			// 获取患者姓名
-			String mmName = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId).getName();
 
-			// 挂号
-			String mmGuahaoId = UUID.randomUUID().toString();
-			Guahao mmGuahao = new Guahao();
-			mmGuahao.setGuahaoid(mmGuahaoId);
-			mmGuahao.setJiuzhenxinxiid(ppJiuzhenxinxiId);
-			mmGuahao.setUserid(ppUserId);
-			mmGuahao.setPaibanid(ppPaibanId);
-			mmGuahao.setName(mmName);
-			mmGuahao.setChuangjianshijian(new Date());
-			mmGuahao.setZhuangtai(1);
+			boolean allowJiahao=false;
+			String mmShenheyijian="";
+
+			boolean isShenhe=false;
+
 			
 			// 消息
 			News mmNews = null;
@@ -266,11 +258,102 @@ public class GuahaoController {
 				mmDangtianTongguoshu += ddPaiBanGuanLiService.countFindYuyue(mmTempPaibanId,1);
 			}
 
+			PatientJiuzhenxinxi mmJiuzhenxinxi = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId);
 
-			// 这个专家在这一天排版中的所有通过数量 小于 这个专家在这一天排版中的限号数之和 ，则直接通过审核 并且 发送消息，否则挂号为待审核状态 20210301修改
-			if(mmDangtianTongguoshu < mmDangtianZongxianhaoshu){
-				mmGuahao.setShenhejieguo(1);	// 审核通过
-				mmGuahao.setShenheyijian("限号数之内的预约直接通过!");
+			String[] Bingzhongvalues = mmPaibanguanli.getJiahaobingzhong().split(",");
+			List<String> Bingzhonglist = Arrays.asList(Bingzhongvalues);
+
+
+			if(mmDangtianTongguoshu < mmDangtianZongxianhaoshu) {
+				allowJiahao=true;
+				mmShenheyijian="限号数之内的预约直接通过";
+			}else if((Bingzhonglist.size()==0)&&(mmPaibanguanli.getJiahaoshu()!=0))//只设置加号数，未设置加号病种的情况
+			{
+				if(mmDangtianTongguoshu >= mmDangtianZongxianhaoshu+mmPaibanguanli.getJiahaoshu()) {
+					if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
+					{
+						//return JsonResult.getErrorResult("各位患儿与家长好，您当前日期预约失败。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复");
+						return JsonResult.getErrorResult("您当前日期夏教授的号预约失败。该病种加号已满");
+					}else
+					{
+						return JsonResult.getErrorResult("您当前日期专家号预约失败。该病种加号已满");
+					}
+				}else
+				{
+					allowJiahao=true;
+					isShenhe=true;
+					mmShenheyijian="当前预约正在审核";
+				}
+			}else if((Bingzhonglist.size()!=0)&&(mmPaibanguanli.getJiahaoshu()!=0))//设置加号病种及加号数
+			{
+				if(Bingzhonglist.contains(mmJiuzhenxinxi.getBingzhong()))
+				{
+					if(mmDangtianTongguoshu>=mmDangtianZongxianhaoshu+mmPaibanguanli.getJiahaoshu())
+					{
+						if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
+						{
+							//return JsonResult.getErrorResult("各位患儿与家长好，您当前日期预约失败。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复");
+							return JsonResult.getErrorResult("您当前日期夏教授的号预约失败。该病种加号已满");
+						}else
+						{
+							return JsonResult.getErrorResult("您当前日期专家号预约失败。该病种加号已满");
+						}
+					}else
+					{
+						allowJiahao=true;
+						isShenhe=true;
+						mmShenheyijian="当前预约正在审核";
+					}
+				}else
+				{
+					if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
+					{
+						//return JsonResult.getErrorResult("各位患儿与家长好，您当前日期预约失败。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复");
+						return JsonResult.getErrorResult("您当前日期夏教授的号预约失败。该病种加号已满");
+					}else
+					{
+						return JsonResult.getErrorResult("您当前日期专家号预约失败。该病种加号已满");
+					}
+				}
+			}else //其他情况，例如加号病种及加号数都为0
+			{
+				if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
+				{
+					//return JsonResult.getErrorResult("各位患儿与家长好，您当前日期预约失败。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复");
+					return JsonResult.getErrorResult("您当前日期夏教授的号预约失败。该病种加号已满");
+				}else
+				{
+					return JsonResult.getErrorResult("您当前日期专家号预约失败。该病种加号已满");
+				}
+			}
+
+			boolean mmResult =false;
+
+			if(allowJiahao)
+			{
+
+				// 获取患者姓名
+				String mmName = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId).getName();
+				// 挂号
+				String mmGuahaoId = UUID.randomUUID().toString();
+				Guahao mmGuahao = new Guahao();
+				mmGuahao.setGuahaoid(mmGuahaoId);
+				mmGuahao.setJiuzhenxinxiid(ppJiuzhenxinxiId);
+				mmGuahao.setUserid(ppUserId);
+				mmGuahao.setPaibanid(ppPaibanId);
+				mmGuahao.setName(mmName);
+				mmGuahao.setChuangjianshijian(new Date());
+				mmGuahao.setZhuangtai(1);
+
+				if(isShenhe)
+				{
+					mmGuahao.setShenhejieguo(0);//待审核
+				}else
+				{
+					mmGuahao.setShenhejieguo(1);//通过
+				}
+
+				mmGuahao.setShenheyijian(mmShenheyijian);
 				mmGuahao.setShenheshijian(new Date());
 
 				// 往消息中插入一条数据
@@ -280,58 +363,46 @@ public class GuahaoController {
 				mmNews.setFajianrenname("挂号管理员");
 				mmNews.setShoujianren(ppUserId);
 				mmNews.setShoujianrenname(mmName);
-				mmNews.setNeirong("限号数之内的预约直接通过!");
+				mmNews.setNeirong(mmShenheyijian);
 				mmNews.setNewstype(1);		// 1:挂号
 				mmNews.setZhuangtai(0);
 				mmNews.setChuangjianshijian(new Date());
 				mmNews.setOwnerid(mmGuahaoId);
-
-			}else{
-				mmGuahao.setShenhejieguo(0);	// 待审核
+				mmResult = ddService.addCustom(mmGuahao, mmPaibanguanli,mmNews);
 			}
 
 
 
-			//	若审核通过的数量小于限号数，则直接通过审核 并且 发送消息，否则挂号为待审核状态 20210220修改 20210301注释
-			/*int mmCountTongguo = ddPaiBanGuanLiService.countFindYuyue(ppPaibanId,1);
-			if(mmCountTongguo < mmXianhaoshu){
-				mmGuahao.setShenhejieguo(1);	// 审核通过
-				mmGuahao.setShenheyijian("限号数之内的预约直接通过!");
-				mmGuahao.setShenheshijian(new Date());
-
-				// 往消息中插入一条数据
-				mmNews = new News();
-				mmNews.setNewsid(UUID.randomUUID().toString());
-				mmNews.setFajianren("guahaoguanliyuan");
-				mmNews.setFajianrenname("挂号管理员");
-				mmNews.setShoujianren(ppUserId);
-				mmNews.setShoujianrenname(mmName);
-				mmNews.setNeirong("限号数之内的预约直接通过!");
-				mmNews.setNewstype(1);		// 1:挂号
-				mmNews.setZhuangtai(0);
-				mmNews.setChuangjianshijian(new Date());
-				mmNews.setOwnerid(mmGuahaoId);
-
-			}else{
-				mmGuahao.setShenhejieguo(0);	// 待审核
-			}*/
 
 			
 
 
-			// 当剩余号数大于0,剩余号数减1 20210129修改 20210220注释
-			/*if (mmShengyuhaoshu > 0) {
-				// 预约挂号成功，剩余号数减一
-				mmPaibanguanli.setShengyuhaoshu(mmShengyuhaoshu - 1);
-			}*/
+			if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
+			{
+				if(isShenhe)
+				{
+					return mmResult ? JsonResult.getSuccessResult("夏教授待审核！") : JsonResult.getErrorResult("夏教授待审核失败！");
+				}else
+				{
+					return mmResult ? JsonResult.getSuccessResult("夏教授审核通过！") : JsonResult.getErrorResult("夏教授审核失败！");
+				}
 
-			boolean mmResult = ddService.addCustom(mmGuahao, mmPaibanguanli,mmNews);
-			
-			if (mmDangtianTongguoshu < mmDangtianZongxianhaoshu) {
-				return mmResult ? JsonResult.getSuccessResult("预约成功！") : JsonResult.getErrorResult("预约失败！");
+				//return mmResult ? JsonResult.getSuccessResult("各位患儿与家长好，您当前日期预约成功。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，祝孩子早日康复"): JsonResult.getErrorResult("各位患儿与家长好，您当前日期预约失败。夏教授是国内儿童肾病第一品牌专家，中国卓越贡献儿科医生，儿童肾病诊疗方案的制定者，接受全国患儿的预约，但一个人的精力是有限，你预约的门诊己约满，建议你预约下次夏教授的专家号，如夏教授时间允许也会给你加号的，请耐心等待，如显示预约成功即加号成功，如显示预约失败请预约夏教授下次专家号，祝孩子早日康复");
+
+			}else
+			{
+				if(isShenhe)
+				{
+					return mmResult ? JsonResult.getSuccessResult("待审核！") : JsonResult.getErrorResult("待审核失败！");
+				}else
+				{
+					return mmResult ? JsonResult.getSuccessResult("审核通过！") : JsonResult.getErrorResult("审核失败！");
+				}
+
 			}
-			
-			return mmResult ? JsonResult.getSuccessResult("加号预约成功，待专家审核！") : JsonResult.getErrorResult("加号预约失败！");
+
+
+
 
 		} catch (Exception e) {
 			e.printStackTrace();

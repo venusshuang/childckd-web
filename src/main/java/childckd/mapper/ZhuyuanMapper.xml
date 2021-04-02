@@ -34,7 +34,7 @@
 		zy.userid,
 		zy.xingming,
 		zy.bingzhong,
-		zy.chuangjianshijian,
+        date_format(zy.chuangjianshijian,'%Y-%m-%d') as chuangjianshijian,
 		zy.zhuangtai,
 		zy.shenhejieguo,
 		zy.shenheshijian,

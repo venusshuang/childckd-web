@@ -13,7 +13,10 @@ var Schedule_Vue = new Vue({
 		jiage : $("#input_jiage").val(),
 		xianhaoshu : $("#input_xianhaoshu").val(),
 		
-		schedule : {},
+		schedule : {
+			jiahaobingzhong:[],
+		},
+		bingzhonglist : [],			// 病种字典表
 		
 		xingqi:'',
 		shangxaiwu:'',
@@ -22,6 +25,8 @@ var Schedule_Vue = new Vue({
 	
 	created : function() {
 		var _this = this;
+		// 加载字典表
+		_this.initDict();
 
 		_this.initExpertList();
 		//_this.bindSchedule();
@@ -38,10 +43,27 @@ var Schedule_Vue = new Vue({
 		_this.bindOnedaySchedule("4","下午");
 		_this.bindOnedaySchedule("5","下午");
 		_this.bindOnedaySchedule("6","下午");
+
+
 	},
 	
 	
 	methods : {
+
+		initDict:function(){
+			var _this = this;
+
+			// 病种
+			$.post('/dict_bingzhong/find_valid', {
+				rdm : Math.random()
+			},function(ppData) {
+				if (ppData != null) {
+					if(ppData.result == "1"){
+						_this.bingzhonglist = ppData.resultContent;
+					}
+				}
+			},"json");
+		},
 		
 		//初始化专家下拉列表
 		initExpertList : function(){
@@ -108,6 +130,8 @@ var Schedule_Vue = new Vue({
 								"<div>专家姓名："+data[i].zhuanjiaxingming+"</div>" +
 								"<div>价格："+data[i].jiage+"元</div>" +
 								"<div>限号数："+data[i].xianhaoshu+"</div>" +
+									/*"<div>加号病种："+data[i].jiahaobingzhong+"</div>" +
+									"<div>加号数："+data[i].jiahaoshu+"</div>" +*/
 								"<div>状态：<span style='color:green'>启用</span></div>" +
 								"<div>" +
 									"<div onclick=\"toShowSchedule('"+data[i].id+"','"+data[i].xingqi+"','"+data[i].shangxiawu+"')\" style='border:1px solid #bbb;float:left;width:33%;color:#08b6fc;'>修改</div>" +
@@ -120,6 +144,8 @@ var Schedule_Vue = new Vue({
 								"<div>专家姓名："+data[i].zhuanjiaxingming+"</div>" +
 								"<div>价格："+data[i].jiage+"元</div>" +
 								"<div>限号数："+data[i].xianhaoshu+"</div>" +
+								/*	"<div>加号病种："+data[i].jiahaobingzhong+"</div>" +
+									"<div>加号数："+data[i].jiahaoshu+"</div>" +*/
 								"<div>状态：<span style='color:#f0ad4e'>停诊</span></div>" +
 								"<div>" +
 									"<div onclick=\"toShowSchedule('"+data[i].id+"','"+data[i].xingqi+"','"+data[i].shangxiawu+"')\" style='border:1px solid #bbb;float:left;width:33%;color:#08b6fc;'>修改</div>" +
@@ -168,7 +194,7 @@ var Schedule_Vue = new Vue({
 		bindOneSchedule : function(){
 			var _this = this;
 			layer.open({type:3});
-			
+			$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
 			$.post('/schedule/find_one', {
 				scheduleid : _this.scheduleid,
 				rdm : Math.random()
@@ -176,11 +202,25 @@ var Schedule_Vue = new Vue({
 				
 				layer.closeAll("loading");
 				if(ppData != null){
+
 					if(ppData.result == "1"){
-						
+
 						var data = ppData.resultContent;
 						_this.schedule = data;
 						_this.expertid = _this.schedule.expertid;
+						$("#jiahaoshu").val(data.jiahaoshu);
+						if(data.jiahaobingzhong)
+						{
+
+							var arr=data.jiahaobingzhong.split(',');
+							$("#jiahaobingzhong").val(arr);
+							$("#jiahaobingzhong").selectpicker('val', arr);
+						}else
+						{
+							$("#jiahaobingzhong").selectpicker('val', []);
+						}
+
+
 					}else{
 						layer.alert(ppData.message);
 					}
@@ -190,6 +230,21 @@ var Schedule_Vue = new Vue({
 		
 		saveSchedule : function(){
 			var _this = this;
+			var mmJiahaobingzhong=$("#jiahaobingzhong").val();
+			var mmbingzhong="";
+			for(var i=0;i<mmJiahaobingzhong.length;i++)
+			{
+				mmbingzhong+=mmJiahaobingzhong[i]+",";
+			}
+			if(mmbingzhong.endsWith(","))
+			{
+				mmbingzhong=mmbingzhong.substring(0,mmbingzhong.length-1);
+			}
+
+
+
+			alert("df");
+
 			if(_this.checkInputData()){
 				layer.open({type:3});
 				$.post('/schedule/save',{
@@ -201,6 +256,8 @@ var Schedule_Vue = new Vue({
 					xianhaoshu : $("#input_xianhaoshu").val(),
 					jiage : $("#input_jiage").val(),
 					zhuangtai : 1,
+					jiahaobingzhong : mmbingzhong,
+					jiahaoshu : $("#jiahaoshu").val(),
 					random : Math.random()
 				},function(ppData){
 					if(ppData != null){
@@ -251,6 +308,7 @@ var Schedule_Vue = new Vue({
 			$("#input_expertid").val("");
 			$("#input_jiage").val("");
 			$("#input_xianhaoshu").val("");
+			$("#jiahaoshu").val("");
 
 		}
 	}

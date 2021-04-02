@@ -1,10 +1,9 @@
 package childckd.model;
 
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.util.Date;
 
 public class Paibanguanli {
     private String paibanid;
@@ -15,8 +14,6 @@ public class Paibanguanli {
 
     private String guahaoleibie;
 
-    @DateTimeFormat(pattern="yyyy-MM-dd")  // HH:mm:ss
-    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date paibanriqi;
 
     private String shangxiawu;
@@ -28,6 +25,10 @@ public class Paibanguanli {
     private Float jiage;
 
     private Integer zhuangtai;
+
+    private String jiahaobingzhong;
+
+    private Integer jiahaoshu;
 
     public String getPaibanid() {
         return paibanid;
@@ -60,7 +61,8 @@ public class Paibanguanli {
     public void setGuahaoleibie(String guahaoleibie) {
         this.guahaoleibie = guahaoleibie;
     }
-    @DateTimeFormat(pattern="yyyy-MM-dd")  // HH:mm:ss
+
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     public Date getPaibanriqi() {
         return paibanriqi;
@@ -108,5 +110,21 @@ public class Paibanguanli {
 
     public void setZhuangtai(Integer zhuangtai) {
         this.zhuangtai = zhuangtai;
+    }
+
+    public String getJiahaobingzhong() {
+        return jiahaobingzhong;
+    }
+
+    public void setJiahaobingzhong(String jiahaobingzhong) {
+        this.jiahaobingzhong = jiahaobingzhong;
+    }
+
+    public Integer getJiahaoshu() {
+        return jiahaoshu;
+    }
+
+    public void setJiahaoshu(Integer jiahaoshu) {
+        this.jiahaoshu = jiahaoshu;
     }
 }

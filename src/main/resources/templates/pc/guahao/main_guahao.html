@@ -100,6 +100,7 @@
 				<th style="text-align:center;vertical-align:middle;">临床诊断</th>
 				<th style="text-align:center;vertical-align:middle;width: 100px;">年龄</th>
 				<th style="text-align:center;vertical-align:middle;width: 140px;">手机号</th>
+				<th style="text-align:center;vertical-align:middle;width: 140px;">创建日期</th>
 				<th style="text-align:center;vertical-align:middle;width: 100px;">预约专家</th>
 				<th style="text-align:center;vertical-align:middle;width: 110px;">预约日期</th>
 				<th style="text-align:center;vertical-align:middle;width: 100px;">处理结果</th>
@@ -120,6 +121,7 @@
 					<td style="text-align:center;vertical-align:middle;" v-if="guahaoitem.age=='1'||guahaoitem.age=='2'" v-html="guahaoitem.nianling"></td>
 					<td style="text-align:center;vertical-align:middle;" v-else><span v-if="guahaoitem.nianling!=null&&guahaoitem.nianling!=''" v-html="guahaoitem.nianling"></span><span v-else>/</span><span>岁</span></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.shoujihao"></td>
+					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.chuangjianshijian"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.zhuanjiaxingming"></td>
 					<td style="text-align:center;vertical-align:middle;" v-text="guahaoitem.paibanriqi"></td>
 					<td style="text-align:center;vertical-align:middle;" >
@@ -178,7 +180,7 @@
 
 </body>
 
-<script src="../js/pc/guahao/main_guahao.js?ver=1.9"></script>
+<script src="../js/pc/guahao/main_guahao.js?ver=6.9"></script>
 <link href="../css/main.css?ver=1.0" rel="stylesheet" type="text/css"></link>
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 <link rel="stylesheet" href="/css/xadmin.css?ver=0.7">

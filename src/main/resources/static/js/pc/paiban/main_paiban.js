@@ -5,24 +5,48 @@ var Paiban_Vue = new Vue({
 		name : $("#name").val(),
 		paibanriqi : $("#paibanriqi").val(),
 		paibanlist : [],// 排班列表
-		paiban : {},	//某一排班情况
+		paiban : {
+			jiahaobingzhong:[],
+		},	//某一排班情况
 		editFlag : 0,// 0:新增，1：修改
 		show : true,// 显示列表是否有数据
 		paibanid : '',	//当前的排班id
 		expertid : '',	//下拉框的专家id
+		expertid_search:'',
 		expertlist : [],// 下拉框的专家集合
-		
+
+		bingzhonglist : [],			// 病种字典表
+		bingzhongid : "",
 		
 	},
 	
 	created : function() {
 		var _this = this;
-
+		// 加载字典表
+		_this.initDict();
 		_this.bindPaibanList();
+		_this.bindExpertList();
+
+
+
 	},
 	
 	
 	methods : {
+		initDict:function(){
+			var _this = this;
+
+			// 病种
+			$.post('/dict_bingzhong/find_valid', {
+				rdm : Math.random()
+			},function(ppData) {
+				if (ppData != null) {
+					if(ppData.result == "1"){
+						_this.bingzhonglist = ppData.resultContent;
+					}
+				}
+			},"json");
+		},
 		
 		 getDate : function() {
 			 var _this=this;
@@ -40,8 +64,9 @@ var Paiban_Vue = new Vue({
 			
 			var _this = this;
 			layer.open({type:3});
-			$.post('/paiban/findPaiBanGuanLiByNameAndDateAndShangxiawu',{
-				name:_this.name,
+			$.post('/paiban/findPaiBanGuanLiByExpertidAndDate',{
+				//name:_this.name,
+				expertid_search:_this.expertid_search,
 				paibanriqi:_this.paibanriqi,
 				shangxiawu:"",
 				rdm:Math.random()
@@ -109,7 +134,8 @@ var Paiban_Vue = new Vue({
 		bindPaiban : function(){
 			var _this = this;
 			layer.open({type:3});
-			
+			$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+
 			$.post('/paiban/find_one', {
 				paibanid : _this.paibanid,
 				rdm : Math.random()
@@ -122,7 +148,21 @@ var Paiban_Vue = new Vue({
 						var data = ppData.resultContent;
 						_this.paiban = data;
 						_this.expertid = data.expertid;
-						$("input[name='shangxiawu'][value="+data.shangxiawu+"]").attr("checked",true); 
+						$("input[name='shangxiawu'][value="+data.shangxiawu+"]").prop("checked",true);
+
+						if(data.jiahaobingzhong)
+						{
+							var arr=data.jiahaobingzhong.split(',');
+							_this.paiban.jiahaobingzhong=arr;
+							$("#jiahaobingzhong").selectpicker('val', arr);
+						}else
+						{
+							_this.paiban.jiahaobingzhong=[];
+						}
+
+
+
+
 						
 					}else{
 						layer.alert(ppData.message);
@@ -145,6 +185,8 @@ var Paiban_Vue = new Vue({
 					xianhaoshu : !_this.paiban.xianhaoshu ? 0 : $.trim(_this.paiban.xianhaoshu),
 					shengyuhaoshu : !_this.paiban.shengyuhaoshu ? 0 : $.trim(_this.paiban.shengyuhaoshu),
 					jiage : !_this.paiban.jiage ? 0 : $.trim(_this.paiban.jiage),
+					jiahaobingzhong : !_this.paiban.jiahaobingzhong ? "" : $.trim(_this.paiban.jiahaobingzhong),
+					jiahaoshu : !_this.paiban.jiahaoshu ? 0 : $.trim(_this.paiban.jiahaoshu),
 					random : Math.random()
 				},function(ppData){
 					if(ppData != null){
@@ -191,17 +233,36 @@ var Paiban_Vue = new Vue({
 			_this.paiban.shangxiawu = $("input[name='shangxiawu']:checked").val();
 			
 			
-			var xianhaoshu = !_this.paiban.xianhaoshu ? "" : $.trim(_this.paiban.xianhaoshu);
+			/*var xianhaoshu = !_this.paiban.xianhaoshu ? "" : $.trim(_this.paiban.xianhaoshu);
 			if("" == xianhaoshu){
 				layer.alert("请填写预约人数！");
 	    		return false;
-			}
+			}*/
 			
 			var jiage = !_this.paiban.jiage ? "" : $.trim(_this.paiban.jiage);
 			if("" == jiage){
 				layer.alert("请填写价格！");
 	    		return false;
 			}
+
+			var jiahaobingzhong = !_this.paiban.jiahaobingzhong ? "" : $.trim(_this.paiban.jiahaobingzhong);
+
+			/*if("" == jiahaobingzhong){
+				layer.alert("请选择加号病种！");
+				return false;
+			}*/
+
+			var expertid = !_this.expertid ? "" : $.trim(_this.expertid);
+			if("" == expertid){
+				layer.alert("请选择专家姓名！");
+				return false;
+			}
+
+			var jiahaoshu = !_this.paiban.jiahaoshu ? "" : $.trim(_this.paiban.jiahaoshu);
+			/*if("" == jiahaoshu){
+				layer.alert("请填写加号数！");
+				return false;
+			}*/
 
 			return true;
 		},
@@ -255,6 +316,8 @@ var Paiban_Vue = new Vue({
 						
 						layer.alert("批量删除成功");	
 						_this.bindPaibanList();
+						$("input[name='paibanCheckbox']").prop('checked',false);
+						$("input[name='paibanAllCheckbox']").prop('checked',false);
 						
 					}else{
 						
@@ -283,6 +346,8 @@ var Paiban_Vue = new Vue({
 					xianhaoshu : !_this.paiban.xianhaoshu ? 0 : $.trim(_this.paiban.xianhaoshu),
 					shengyuhaoshu : !_this.paiban.shengyuhaoshu ? 0 : $.trim(_this.paiban.shengyuhaoshu),
 					jiage : !_this.paiban.jiage ? 0 : $.trim(_this.paiban.jiage),
+					jiahaobingzhong : !_this.paiban.jiahaobingzhong ? "" : $.trim(_this.paiban.jiahaobingzhong),
+					jiahaoshu : !_this.paiban.jiahaoshu ? 0 : $.trim(_this.paiban.jiahaoshu),
 					random : Math.random()
 				},function(ppData){
 					if(ppData != null){

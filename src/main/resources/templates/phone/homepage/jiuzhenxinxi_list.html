@@ -10,8 +10,10 @@
 		<input type="hidden" th:value="${UserType}" id="usertype">
 		<input type="hidden" th:value="${UserId}" id="userid">
 	
-		<div class="top">
-			就诊患者
+		<div class="top1">
+			<a  href="../../homepage/index_patient.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+
+			<span style="margin-left:240px">就诊患者</span>
 		</div>
 
 		
@@ -43,7 +45,7 @@
 		            </div>
 		            <div class="weui-form-preview__ft" style="line-height:80px;">
 	                	<a style="font-size:40px;" class="weui-form-preview__btn weui-form-preview__btn_default" @click="prepareToModify(jiuzhenxinxiitem.jiuzhenxinxiid)">修改</a>
-	                	<a style="font-size:40px;" class="weui-form-preview__btn weui-form-preview__btn_primary" @click="prepareToGuahao(jiuzhenxinxiitem.jiuzhenxinxiid)">选择挂号</a>
+	                	<a style="font-size:50px;" class="weui-form-preview__btn weui-form-preview__btn_primary" @click="prepareToGuahao(jiuzhenxinxiitem.jiuzhenxinxiid)"><strong>选择挂号</strong></a>
 	            	</div>
 		        </div>
 				
@@ -225,7 +227,7 @@
 <script type="text/javascript" charset="utf-8" src="../../js/ie10-viewport-bug-workaround.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../js/layer/layer.js"></script>
 <link rel="stylesheet" href="../../css/weui.css"/>
-<link href="../../css/phone/homepage.css?ver=1.8" rel="stylesheet" type="text/css"></link>
+<link href="../../css/phone/homepage.css?ver=1.9" rel="stylesheet" type="text/css"></link>
 <script src="../../js/phone/homepage/jiuzhenxinxi.js?ver=3.5"></script>
 <script type="text/javascript" charset="utf-8" src="../../js/plupload/plupload.js"></script>
 <script type="text/javascript" charset="utf-8" src="../../js/plupload/plupload.full.js"></script>

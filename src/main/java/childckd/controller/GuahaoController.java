@@ -260,15 +260,26 @@ public class GuahaoController {
 
 			PatientJiuzhenxinxi mmJiuzhenxinxi = ddPatientJiuzhenxinxiService.findOne(ppJiuzhenxinxiId);
 
-			String[] Bingzhongvalues = mmPaibanguanli.getJiahaobingzhong().split(",");
-			List<String> Bingzhonglist = Arrays.asList(Bingzhongvalues);
+
+
+			String[] Bingzhongvalues=null;
+			List<String> Bingzhonglist=null;
+			if(mmPaibanguanli.getJiahaobingzhong()!=null&&!"".equals(mmPaibanguanli.getJiahaobingzhong()))
+			{
+				Bingzhongvalues = mmPaibanguanli.getJiahaobingzhong().split(",");
+				Bingzhonglist = Arrays.asList(Bingzhongvalues);
+			}
+
+
+			System.out.println(Bingzhongvalues);
 
 
 			if(mmDangtianTongguoshu < mmDangtianZongxianhaoshu) {
 				allowJiahao=true;
 				mmShenheyijian="限号数之内的预约直接通过";
-			}else if((Bingzhonglist.size()==0)&&(mmPaibanguanli.getJiahaoshu()!=0))//只设置加号数，未设置加号病种的情况
+			}else if((Bingzhongvalues==null)&&(mmPaibanguanli.getJiahaoshu()!=0))//只设置加号数，未设置加号病种的情况
 			{
+
 				if(mmDangtianTongguoshu >= mmDangtianZongxianhaoshu+mmPaibanguanli.getJiahaoshu()) {
 					if("0401181f-ad2f-4ad7-8518-c7c631bd9d0a".equals(mmPaibanguanli.getExpertid()))
 					{
@@ -284,8 +295,9 @@ public class GuahaoController {
 					isShenhe=true;
 					mmShenheyijian="当前预约正在审核";
 				}
-			}else if((Bingzhonglist.size()!=0)&&(mmPaibanguanli.getJiahaoshu()!=0))//设置加号病种及加号数
+			}else if((Bingzhongvalues!=null)&&(mmPaibanguanli.getJiahaoshu()!=0))//设置加号病种及加号数
 			{
+
 				if(Bingzhonglist.contains(mmJiuzhenxinxi.getBingzhong()))
 				{
 					if(mmDangtianTongguoshu>=mmDangtianZongxianhaoshu+mmPaibanguanli.getJiahaoshu())

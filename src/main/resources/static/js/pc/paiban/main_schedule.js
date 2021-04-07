@@ -25,10 +25,14 @@ var Schedule_Vue = new Vue({
 	
 	created : function() {
 		var _this = this;
+
+
+
+		_this.initExpertList();
+
 		// 加载字典表
 		_this.initDict();
 
-		_this.initExpertList();
 		//_this.bindSchedule();
 		_this.bindOnedaySchedule("1","上午");
 		_this.bindOnedaySchedule("2","上午");
@@ -44,13 +48,17 @@ var Schedule_Vue = new Vue({
 		_this.bindOnedaySchedule("5","下午");
 		_this.bindOnedaySchedule("6","下午");
 
+		/*setTimeout(function(){
 
+			_this.initDict();
+		},'2000');*/
 	},
 	
 	
 	methods : {
 
 		initDict:function(){
+			//alert("2");
 			var _this = this;
 
 			// 病种
@@ -171,12 +179,18 @@ var Schedule_Vue = new Vue({
 			var _this = this;
 
 			_this.clearInput();
-
+			_this.initDict();//绑定病种字典表
 			
 			$("#xingqi").val(ppXingqi);
 			$("#shangxiawu").val(ppShangxiawu);
 			_this.xingqi = ppXingqi;
 			_this.shangxiawu = ppShangxiawu;
+
+			$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+
+			$("#jiahaobingzhong").selectpicker('refresh');
+			//render方法强制重新渲染引导程序 - 选择ui,如果当您编程时更改任何相关值而影响元素布局，这将非常有用。
+			$("#jiahaobingzhong").selectpicker('render');
 			
 			if(ppScheduleId != ""){
 				$("#scheduleid").val(ppScheduleId);
@@ -185,6 +199,7 @@ var Schedule_Vue = new Vue({
 				
 				$("#myModalLabel").html("修改周排班");
 			}else{
+
 				$("#myModalLabel").html("新增周排班");
 			}
 			
@@ -194,7 +209,12 @@ var Schedule_Vue = new Vue({
 		bindOneSchedule : function(){
 			var _this = this;
 			layer.open({type:3});
-			$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+			/*$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+
+			$("#jiahaobingzhong").selectpicker('refresh');
+			//render方法强制重新渲染引导程序 - 选择ui,如果当您编程时更改任何相关值而影响元素布局，这将非常有用。
+			$("#jiahaobingzhong").selectpicker('render');*/
+
 			$.post('/schedule/find_one', {
 				scheduleid : _this.scheduleid,
 				rdm : Math.random()
@@ -243,7 +263,7 @@ var Schedule_Vue = new Vue({
 
 
 
-			alert("df");
+
 
 			if(_this.checkInputData()){
 				layer.open({type:3});

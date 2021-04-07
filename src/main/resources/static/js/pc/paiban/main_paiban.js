@@ -95,10 +95,12 @@ var Paiban_Vue = new Vue({
 		perparetoAddPaiban : function(){
 			$('#editPaibanModal').modal();
 			$("#myModalLabel_paiban").html("新增排班信息");
-			this.editFlag = 0;
-			this.paiban = {};
-			this.paibanid="";
-			this.bindExpertList();
+			var _this = this;
+			_this.editFlag = 0;
+			_this.paiban = {};
+			_this.paibanid="";
+			_this.bindExpertList();
+			_this.initDict();
 		
 		},
 		
@@ -123,11 +125,13 @@ var Paiban_Vue = new Vue({
 
 			$('#editPaibanModal').modal();
 			$("#myModalLabel_paiban").html("修改排班信息");
-			this.editFlag = 1;
+			var _this = this;
+			_this.editFlag = 1;
 
-			this.paibanid = ppPaibanId;
-			this.bindExpertList();
-			this.bindPaiban();
+			_this.paibanid = ppPaibanId;
+			_this.bindExpertList();
+			_this.initDict();
+			_this.bindPaiban();
 			
 		},
 		
@@ -135,6 +139,10 @@ var Paiban_Vue = new Vue({
 			var _this = this;
 			layer.open({type:3});
 			$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+
+			$("#jiahaobingzhong").selectpicker('refresh');
+			//render方法强制重新渲染引导程序 - 选择ui,如果当您编程时更改任何相关值而影响元素布局，这将非常有用。
+			$("#jiahaobingzhong").selectpicker('render');
 
 			$.post('/paiban/find_one', {
 				paibanid : _this.paibanid,

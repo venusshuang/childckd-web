@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="public::head('周排班管理')">
-	
+
+	<link rel="stylesheet" href="../../../static/css/bootstrap-select.css">
 </head>
 <body>
 
@@ -60,7 +61,7 @@
 
 </body>
 
-<script src="../js/pc/paiban/main_schedule.js?ver=1.2"></script>
+<script src="../js/pc/paiban/main_schedule.js?ver=1.9"></script>
 <link href="../css/main.css?ver=1.0" rel="stylesheet" type="text/css"></link>
 <link href="../css/dashboard.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 
@@ -69,12 +70,12 @@
 
 <!-- Latest compiled and minified CSS -->
 <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css">-->
-<link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/css/bootstrap-select.css" rel="stylesheet">
-
+<!--<link href="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/css/bootstrap-select.css" rel="stylesheet">-->
+<link href="../css/bootstrap-select.css?ver=1.1" rel="stylesheet" type="text/css"></link>
 <!-- Latest compiled and minified JavaScript -->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>-->
-<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/js/bootstrap-select.min.js"></script>
-
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-select/1.14.0-beta/js/bootstrap-select.min.js"></script>-->
+<script src="../js/bootstrap-select.min.js?ver=1.2"></script>
 <!-- (Optional) Latest compiled and minified JavaScript translation files -->
 <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/i18n/defaults-*.min.js"></script>-->
 
@@ -87,12 +88,17 @@ var mmScheduleId = "";
 function toShowSchedule(ppScheduleId,ppXingqi,ppShangxiawu){
 
 	clearInput();
-	
+
 	mmXingqi = ppXingqi;
 	mmShangxiawu = ppShangxiawu;
 	
 	$("#xingqi").val(mmXingqi);
 	$("#shangxiawu").val(mmShangxiawu);
+
+	$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+	$("#jiahaobingzhong").selectpicker('refresh');
+	//render方法强制重新渲染引导程序 - 选择ui,如果当您编程时更改任何相关值而影响元素布局，这将非常有用。
+	$("#jiahaobingzhong").selectpicker('render');
 	
 	if(ppScheduleId!=""){
 		mmScheduleId = ppScheduleId;
@@ -107,9 +113,32 @@ function toShowSchedule(ppScheduleId,ppXingqi,ppShangxiawu){
 	$('#editScheduleModal').modal();
 };
 
+
+function BindSelectControl(ppControlName,ppJsonData)
+{
+	var mmHtml = "";
+
+	for(var i=0;i< ppJsonData.length;i++)
+	{
+		var mmValue = unescape(ppJsonData[i].id);
+		var mmText = unescape(ppJsonData[i].text);
+
+		mmHtml +="<option value='" + mmValue + "'>" + mmText + "</option>";
+	}
+
+	//   IsMaxCount(unescape(ppJsonData[0].I));
+
+	var mmControl = $("#"+ ppControlName);
+	mmControl.html(mmHtml);
+};
+
 function bindOneSchedule(){
 
-	$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+	/*$("#jiahaobingzhong").selectpicker('val', []);//否则下拉框旧值不刷新
+	$("#jiahaobingzhong").selectpicker('refresh');
+	//render方法强制重新渲染引导程序 - 选择ui,如果当您编程时更改任何相关值而影响元素布局，这将非常有用。
+	$("#jiahaobingzhong").selectpicker('render');*/
+
 	$.post('/schedule/find_one', {
 		scheduleid : mmScheduleId,
 		rdm : Math.random()

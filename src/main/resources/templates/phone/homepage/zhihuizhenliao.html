@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <link href="../../css/phone/homepage.css?ver=1.6" rel="stylesheet" type="text/css"></link>
@@ -8,9 +8,14 @@
 </head>
 <body>
 	
-	<div class="container">
+	<div class="container" id="zhihuizhenliao">
+		<input type="hidden" th:value="${UserType}" id="usertype">
+		<input type="hidden" th:value="${UserId}" id="userid">
+
 		<div class="top1">
-			<a  href="../../homepage/index_patient.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+			<a  :href="'index_'+usertype+'.html'" >
+				<img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" >
+			</a>
 
 			<span style="margin-left:70px">东总儿肾中心智慧诊疗</span>
 		</div>
@@ -61,7 +66,7 @@
 			      
 			</div>		
 		</div>
-		<div class="weui-grids" style="width:95%;height:1000px;margin:50px auto;">
+		<div class="weui-grids" style="width:95%;height:1000px;margin:50px auto;" v-if="usertype == 'patient'">
 			<div style="width:100%;height:500px;">
 
 				<a id="a_guahao" href="../../homepage/jiuzhenxinxi_list.html"  >
@@ -88,4 +93,15 @@
 		</div>
 	</div>
 </body>
+<script src="https://res.wx.qq.com/open/libs/weuijs/1.2.1/weui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/vue.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/vue-resource.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/ie10-viewport-bug-workaround.js"></script>
+<script type="text/javascript" charset="utf-8" src="../../js/layer/layer.js"></script>
+<link rel="stylesheet" href="../../css/weui.css"/>
+<link href="../../css/phone/homepage.css?ver=1.7" rel="stylesheet" type="text/css"></link>
+
+<script src="../../js/phone/homepage/zhihuizhenliao.js?ver=0.4"></script>
+
 </html>

@@ -15,10 +15,10 @@
 		<div class="top1">
 			<a  href="../../homepage/zhongxinjianjie.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
 
-			<span style="margin-left:240px"></span>
+			<span style="margin-left:240px" id="title" v-text="info.categoryname"></span>
 		</div>
 		
-		<div style="width:100%;margin-top:200px;height:1200px;overflow:auto;" class="detailPart">
+		<div style="width:100%;margin-top:200px;height:100%;overflow:auto;" class="detailPart">
 			<div style="width:98%;">
 				<div class="weui-form-preview__item">
                 	<span class="weui-form-preview__value" style="text-indent:2em;margin-left:30px;font-size:40px;text-align:left;color:#000;line-height:100px;" v-html="info.infocontent"></span>

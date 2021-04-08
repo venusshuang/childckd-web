@@ -63,12 +63,12 @@
 		                	
 	                	</div>
 	                	<div @click="toDetail(paibanitem.paibanid,paibanitem.shengyuhaoshu)">
-			                <div class="weui-form-preview__item">
-			                	<span class="weui-form-preview__label" style="margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#888;line-height:100px;" v-html="paibanitem.zhiwu"></span>
-			                	<span class="weui-form-preview__value" style="float:right;font-size:40px;font-weight:bold;text-align:left;color:#888;line-height:100px;" v-html='paibanitem.jiage+"元"'></span>
+			                <div class="weui-form-preview__item" style="align-items: center;display: -webkit-flex;">
+			                	<div style="float: left;margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#888;width: 80%;" v-text="paibanitem.zhiwu"></div>
+								<div  style="float:right;font-size:40px;font-weight:bold;text-align:left;color:#888;width: 15%;" v-text='paibanitem.jiage+"元"'></div>
 		                	</div>
 		                	<div class="weui-form-preview__item">
-			                	<span class="weui-form-preview__value" style="text-indent:2em;margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#888;line-height:100px;" v-html="paibanitem.jianjie"></span>
+			                	<span class="weui-form-preview__value" style="text-indent:2em;margin-left:30px;font-size:40px;font-weight:bold;text-align:left;color:#888;" v-html="paibanitem.jianjie"></span>
 		                	</div>
 	                	</div>
 		            </div>

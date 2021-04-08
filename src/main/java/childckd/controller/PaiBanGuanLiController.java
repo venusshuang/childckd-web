@@ -39,8 +39,12 @@ public class PaiBanGuanLiController {
 		}
 	}
 
+	// 查找排班列表
 	@RequestMapping("findPaiBanGuanLiByExpertidAndDate")
-	public JsonResult<?> findPaiBanGuanLiByExpertidAndDate(@RequestParam("expertid_search") String ppExpertid_search,@RequestParam("paibanriqi") String ppPaiBanRiQi,@RequestParam("shangxiawu") String ppShangxiawu) {
+	public JsonResult<?> findPaiBanGuanLiByExpertidAndDate(
+			@RequestParam("expertid_search") String ppExpertid_search,
+			@RequestParam("paibanriqi") String ppPaiBanRiQi,
+			@RequestParam("shangxiawu") String ppShangxiawu) {
 		try {
 			//Date mmPaiBanRiQi = DateUtil.convertShortStringToDate(ppPaiBanRiQi);
 			return JsonResult.getSuccessResult(ddService.findPaiBanGuanLiByExpertidAndDate(ppExpertid_search,ppPaiBanRiQi,ppShangxiawu));
@@ -61,8 +65,13 @@ public class PaiBanGuanLiController {
 		}
 	}
 
+	// 查找仪表盘中的列表
 	@RequestMapping("findByExpertidAndPaibanriqi")
-	public JsonResult<?> findByExpertidAndPaibanriqi(@RequestParam("expertid") String ppExpertId,@RequestParam("paibanriqi") String ppPaiBanRiQi,@RequestParam("pageindex") int ppPageIndex, @RequestParam("pagesize") int ppPageSize) {
+	public JsonResult<?> findByExpertidAndPaibanriqi(
+			@RequestParam("expertid") String ppExpertId,
+			@RequestParam("paibanriqi") String ppPaiBanRiQi,
+			@RequestParam("pageindex") int ppPageIndex,
+			@RequestParam("pagesize") int ppPageSize) {
 		try {
 			int mmCount = ddService.CountByExpertidAndPaibanriqi(ppExpertId,ppPaiBanRiQi);
 			PageInfo mmPageInfo = new PageInfo(ppPageIndex, ppPageSize, mmCount);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
 <title>中心简介</title>
@@ -11,7 +11,9 @@
 		<input type="hidden" th:value="${UserId}" id="userid">
 
 		<div class="top1">
-			<a  href="../../homepage/index_patient.html"  ><img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" ></a>
+			<a :href="'index_'+usertype+'.html'" >
+				<img style="margin-left: 0px;" width="150" height="60" src="../../image/fh.jpg" alt="" >
+			</a>
 
 			<span style="margin-left:240px">中心简介</span>
 		</div>
@@ -19,9 +21,19 @@
 		<div style="width:100%;margin-top:200px;overflow-y:auto;" class="listPart">
 		
 			<div style="width:95%;margin:0 auto;">
-				
 
-					<a href="/homepage/jingyingtuandui.html">
+				<a href="/homepage/showinfo2.html?infoid=56e22cbe-0d41-48aa-b8a4-012049f507e2">
+					<div style="margin-top:20px;border: 1px solid #bbb;border-radius: 15px;background-color:#f5fffc;" class="weui-form-preview">
+						<div class="weui-form-preview__bd">
+							<div class="weui-form-preview__item">
+								<label class="weui-form-preview__label" style="padding-left:50px;font-size:50px;color:#00baad;font-weight:bolder;">科室介绍</label>
+								<label class="weui-form-preview__label" style="min-width:60px !important;float:right;font-size:50px;color:#00baad;font-weight:bolder;">>></label>
+							</div>
+						</div>
+					</div>
+				</a>
+
+				<a href="/homepage/jingyingtuandui.html">
 				<div style="margin-top:20px;border: 1px solid #bbb;border-radius: 15px;background-color:#f5fffc;" class="weui-form-preview">
 	            	<div class="weui-form-preview__bd">
 		                <div class="weui-form-preview__item">
@@ -77,5 +89,7 @@
 <script type="text/javascript" charset="utf-8" src="../../js/layer/layer.js"></script>
 <link rel="stylesheet" href="../../css/weui.css"/>
 <link href="../../css/phone/homepage.css?ver=1.7" rel="stylesheet" type="text/css"></link>
+
+<script src="../../js/phone/homepage/zhongxinjianjie.js?ver=0.4"></script>
 
 </html>

@@ -1,3 +1,4 @@
+// 加载栏目树
 function BindTree_InfoCategory(ppUserType, ppDeptId) {
 	if (ppUserType == 'SuperAdmin') {
 		FindAll_infocategory(function(ppData) {

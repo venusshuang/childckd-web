@@ -26,9 +26,7 @@ var infolistVue = new Vue({
 			
 			var _this = this;
 			layer.open({type:3});
-			
-			$(".top").html(_this.categoryname);
-			
+
 			$.post('/info/find_passed_by_categoryid_paging',{
 				categoryid : _this.categoryid,
 				pageindex : _this.pageindex,

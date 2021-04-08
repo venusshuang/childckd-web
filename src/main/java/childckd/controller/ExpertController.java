@@ -120,8 +120,8 @@ public class ExpertController {
 		if (StringHandle.getStringByteLength(ppZhiwu) > 255) {
 			return BooleanMessage.getErrorMessage("专家职位不能超过255字节");
 		}
-		if (StringHandle.getStringByteLength(ppJianjie) > 2000) {
-			return BooleanMessage.getErrorMessage("专家姓名不能超过2000字节");
+		if (StringHandle.getStringByteLength(ppJianjie) > 15000) {
+			return BooleanMessage.getErrorMessage("专家简介不能超过15000字节");
 		}
 		
 		mmExpert.setName(ppName);

@@ -167,7 +167,7 @@ public class PageController {
 	// 手机端智慧诊疗
 	@RequestMapping("/homepage/zhihuizhenliao.html")
 	public String zhihuizhenliao(HttpServletRequest request, ModelMap map) {
-		/*if(!isLoginPhone(request)) {
+		if(!isLoginPhone(request)) {
 			return "redirect:/homepage/login.html";
 		}
 
@@ -175,7 +175,7 @@ public class PageController {
 		String mmUserId = request.getSession().getAttribute("UserId").toString();
 
 		map.put("UserType", mmUserType);
-		map.put("UserId", mmUserId);*/
+		map.put("UserId", mmUserId);
 
 		return "phone/homepage/zhihuizhenliao";
 	}

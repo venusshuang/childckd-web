@@ -65,7 +65,7 @@
     <if test='ppShangxiawu != ""'>
         and pbgl.shangxiawu = #{ppShangxiawu}
     </if>
-    order by pbgl.paibanriqi asc
+    order by pbgl.paibanriqi,pbgl.shangxiawu asc
   </select>
 
 

@@ -46,7 +46,6 @@ public class PaiBanGuanLiController {
 			@RequestParam("paibanriqi") String ppPaiBanRiQi,
 			@RequestParam("shangxiawu") String ppShangxiawu) {
 		try {
-			//Date mmPaiBanRiQi = DateUtil.convertShortStringToDate(ppPaiBanRiQi);
 			return JsonResult.getSuccessResult(ddService.findPaiBanGuanLiByExpertidAndDate(ppExpertid_search,ppPaiBanRiQi,ppShangxiawu));
 		} catch (Exception e) {
 			e.printStackTrace();

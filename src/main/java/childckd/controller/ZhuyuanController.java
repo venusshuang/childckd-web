@@ -32,8 +32,14 @@ public class ZhuyuanController {
 	private Logger logger = LoggerFactory.getLogger(getClass());
 
 	@RequestMapping("find_custom_all")
-	public JsonResult<?> findCustomAll(@RequestParam("xingming") String ppXingming, @RequestParam("shoujihao") String ppShoujihao, @RequestParam("bingzhong") String ppBingzhong,
-			@RequestParam("yuyueriqi") String ppYuyueriqi,@RequestParam("shenhejieguo") int ppShenhejieguo,@RequestParam("pageindex") int ppPageIndex, @RequestParam("pagesize") int ppPageSize) {
+	public JsonResult<?> findCustomAll(
+			@RequestParam("xingming") String ppXingming,
+			@RequestParam("shoujihao") String ppShoujihao,
+			@RequestParam("bingzhong") String ppBingzhong,
+			@RequestParam("yuyueriqi") String ppYuyueriqi,
+			@RequestParam("shenhejieguo") int ppShenhejieguo,
+			@RequestParam("pageindex") int ppPageIndex,
+			@RequestParam("pagesize") int ppPageSize) {
 		try {
 			
 			int mmCount = ddService.countFindCustomAll(ppXingming, ppShoujihao, ppBingzhong, ppYuyueriqi,ppShenhejieguo);
